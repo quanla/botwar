@@ -15,17 +15,25 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <div class="jumbotron">
-            <h2 ng-bind="challenge.jumbotron.h2"></h2>
-            <p class="lead" ng-bind="challenge.jumbotron.p"></p>
+        <div class="form-group">
+            <select class="form-control" ng-model="challenge" ng-options="c as c.name for c in challenges"></select>
         </div>
 
-        <p class="">
-            The first fight will be rather easy. Your opponent will not move or fight, he only stares at you.
-        </p>
-        <p class="">
-            Man, he doesn't care to live anymore, finish him.
-        </p>
+        <div class="jumbotron">
+            <h2 ng-bind="!finished ? challenge.jumbotron.h2 : challenge.congrats.h2"></h2>
+            <p class="lead" ng-bind="!finished ? challenge.jumbotron.p : challenge.congrats.p"></p>
+        </div>
+
+        <div ng-show="!finished">
+            <p ng-repeat="msg in challenge.messages" ng-bind="::msg"></p>
+        </div>
+        <div ng-show="finished">
+            <p ng-show="nextChallenge() == null">
+                Right now we don't have any more challenges for you. Please come again later
+            </p>
+            <p ng-show="nextChallenge() != null" ng-bind="'Next challenge: ' + nextChallenge().intro"></p>
+        </div>
+
     </div>
     <div class="col-lg-6 text-center">
         <div width="500" height="500" battlefield="game" options="options"></div>
@@ -36,6 +44,6 @@
 <div class="row">
     <div class="col-lg-12 text-center">
         <br/>
-        <button class="btn btn-lg btn-primary" ng-click="startGame()">Start Using "{{currentBot.name}}"</button>
+        <button class="btn btn-lg btn-primary" ng-click="startGame()">Start Fight using the "{{currentBot.name}}"</button>
     </div>
 </div>
