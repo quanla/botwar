@@ -32,7 +32,7 @@
                 templateUrl: "angular/main/skirmish/skirmish-battlefield.html",
                 link: function($scope, elem, attrs) {
 
-                    function createGame() {
+                    function createGame(hasBot) {
                         var sides = [];
 
                         for (var i = 0; i < $scope.sides.length; i++) {
@@ -42,12 +42,11 @@
                                 var unitConfig = sideConfig.units[j];
 
                                 for (var k = 0; k < unitConfig.count; k++) {
-                                    var bot = BotSource.createBot(unitConfig.bot.code);
                                     units.push({
                                         type: unitConfig.type,
                                         position: {x: (i) * 300 + 100, y: 150 + k * 50},
                                         direction: (i) * Math.PI + Math.PI/2,
-                                        bot: bot
+                                        bot: hasBot ? BotSource.createBot(unitConfig.bot.code) : null
                                     });
                                 }
                             }
@@ -60,8 +59,6 @@
                             sides: sides
                         };
                     }
-
-                    $scope.options = { pause: true };
 
                     var awefwaef = $scope.$watch("bots[0].code", function(value) {
                         if (value) {
@@ -90,33 +87,27 @@
                                 }
                             ];
 
-                            $scope.game = createGame();
+                            $scope.game = createGame(false);
                         }
                     });
 
 
                     $scope.startGame = function() {
-                        if (!$scope.game.isFinished && $scope.options.pause) {
-                            $scope.game = createGame();
-                            $scope.options.pause = false;
-                        } else if (!$scope.game.isFinished && !$scope.options.pause) {
-                            $scope.game = createGame();
-                            $scope.options.pause = true;
-                        }
+                        $scope.game = createGame(true);
                     };
 
                     $scope.addBot = function(unit) {
                         if (unit.count >= 5) return;
                         unit.count ++;
 
-                        $scope.game = createGame();
+                        $scope.game = createGame(false);
                     };
 
                     $scope.removeBot = function(unit) {
                         if (unit.count <= 1) return;
                         unit.count --;
 
-                        $scope.game = createGame();
+                        $scope.game = createGame(false);
                     }
                 }
             };
