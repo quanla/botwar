@@ -18,6 +18,15 @@
                     };
                 }
 
+                game.finish = function() {
+                    if (game.isFinished) return;
+
+                    game.isFinished = true;
+                    if (game.onFinish) {
+                        game.onFinish();
+                    }
+                };
+
                 for (var i = 0; i < game.sides.length; i++) {
                     var side = game.sides[i];
                     for (var j = 0; j < side.units.length; j++) {
@@ -55,10 +64,7 @@
 
                         var result = isGameFinished(game);
                         if (result) {
-                            game.isFinished = true;
-                            if (game.onFinish) {
-                                game.onFinish();
-                            }
+                            game.finish();
                         }
                     }
 
@@ -85,7 +91,7 @@
                     return gameRunner = {
                         updateUI: null,
                         onEachRound: function() {
-                            if (!skipper() && !pause) {
+                            if (!skipper() && !pause && !game.isFinished) {
                                 // Decide to move, change state
                                 BotRunner.runBots(game, round);
 

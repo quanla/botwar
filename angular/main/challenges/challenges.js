@@ -31,29 +31,45 @@
 
             $scope.challenges = Challenges.challenges;
             $scope.challenge = $scope.challenges[0];
+            //$scope.challenge = $scope.challenges[1];
 
             $scope.nextChallenge = function() {
                 return $scope.challenges[$scope.challenges.indexOf($scope.challenge) + 1];
             };
+            $scope.toNextChallenge = function() {
+                $scope.challenge = $scope.nextChallenge();
+            };
 
-            $scope.$watch("challenge", function(challenge) {
+            $scope.$watch("challenge", function() {
                 $scope.finished = false;
+
+                $scope.failMessage = null;
 
                 $scope.game = Challenges.setupGame($scope.challenge);
             });
 
-
+            $scope.jumbotron = function() {
+                return $scope.failMessage || (!$scope.finished ? $scope.challenge.jumbotron : $scope.challenge.congrats);
+            };
 
             $scope.startGame = function() {
-                $scope.game = Challenges.setupGame($scope.challenge, BotSource.createBot($scope.currentBot.code), function() {
-                    $scope.$apply(function() {
-                        $scope.finished = true;
-                    });
-                });
+                $scope.game = Challenges.setupGame($scope.challenge, BotSource.createBot($scope.currentBot.code),
+                    function() {
+                        $scope.$apply(function() {
+                            $scope.failMessage = null;
+                            $scope.finished = true;
+                        });
+                    },
+                    function(failMessage) {
+                        $scope.$apply(function() {
+                            $scope.failMessage = failMessage || $scope.challenge.failMessage;
+                        });
+                    }
+                );
             };
         })
 
-        .factory("Challenges", function() {
+        .factory("Challenges", function(SampleBot, BotSource) {
 
             var challenge1 = {
                 name: "Challenge 1 - Idle bot",
@@ -76,30 +92,84 @@
                 name: "Challenge 2 - Now... dodge",
                 intro: "This time you won't be allowed to fight",
                 jumbotron: {
-                    h2: "So you can fight!",
+                    h2: "So you can fight, huh?",
                     p: "Red guy's brother is angry, and he is coming for you. Get ready..."
                 },
                 messages: [
                     "Killing the Idle guy doesn't prove anything, this time you are not allowed to fight.",
-                    "The Red guy will try to hit you, if you can dodge 3 times, he will be too tired to continue... then you will win.",
+                    "The Red guy's brother will try to hit you, if you can dodge 3 times, he will be too tired to " +
+                    "continue... then you will win."
                 ],
                 congrats: {
                     h2: "Well done, he is on his knee now!",
                     p: "\"So in war, the way is to avoid what is strong, and strike at what is weak.\" -  Sun Tzu"
+                },
+                battleSetup: function() {
+                    var countHit = 0;
+
+                    var setup;
+                    return setup = {
+                        redBot: "fight",
+                        checkFinish: function(game) {
+
+                            var blue = game.sides[0].units[0];
+                            console.log(blue.state);
+                            if (blue.state != null && blue.state.name == "die") {
+                                return {
+                                    h2: "Oh no, he killed you!",
+                                    p: "Run faster next time will you..."
+                                };
+                            }
+
+                            var red = game.sides[1].units[0];
+                            if (red.state != null && red.state.name == "die") {
+                                return {
+                                    h2: "Oh no, don't kill him!",
+                                    p: "I know you are strong, but this time, run..."
+                                };
+                            }
+                        },
+                        afterRedBotRun: function(unit) {
+                            if (unit.state != null && unit.state.name == "fight") {
+                                countHit++;
+                                if (countHit == 3) {
+                                    unit.state = null;
+                                    setTimeout(function() {
+                                        setup.game.finish();
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    };
                 }
+            };
+
+            var bots = {};
+            var getBot = function(name) {
+                return BotSource.createBot(bots[name]);
             };
 
             var challenges = [
                 challenge1,
                 challenge2
             ];
+
             return {
                 getChallenge: function(index) {
                     return challenges[index];
                 },
                 challenges: challenges,
-                setupGame: function(challenge, userBot, onFinish) {
-                    return {
+                setupGame: function(challenge, userBot, onFinish, onFail) {
+
+                    var battleSetup = {};
+                    if (challenge.battleSetup) {
+                        battleSetup = challenge.battleSetup();
+                        SampleBot.loadBot(battleSetup.redBot, function(source) {
+                            bots[battleSetup.redBot] = source;
+                        });
+                    }
+
+                    var game = {
                         sides: [
                             {
                                 color: "blue",
@@ -119,13 +189,31 @@
                                         type: "footman",
                                         position: {x: 1*300 + 100, y: 150},
                                         direction: (1) * Math.PI + Math.PI/2,
-                                        bot: null
+                                        bot: userBot == null || battleSetup.redBot==null ? null : getBot(battleSetup.redBot),
+                                        afterBotRun: battleSetup.afterRedBotRun
                                     }
                                 ]
                             }
                         ],
-                        onFinish: onFinish
+                        onFinish: function() {
+
+                            //onFail
+                            if (battleSetup.checkFinish == null) {
+                                onFinish();
+                            } else {
+                                var checkFinish = battleSetup.checkFinish(game);
+                                if (checkFinish) {
+                                    onFail(checkFinish);
+                                } else {
+                                    onFinish();
+                                }
+                            }
+                        }
                     };
+
+                    battleSetup.game = game;
+
+                    return game;
                 }
             };
         })

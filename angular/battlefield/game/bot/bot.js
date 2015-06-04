@@ -88,6 +88,10 @@
 
                                 unit.bot.run(control);
 
+                                if (unit.afterBotRun) {
+                                    unit.afterBotRun(unit);
+                                }
+
                                 unit.direction = control.direction;
                             }
                         }

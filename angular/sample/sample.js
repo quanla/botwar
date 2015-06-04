@@ -7,10 +7,11 @@
         .factory("SampleBot", function($http) {
             function loadBot(name, onDone) {
                 $http.get("/botwar/sample-bots/" + name + "-bot.js").success(function(source) {
-                    onDone(source);
+                    if (onDone) onDone(source);
                 });
             }
             return {
+                loadBot: loadBot,
                 loadEmpty: function(onDone) {
                     loadBot("empty", onDone);
                 },

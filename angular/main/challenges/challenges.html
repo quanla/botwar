@@ -20,8 +20,8 @@
         </div>
 
         <div class="jumbotron">
-            <h2 ng-bind="!finished ? challenge.jumbotron.h2 : challenge.congrats.h2"></h2>
-            <p class="lead" ng-bind="!finished ? challenge.jumbotron.p : challenge.congrats.p"></p>
+            <h2 ng-bind="jumbotron().h2"></h2>
+            <p class="lead" ng-bind="jumbotron().p"></p>
         </div>
 
         <div ng-show="!finished">
@@ -31,7 +31,7 @@
             <p ng-show="nextChallenge() == null">
                 Right now we don't have any more challenges for you. Please come again later
             </p>
-            <p ng-show="nextChallenge() != null" ng-bind="'Next challenge: ' + nextChallenge().intro"></p>
+            <p ng-show="nextChallenge() != null">Next challenge: <a href="" ng-click="toNextChallenge()" ng-bind="nextChallenge().intro"></a></p>
         </div>
 
     </div>
