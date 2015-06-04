@@ -4,9 +4,25 @@
 
     angular.module('bw.sample', [
     ])
-        .factory("SampleBot", function() {
+        .factory("SampleBot", function($http) {
+            function loadBot(name, onDone) {
+                $http.get("/botwar/sample-bots/" + name + "-bot.js").success(function(source) {
+                    onDone(source);
+                });
+            }
             return {
-
+                loadEmpty: function(onDone) {
+                    loadBot("empty", onDone);
+                },
+                loadFighter: function(onDone) {
+                    loadBot("fight", onDone);
+                },
+                loadRunner: function(onDone) {
+                    loadBot("run", onDone);
+                },
+                loadVeteran: function(onDone) {
+                    loadBot("veteran", onDone);
+                }
             };
         })
 
@@ -23,28 +39,28 @@
             };
         })
 
-        .factory("SampleFightBot", function(BotSource, $http) {
+        .factory("SampleFightBot", function(BotSource, SampleBot) {
             return {
                 createSampleBot: function(onDone) {
-                    $http.get("sample-bots/fight-bot.js").success(function(source) {
+                    SampleBot.loadFighter(function(source) {
                         onDone(BotSource.createBot(source));
                     });
                 }
             };
         })
-        .factory("SampleRunBot", function(BotSource, $http) {
+        .factory("SampleRunBot", function(BotSource, SampleBot) {
             return {
                 createSampleBot: function(onDone) {
-                    $http.get("sample-bots/run-bot.js").success(function(source) {
+                    SampleBot.loadRunner(function(source) {
                         onDone(BotSource.createBot(source));
                     });
                 }
             };
         })
-        .factory("SamplePreemptBot", function(BotSource, $http) {
+        .factory("SampleVeteranBot", function(BotSource, SampleBot) {
             return {
                 createSampleBot: function(onDone) {
-                    $http.get("sample-bots/preempt-bot.js").success(function(source) {
+                    SampleBot.loadVeteran(function(source) {
                         onDone(BotSource.createBot(source));
                     });
                 }

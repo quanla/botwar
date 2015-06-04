@@ -55,11 +55,20 @@
                 };
             }
 
-            var fightBot = SampleFightBot.createSampleFightBot();
+            var fightBot;
+            SampleFightBot.createSampleBot(function(bot) {
+                fightBot = bot;
+            });
 
-            var runBot = SampleRunBot.createSampleRunBot();
+            var runBot;
+            SampleRunBot.createSampleBot(function(bot) {
+                runBot = bot;
+            });
 
-            var preemptBot = SamplePreemptBot.createSamplePreemptBot();
+            var veteranBot;
+             SamplePreemptBot.createSampleBot(function(bot) {
+                 veteranBot = bot;
+            });
 
             $scope.testSlaughter = function() {
                 $scope.showGame(randomGame(fightBot));
@@ -71,7 +80,7 @@
                 $scope.showGame(randomGame(fightBot, fightBot));
             };
             $scope.testPreempty = function() {
-                $scope.showGame(randomGame(fightBot, preemptBot));
+                $scope.showGame(randomGame(fightBot, veteranBot));
             };
 
             $scope.testPreempty();

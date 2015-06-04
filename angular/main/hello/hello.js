@@ -18,7 +18,7 @@
             ;
         }])
 
-        .controller("bw.main.hello.Ctrl", function($scope, SampleFightBot, SampleRunBot, SamplePreemptBot) {
+        .controller("bw.main.hello.Ctrl", function($scope, SampleFightBot, SampleRunBot, SampleVeteranBot) {
 
             //$scope.step2 = true;
             //$scope.step3 = true;
@@ -33,8 +33,8 @@
             SampleRunBot.createSampleBot(function(bot) {
                 $scope.runBot = bot;
             });
-            SamplePreemptBot.createSampleBot(function(bot) {
-                $scope.preemptBot = bot;
+            SampleVeteranBot.createSampleBot(function(bot) {
+                $scope.veteranBot = bot;
             });
         })
 
@@ -128,7 +128,7 @@
             $scope.options = {pause: true};
 
 
-            $scope.$watch("preemptBot && runBot", function(v) {
+            $scope.$watch("veteranBot && runBot", function(v) {
                 if (!v) return;
                 newGame();
             });
@@ -156,7 +156,7 @@
                                     type: "footman",
                                     position: {x: 300, y: 150},
                                     direction: Math.PI,
-                                    bot: $scope.preemptBot
+                                    bot: $scope.veteranBot
                                 }
                             ]
                         }

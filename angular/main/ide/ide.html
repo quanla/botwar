@@ -1,32 +1,41 @@
 <div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-heading text-capitalize">
-                <h4><a href="" ng-click="showCodeEditor = !showCodeEditor">Your Bot Code</a></h4>
-            </div>
+    <div class="col-lg-6">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon">Bot name:</div>
 
-            <div class="panel-body" ng-if="showCodeEditor">
-                <div class="row">
-                    <div class="col-lg-2">
-                        Bot name:
-                    </div>
-                    <div class="col-lg-4">
-                        <input ng-model="currentBot.name">
-                    </div>
-                    <div class="col-lg-6 text-right">
-                        <a href="" ng-click="createNewBot()">Create new bot?</a> &nbsp;
-                        <select ng-model="currentBot" ng-options="bot as bot.name for bot in bots"></select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div code-mirror="currentBot.code" style="border: 1px solid gray"></div>
-                    </div>
-                </div>
+                <input class="form-control" ng-model="currentBot.name">
             </div>
         </div>
     </div>
+    <div class="col-lg-2 text-right">
+    </div>
+    <div class="col-lg-4 text-right">
+
+        <div class="form-group">
+            <div class="input-group">
+                <select class="form-control" ng-model="currentBot" ng-options="bot as bot.name for bot in bots"></select>
+
+
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li><a href="" ng-click="createNewBot()">[+] Add new</a></li>
+                        <li><a href="" ng-click="deleteBot()">[-] Remove this bot</a></li>
+                    </ul>
+                </div><!-- /btn-group -->
+
+            </div>
+        </div>
+
+
+    </div>
 </div>
-
-
-<bw-ide-battlefield></bw-ide-battlefield>
+<div class="row">
+    <div class="col-lg-12">
+        <div code-mirror="currentBot.code" style="border: 1px solid gray"></div>
+    </div>
+</div>

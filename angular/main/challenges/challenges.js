@@ -22,6 +22,15 @@
 
         })
 
+        .directive("bwChallengesIde", function() {
+            return {
+                restrict: "E",
+                templateUrl: "angular/main/challenges/challenges-ide.html",
+                link: function($scope, elem, attrs) {
+
+                }
+            };
+        })
     ;
 
 })();
