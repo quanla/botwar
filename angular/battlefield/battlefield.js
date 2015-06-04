@@ -30,7 +30,6 @@
                                 }
 
                                 if (game != null) {
-
                                     gameRunner = GameRunner.newGameRunner(game, $scope.options, attrs.width, attrs.height);
 
                                     unitSprites = UnitSprites.createUnitSprites(game, renderer.unitStage);

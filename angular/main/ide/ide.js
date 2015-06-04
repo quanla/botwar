@@ -123,8 +123,9 @@
 
                     $scope.options = { pause: true };
 
-                    $scope.$watch("::bots[0].code", function(value) {
+                    var awefwaef = $scope.$watch("bots[0].code", function(value) {
                         if (value) {
+                            awefwaef();
                             $scope.game = createGame();
                         }
                     });
