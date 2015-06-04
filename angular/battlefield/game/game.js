@@ -43,6 +43,7 @@
             return {
                 newGameRunner: function(game, options, width, height) {
                     var skip = options == null || options.skip == null ? 0 : options.skip;
+                    var consume = options == null || options.consume == null ? 1 : options.consume;
                     var pause = options == null || options.pause == null ? 0 : options.pause;
 
                     var skipped = 0;
@@ -92,24 +93,28 @@
                         updateUI: null,
                         onEachRound: function() {
                             if (!skipper() && !pause && !game.isFinished) {
-                                // Decide to move, change state
-                                BotRunner.runBots(game, round);
+                                for (var i = 0; i< consume;i++) {
+                                    // Decide to move, change state
+                                    BotRunner.runBots(game, round);
 
-                                // Change velocity, position
-                                // action impacts
-                                UnitDynamics.applyDynamics(game, round);
+                                    // Change velocity, position
+                                    // action impacts
+                                    UnitDynamics.applyDynamics(game, round);
 
-                                updateGameState(game);
+                                    updateGameState(game);
 
-                                gameRunner.updateUI(round);
-
-                                round++;
+                                    round++;
+                                }
+                                gameRunner.updateUI(round - 1);
                             } else {
                                 gameRunner.updateUI(round);
                             }
                         },
                         skip: function(skip1) {
                             skip = skip1;
+                        },
+                        consume: function(consume1) {
+                            consume = consume1 || 1;
                         },
                         pause: function(pause1) {
                             pause = pause1;
@@ -259,7 +264,7 @@
                 // Add vectors
                 var result = Vectors.add({value: accel, direction: direction}, velocity || {value: 0, direction: 0});
                 // Speed limit
-                var maxSpeed = 1;
+                var maxSpeed = 1.5;
                 if (result.value > maxSpeed) {
                     result.value = maxSpeed;
                 } else if (result.value < -maxSpeed) {
