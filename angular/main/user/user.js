@@ -5,6 +5,15 @@
     angular.module('bw.main.user', [
     ])
         .factory("User", function(SampleBot, $q) {
+            function deleteAll() {
+                for (var i = 0; i < localStorage.bots_count; i++) {
+                    delete localStorage["bot" + i + "_name"];
+                    delete localStorage["bot" + i + "_code"];
+                }
+                delete localStorage.bots_count;
+            }
+            //deleteAll();
+
             function loadFromLocal() {
                 var bots = [];
 
@@ -20,12 +29,23 @@
                 };
             }
 
-            function shiftBots() {
-                for (var i = localStorage.bots_count - 1; i > -1; i--) {
+            function shiftBotsDown(from) {
+                for (var i = localStorage.bots_count - 1; i > from - 1; i--) {
                     localStorage["bot" + (i+1) + "_name"] = localStorage["bot" + i + "_name"];
                     localStorage["bot" + (i+1) + "_code"] = localStorage["bot" + i + "_code"];
                 }
                 localStorage.bots_count = localStorage.bots_count*1 + 1;
+            }
+            function shiftBotsUp(from) {
+                for (var i = from; i < localStorage.bots_count; i++) {
+                    localStorage["bot" + (i-1) + "_name"] = localStorage["bot" + i + "_name"];
+                    localStorage["bot" + (i-1) + "_code"] = localStorage["bot" + i + "_code"];
+                }
+                localStorage.bots_count = localStorage.bots_count*1 - 1;
+
+                delete localStorage["bot" + localStorage.bots_count + "_name"];
+                delete localStorage["bot" + localStorage.bots_count + "_code"];
+
             }
             return {
                 loadUserBots: function() {
@@ -64,7 +84,7 @@
                 newBot: function() {
                     var defer = $q.defer();
                     SampleBot.loadEmpty(function(source) {
-                        shiftBots();
+                        shiftBotsDown(0);
                         localStorage["bot0_name"] = "New Bot";
                         localStorage["bot0_code"] = source;
 
@@ -72,6 +92,9 @@
 
                     });
                     return defer.promise;
+                },
+                deleteBot: function(index) {
+                    shiftBotsUp(index + 1);
                 }
             };
         })

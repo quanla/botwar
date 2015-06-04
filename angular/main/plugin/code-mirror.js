@@ -9,6 +9,7 @@
             return {
                 restrict: "A",
                 link: function($scope, elem, attrs) {
+
                     var editor = CodeMirror(elem[0], {
                         mode:  "javascript",
                         lineNumbers: true

@@ -18,19 +18,20 @@
             ;
         }])
 
-        .controller("challenges.ctrl", function($http, $scope) {
+        .controller("challenges.ctrl", function(User, $scope) {
+            User.loadUserBots().then(function(bots) {
+                $scope.bots = bots;
+                $scope.currentBot = bots[0];
+            });
+            $scope.showCodeEditor = false;
+
+            $scope.changeBot = function(bot) {
+                $scope.currentBot = bot;
+            }
+
 
         })
 
-        .directive("bwChallengesIde", function() {
-            return {
-                restrict: "E",
-                templateUrl: "angular/main/challenges/challenges-ide.html",
-                link: function($scope, elem, attrs) {
-
-                }
-            };
-        })
     ;
 
 })();

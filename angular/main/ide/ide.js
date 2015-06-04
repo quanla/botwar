@@ -9,10 +9,14 @@
         .directive("bwEditor", function(SampleBot, User) {
             return {
                 restrict: "E",
+                scope: {
+                    bots: "=",
+                    changeBot: "&"
+                },
                 templateUrl: "angular/main/ide/ide.html",
                 link: function($scope, elem, attrs) {
 
-                    $scope.$watch("::bots", function() {
+                    $scope.$watch("bots", function() {
                         $scope.currentBot = $scope.bots[0];
                     });
 
@@ -23,11 +27,23 @@
                         });
                     };
 
+                    $scope.deleteBot = function() {
+                        User.deleteBot($scope.bots.indexOf($scope.currentBot));
+                        Cols.remove($scope.currentBot, $scope.bots);
+                        $scope.currentBot = $scope.bots[0];
+                    };
+
                     var saveCurrentBot = function () {
                         User.saveBot($scope.currentBot, $scope.bots.indexOf($scope.currentBot));
                     };
                     $scope.$watch("currentBot.code", saveCurrentBot);
                     $scope.$watch("currentBot.name", saveCurrentBot);
+
+                    if ($scope.changeBot) {
+                        $scope.$watch("currentBot", function(currentBot) {
+                            $scope.changeBot({bot: currentBot});
+                        });
+                    }
 
                 }
             };

@@ -32,29 +32,6 @@
                 templateUrl: "angular/main/skirmish/skirmish-battlefield.html",
                 link: function($scope, elem, attrs) {
 
-                    $scope.sides = [
-                        {
-                            color: "blue",
-                            units: [
-                                {
-                                    type: "footman",
-                                    count: 1,
-                                    bot: $scope.bots[0]
-                                }
-                            ]
-                        },
-                        {
-                            color: "red",
-                            units: [
-                                {
-                                    type: "footman",
-                                    count: 1,
-                                    bot: $scope.bots[0]
-                                }
-                            ]
-                        }
-                    ];
-
                     function createGame() {
                         var sides = [];
 
@@ -89,6 +66,30 @@
                     var awefwaef = $scope.$watch("bots[0].code", function(value) {
                         if (value) {
                             awefwaef();
+
+                            $scope.sides = [
+                                {
+                                    color: "blue",
+                                    units: [
+                                        {
+                                            type: "footman",
+                                            count: 1,
+                                            bot: $scope.bots[0]
+                                        }
+                                    ]
+                                },
+                                {
+                                    color: "red",
+                                    units: [
+                                        {
+                                            type: "footman",
+                                            count: 1,
+                                            bot: $scope.bots[0]
+                                        }
+                                    ]
+                                }
+                            ];
+
                             $scope.game = createGame();
                         }
                     });
