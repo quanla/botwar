@@ -14,6 +14,11 @@
                     position: ObjectUtil.clone(unit.position)
                 };
             }
+            function friendInfo(unit) {
+                return unit== null ? null : {
+                    position: ObjectUtil.clone(unit.position)
+                };
+            }
             return {
                 alive: alive,
                 createControl: function(unit, round, sides, side) {
@@ -55,6 +60,9 @@
                                 }
                             }
                             return total;
+                        },
+                        getFriends: function() {
+                            return Cols.yield(side.units, Fs.chain(alive, friendInfo));
                         },
                         setDirection: function(pos) {
                             this.direction = Vectors.toVector( Vectors.subtractPos(pos, unit.position)).direction;
