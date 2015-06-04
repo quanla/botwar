@@ -101,6 +101,11 @@
                                     // action impacts
                                     UnitDynamics.applyDynamics(game, round);
 
+                                    if (game.afterRoundDynamics) {
+                                        game.afterRoundDynamics();
+                                    }
+
+                                    // Check battle finished
                                     updateGameState(game);
 
                                     round++;

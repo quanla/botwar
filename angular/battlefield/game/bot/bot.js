@@ -11,22 +11,22 @@
             }
             function info(unit) {
                 return unit== null ? null : {
-                    position: ObjectUtil.clone(unit.position)
+                    position: ObjectUtil.clone(unit.position),
+                    state: ObjectUtil.clone(unit.state)
                 };
             }
             function friendInfo(unit) {
-                return unit== null ? null : {
-                    position: ObjectUtil.clone(unit.position)
-                };
+                return unit== null ? null : info(unit);
             }
             return {
                 alive: alive,
                 createControl: function(unit, round, sides, side) {
                     return {
+                        round: round,
                         position: ObjectUtil.clone(unit.position),
                         direction: unit.direction,
                         goForward: function() {
-                            unit.botActionSince = round;
+                            unit.botBlockedUtil = round + 10;
                             if (unit.state != null && unit.state.name == "walk") {
                                 return;
                             }
@@ -41,12 +41,12 @@
                                 name: "fight",
                                 since: round
                             };
-                            unit.botActionSince = round;
+                            unit.botBlockedUtil = round + 10;
                             unit.moveAccel = 0;
                         },
                         stand: function() {
                             unit.state = null;
-                            //unit.botActionSince = round;
+                            unit.botBlockedUtil = null;
                             unit.moveAccel = 0;
                         },
                         getEnemies: function() {
@@ -80,7 +80,7 @@
                 if (unit.state != null) {
                     if (["fight", "die"].indexOf(unit.state.name) > -1) {
                         return true;
-                    } else if (round - unit.botActionSince < 10) {
+                    } else if (round < unit.botBlockedUtil) {
                         return true;
                     }
                 }

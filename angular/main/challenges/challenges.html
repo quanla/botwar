@@ -20,7 +20,7 @@
         </div>
 
         <div class="jumbotron">
-            <h2 ng-bind="jumbotron().h2"></h2>
+            <h2 ng-bind="jumbotron().h2" ng-class="{'text-danger': failMessage != null}"></h2>
             <p class="lead" ng-bind="jumbotron().p"></p>
         </div>
 
