@@ -22,15 +22,15 @@
             $scope.bots = [
                 {
                     name: "Fighter",
-                    code: ""
+                    code: null
                 },
                 {
                     name: "Run away",
-                    code: ""
+                    code: null
                 },
                 {
                     name: "Veteran",
-                    code: ""
+                    code: null
                 }
             ];
 
@@ -123,7 +123,12 @@
 
                     $scope.options = { pause: true };
 
-                    $scope.game = createGame();
+                    $scope.$watch("::bots[0].code", function(value) {
+                        if (value) {
+                            $scope.game = createGame();
+                        }
+                    });
+
 
                     $scope.startGame = function() {
                         $scope.game = createGame();
