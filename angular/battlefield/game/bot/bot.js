@@ -62,7 +62,10 @@
                             return total;
                         },
                         getFriends: function() {
-                            return Cols.yield(side.units, Fs.chain(alive, friendInfo));
+                            var notSelf = function (unit1) {
+                                return unit1 == unit ? null : unit1;
+                            };
+                            return Cols.yield(side.units, Fs.chain(notSelf,alive, friendInfo));
                         },
                         setDirection: function(pos) {
                             this.direction = Vectors.toVector( Vectors.subtractPos(pos, unit.position)).direction;
