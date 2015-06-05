@@ -3,6 +3,8 @@
 (function () {
 
     angular.module('bw.battlefield.game', [
+        'bw.battlefield.unit-physics',
+        'bw.battlefield.unit-fighting-style',
         'bw.battlefield.game.bot'
     ])
         .factory("GameRunner", function(BotRunner, UnitDynamics, GameUtil, UnitUtil) {
@@ -151,7 +153,7 @@
             };
         })
 
-        .factory("UnitDynamics", function(Dynamics, GameUtil, UnitTypes) {
+        .factory("UnitDynamics", function(Dynamics, GameUtil, UnitRender, UnitPhysics, UnitFightingStyle) {
             function limitPosition(pos, battlefield) {
                 if (pos.x < 0 + 30) {
                     pos.x = 0 + 30;
@@ -173,7 +175,7 @@
                         if (type == "hit") {
                             // Resolve impact
                             GameUtil.eachUnit(game, function(unit) {
-                                if (unit.type == "footman") {
+                                if (unit.type == "footman" || unit.type == "archer") {
                                     if (unit.state != null && unit.state.name == "die" ) {
                                         return; // Immune to damage
                                     }
@@ -197,11 +199,8 @@
                                 if (unit == props.source) {
                                     return;
                                 }
-                                if (unit.type == "footman") {
-                                    if (unit.state != null && unit.state.name == "die" ) {
-                                        return; // No need to make way
-                                    }
-
+                                var unitPhysics = UnitPhysics.getUnitPhysics(unit);
+                                if (unitPhysics.needWay) {
                                     if (Distance.between(unit.position, props.position) < 20) {
                                         return true;
                                     }
@@ -218,23 +217,33 @@
                     }
 
                     GameUtil.eachUnit(game, function(unit) {
+
+                        var unitPhysics = UnitPhysics.getUnitPhysics(unit);
+
                         unit.velocity = Dynamics.applyAccel(unit.moveAccel, unit.direction, unit.velocity);
 
                         if (unit.velocity != null && unit.velocity.value > 0) {
                             var newPosition = Dynamics.applyVelocity(unit.velocity, unit.position);
-                            impact("makeWay", {
-                                position: newPosition,
-                                source: unit
-                            }).then(function() {
+
+                            if (unitPhysics.needWay) {
+                                impact("makeWay", {
+                                    position: newPosition,
+                                    source: unit
+                                }).then(function() {
+                                    unit.position = newPosition;
+                                });
+                            } else {
                                 unit.position = newPosition;
-                            });
+                            }
                         }
 
+                        // Battlefield boundary
                         limitPosition(unit.position, game.battlefield);
 
                         if (unit.state != null) {
                             if (unit.state.name == "fight") {
-                                if ((round - unit.state.since) == UnitTypes.aniSpeed * 3) {
+                                var fightingStyle = UnitFightingStyle.getUnitFightingStyle(unit);
+                                if (fightingStyle.isHit(round, unit)) {
                                     impact("hit", {
                                         position: Vectors.addPos(unit.position, Vectors.vectorPos({
                                             direction: unit.direction,
@@ -242,7 +251,15 @@
                                         })),
                                         source: unit
                                     });
-                                } else if ((round - unit.state.since) == (UnitTypes.aniSpeed * 4)) {
+                                } else if (fightingStyle.isCreateArrow(round, unit)) {
+                                    game.nature.push({
+                                        type: "arrow",
+                                        position: ObjectUtil.clone(unit.position),
+                                        direction: unit.direction,
+                                        side: unit.side,
+                                        moveAccel: 100
+                                    });
+                                } else if (fightingStyle.isFinished(round, unit)) {
                                     unit.state = null;
                                 }
                             } else if (unit.state.name == "die") {

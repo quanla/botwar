@@ -67,6 +67,15 @@
                 }
             };
         })
+        .factory("SampleArcherBot", function(BotSource, SampleBot) {
+            return {
+                createSampleBot: function(onDone) {
+                    SampleBot.loadBot("archer", function(source) {
+                        onDone(BotSource.createBot(source));
+                    });
+                }
+            };
+        })
     ;
 
 })();

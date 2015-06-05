@@ -18,7 +18,7 @@
             ;
         }])
 
-        .controller("bw.test.bot.Ctrl", function($scope, SampleFightBot, SampleRunBot, SampleVeteranBot) {
+        .controller("bw.test.bot.Ctrl", function($scope, SampleFightBot, SampleRunBot, SampleVeteranBot, SampleArcherBot) {
 
             function randomGame(bot, eneBot) {
                 var blueUnits = [];
@@ -34,7 +34,7 @@
                 var redUnits = [];
                 for (var i = 0; i < 1; i++) {
                     redUnits.push({
-                        type: "footman",
+                        type: "archer",
                         position: {x: 400, y: 50 + i * 50},
                         direction: 3 * Math.PI/4,
                         bot: eneBot
@@ -70,6 +70,11 @@
                  veteranBot = bot;
             });
 
+            var archerBot;
+            SampleArcherBot.createSampleBot(function(bot) {
+                archerBot = bot;
+            });
+
             $scope.testSlaughter = function() {
                 $scope.game = randomGame(fightBot);
             };
@@ -82,8 +87,11 @@
             $scope.testVeteran = function() {
                 $scope.game = randomGame(fightBot, veteranBot);
             };
+            $scope.testArcher = function() {
+                $scope.game = randomGame(fightBot, archerBot);
+            };
 
-            $scope.testVeteran();
+            $scope.testArcher();
         })
     ;
 

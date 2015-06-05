@@ -62,7 +62,7 @@
             };
         })
 
-        .factory("UnitTypes", function(UnitTexture, FootmanRender, ArcherRender) {
+        .factory("UnitRender", function(UnitTexture, FootmanRender, ArcherRender) {
             var aniSpeed = 10;
 
             FootmanRender.aniSpeed = aniSpeed;
@@ -136,7 +136,7 @@
             };
         })
 
-        .factory("UnitSprites", function(UnitTypes) {
+        .factory("UnitSprites", function(UnitRender) {
             function isAbove(u1, u2) {
                 if (u1.state != null && u1.state.name == "die") {
                     return false;
@@ -170,7 +170,7 @@
                     function createUnitsLink (units) {
                         return new ColLink(units,
                             function (unit) {
-                                var unitSprites = UnitTypes.createUnitSprites(unit);
+                                var unitSprites = UnitRender.createUnitSprites(unit);
 
                                 stage.addChild(unitSprites.container);
                                 orderCache.push(unitSprites);
@@ -238,7 +238,7 @@
             };
         })
 
-        .factory("Renderers", function(UnitTypes, BotRunner, Dynamics, Pixi, $http) {
+        .factory("Renderers", function(UnitRender, BotRunner, Dynamics, Pixi, $http) {
 
             function addBackground(stage, renderer, assetsLoc) {
                 var grassTexture = PIXI.Texture.fromImage(assetsLoc + '/grass.png');
@@ -284,7 +284,7 @@
                         if (onLoad) onLoad();
                         loaded = true;
 
-                        UnitTypes.init(event.resources);
+                        UnitRender.init(event.resources);
 
                         if (!stopped) {
                             requestAnimationFrame( animate );
