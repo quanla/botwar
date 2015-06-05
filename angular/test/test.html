@@ -50,18 +50,7 @@
 
     <!-- Page content of course! -->
     <main id="content" role="main">
-        <div class="container" ng-controller="bw.test.Ctrl">
-            <div class="row">
-                <div class="col-lg-3" >
-                    <ui-view></ui-view>
-                </div>
-                <div class="col-lg-9 text-center">
-                    <div width="600" height="600" battlefield="showing.game" assets-loc="../../assets" options="showing.options" ng-if="showing.game != null"></div>
-                    <div width="600" height="800" sprite-sheet-editor="showing.spriteSheet" ng-if="showing.spriteSheet.gridMode == true"></div>
-                    <div width="600" height="800" sprite-sheet-editor="showing.spriteSheet" ng-if="showing.spriteSheet.gridMode == false"></div>
-                </div>
-            </div>
-        </div>
+        <div class="container" ui-view></div>
     </main>
 
     <!-- Bootstrap core JavaScript
@@ -92,6 +81,7 @@
     <script src="/botwar/angular/test/tests/ani/test-ani.js"></script>
     <script src="/botwar/angular/test/tests/bot/test-bot.js"></script>
     <script src="/botwar/angular/test/tests/color/test-color.js"></script>
+    <script src="/botwar/angular/test/tests/posture/test-posture.js"></script>
     <script src="/botwar/angular/test/tests/sprite/editor/sprite-editor.js"></script>
     <script src="/botwar/angular/test/tests/sprite/test-sprite.js"></script>
     <!-- test-js end -->

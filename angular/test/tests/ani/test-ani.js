@@ -53,7 +53,7 @@
                         control.direction = direction;
                     }
                 };
-                $scope.showGame(singleGame(rotateBot));
+                $scope.game = singleGame(rotateBot);
             };
 
 
@@ -68,7 +68,7 @@
                         position = control.position;
                     }
                 };
-                $scope.showGame(singleGame(walkBot));
+                $scope.game = singleGame(walkBot);
             };
             $scope.testFight = function() {
                 var fighted = false;
@@ -82,7 +82,7 @@
                         }
                     }
                 };
-                $scope.showGame(singleGame(fightBot));
+                $scope.game = singleGame(fightBot);
             };
 
             $scope.testWalk();

@@ -19,6 +19,8 @@
 
 
         .controller("bw.test.color.Ctrl", function($scope) {
+            $scope.unitType = "footman";
+
             $scope.showStand = function() {
 
                 function create(unit, position, direction, state, num) {
@@ -42,37 +44,37 @@
                 }
 
                 var a=1;
-                createCol(a++, "footman", "stand", 0);
-                createCol(a++, "archer", "stand", 0);
-                //createCol(a++, "walk", 0);
-                //createCol(a++, "walk", 1);
-                //createCol(a++, "walk", 2);
-                //createCol(a++, "walk", 3);
-                //createCol(a++, "fight", 0);
-                //createCol(a++, "fight", 1);
-                //if (unit == "footman") {
-                //    createCol(a++, "fight", 2);
-                //    createCol(a++, "fight", 3);
-                //}
-                //createCol(a++, "die", 0);
-                //createCol(a++, "die", 1);
-                //createCol(a++, "die", 2);
+                createCol(a++, $scope.unitType, "stand", 0);
+                createCol(a++, $scope.unitType, "walk", 0);
+                createCol(a++, $scope.unitType, "walk", 1);
+                createCol(a++, $scope.unitType, "walk", 2);
+                createCol(a++, $scope.unitType, "walk", 3);
+                createCol(a++, $scope.unitType, "fight", 0);
+                createCol(a++, $scope.unitType, "fight", 1);
+                if ($scope.unitType == "footman") {
+                    createCol(a++, $scope.unitType, "fight", 2);
+                    createCol(a++, $scope.unitType, "fight", 3);
+                }
+                createCol(a++, $scope.unitType, "die", 0);
+                createCol(a++, $scope.unitType, "die", 1);
+                createCol(a++, $scope.unitType, "die", 2);
 
-                //$scope.color = "blue";
-                //$scope.color = "red";
-
-                $scope.showGame({
+                $scope.game = {
                     sides: [
                         {
                             color: $scope.color,
                             units: units
                         }
                     ]
-                });
+                };
             };
 
             $scope.setColor = function(color) {
                 $scope.color = color;
+                $scope.showStand();
+            };
+            $scope.setUnitType = function(ut) {
+                $scope.unitType = ut;
                 $scope.showStand();
             };
 

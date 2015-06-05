@@ -71,19 +71,19 @@
             });
 
             $scope.testSlaughter = function() {
-                $scope.showGame(randomGame(fightBot));
+                $scope.game = randomGame(fightBot);
             };
             $scope.testRunAway = function() {
-                $scope.showGame(randomGame(fightBot, runBot));
+                $scope.game = randomGame(fightBot, runBot);
             };
             $scope.testFight = function() {
-                $scope.showGame(randomGame(fightBot, fightBot));
+                $scope.game = randomGame(fightBot, fightBot);
             };
-            $scope.testPreempty = function() {
-                $scope.showGame(randomGame(fightBot, veteranBot));
+            $scope.testVeteran = function() {
+                $scope.game = randomGame(fightBot, veteranBot);
             };
 
-            $scope.testPreempty();
+            $scope.testVeteran();
         })
     ;
 

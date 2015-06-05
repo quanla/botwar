@@ -58,7 +58,8 @@
                         control.fight();
                     }
                 };
-                $scope.showGame(singleGame(fightBot), {skip: 0});
+                $scope.game = singleGame(fightBot);
+                $scope.options = {skip: 0};
             };
 
             $scope.testHit();

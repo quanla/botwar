@@ -1,5 +1,17 @@
 <div class="row">
-    <div class="col-lg-12 col-xs-3">
-        <button class="btn text-capitalize" ng-repeat="ut in ['blue','red','white','green']" ng-class="{'btn-primary': color == ut}" ng-click="setColor(ut)">{{ut}}</button>
+    <div class="col-lg-3" >
+        <div class="row">
+            <div class="col-lg-12 col-xs-3">
+                <button class="btn text-capitalize" ng-repeat="uc in ['blue','red','white','green']" ng-class="{'btn-primary': color == uc}" ng-click="setColor(uc)">{{uc}}</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-xs-3">
+                <button class="btn text-capitalize" ng-repeat="ut in ['footman','archer']" ng-class="{'btn-primary': unitType == ut}" ng-click="setUnitType(ut)">{{ut}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9 text-center">
+        <div width="800" height="600" battlefield="game" assets-loc="../../assets"></div>
     </div>
 </div>

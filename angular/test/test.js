@@ -15,25 +15,5 @@
                 // If the url is ever invalid, e.g. '/asdf', then redirect to '/' aka the home state
                 .otherwise("/bot");
         }])
-
-
-        .controller("bw.test.Ctrl", function($scope) {
-
-            $scope.showing = {};
-
-            $scope.showGame = function(game, options) {
-                $scope.showing = {
-                    game: game,
-                    options: options
-                };
-            };
-
-            $scope.showSpriteSheetEditor = function(spriteSheet) {
-                $scope.showing = {
-                    spriteSheet: spriteSheet
-                };
-            };
-        })
-
     ;
 })();
