@@ -3,7 +3,7 @@
 (function () {
 
     angular.module('bw.battlefield.renderer.unit', [
-        'bw.battlefield.renderer.unit.footman'
+        'bw.battlefield.renderer.unit.land-unit'
     ])
 
         .factory("ColorMatrixCombi", function() {

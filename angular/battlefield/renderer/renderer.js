@@ -62,7 +62,7 @@
             };
         })
 
-        .factory("UnitRender", function(UnitTexture, FootmanRender, ArcherRender) {
+        .factory("UnitRender", function(UnitTexture, FootmanRender, ArcherRender, ArrowRender) {
             var aniSpeed = 10;
 
             FootmanRender.aniSpeed = aniSpeed;
@@ -70,6 +70,7 @@
             var types = {
                 "footman": FootmanRender,
                 "archer": ArcherRender,
+                "arrow": ArrowRender,
                 "circle": {
                     createUnitSprites: function(unit) {
                         var g = new PIXI.Graphics();

@@ -2,7 +2,8 @@
 
 (function () {
 
-    angular.module('bw.battlefield.renderer.unit.footman', [
+    angular.module('bw.battlefield.renderer.unit.land-unit', [
+        'bw.battlefield.renderer.unit.arrow'
     ])
         .factory("FootmanRender", function(LandUnitRender) {
             return LandUnitRender.createLandUnitRender({

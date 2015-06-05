@@ -33,7 +33,7 @@
                             units: [
                                 {
                                     type: $scope.unitType,
-                                    position: position || {x: 400, y: 100},
+                                    position: position || {x: 100, y: 200},
                                     direction: 0,
                                     bot: bot
                                 }
@@ -71,21 +71,20 @@
                 $scope.game = singleGame(walkBot);
             };
             $scope.testFight = function() {
-                var fighted = false;
+                //var fighted = false;
                 var fightBot = {
                     run: function (control) {
                         control.direction = direction;
-                        if (!fighted) {
+                        //if (!fighted) {
                             control.fight();
-                            fighted = true;
-                        } else {
-                        }
+                            //fighted = true;
+                        //}
                     }
                 };
                 $scope.game = singleGame(fightBot);
             };
 
-            $scope.testWalk();
+            $scope.testFight();
         })
     ;
 

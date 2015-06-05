@@ -45,7 +45,7 @@
                                 name: "fight",
                                 since: round
                             };
-                            unit.botBlockedUtil = round + 10;
+                            //unit.botBlockedUtil = round + 1000; // TODO
                             unit.moveAccel = 0;
                         },
                         stand: function() {

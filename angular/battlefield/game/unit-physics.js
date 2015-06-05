@@ -6,10 +6,16 @@
     ])
         .factory("UnitPhysics", function() {
             var landNormal = {
-                needWay: true
+                needWay: true,
+                maxSpeed: 1
+            };
+            var arrow = {
+                needWay: false,
+                maxSpeed: 20
             };
             var dirt = {
-                needWay: false
+                needWay: false,
+                maxSpeed: 1
             };
             return {
                 getUnitPhysics: function(unit) {
@@ -19,6 +25,8 @@
                         } else {
                             return dirt;
                         }
+                    } else if (unit.type == "arrow") {
+                        return arrow;
                     }
                     return dirt;
                 }
