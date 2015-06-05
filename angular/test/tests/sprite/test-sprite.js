@@ -75,10 +75,12 @@
                 //createCol(a++, "walk", 1);
                 //createCol(a++, "walk", 2);
                 //createCol(a++, "walk", 3);
-                //createCol(a++, "fight", 0);
-                //createCol(a++, "fight", 1);
-                //createCol(a++, "fight", 2);
-                //createCol(a++, "fight", 3);
+                createCol(a++, "fight", 0);
+                createCol(a++, "fight", 1);
+                if (unit == "footman") {
+                    createCol(a++, "fight", 2);
+                    createCol(a++, "fight", 3);
+                }
                 createCol(a++, "die", 0);
                 createCol(a++, "die", 1);
                 createCol(a++, "die", 2);

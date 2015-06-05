@@ -14,29 +14,32 @@
 
             return {
                 initTextures: function(resources) {
+                    function load(unitType) {
+                        var framesData = resources[unitType]["data"]["frames"];
+                        for (var fName in framesData) {
+                            textures[fName.replace(/\.png$/, "")] = PIXI.Texture.fromFrame(fName);
 
-                    var framesData = resources["footman"]["data"]["frames"];
+                            var frameData = framesData[fName];
 
-                    for (var fName in framesData) {
-                        textures[fName.replace(/\.png$/, "")] = PIXI.Texture.fromFrame(fName);
+                            var fixX = frameData["fixX"];
+                            var fixY = frameData["fixY"];
+                            if (fixX != null || fixY != null) {
+                                fixes[fName.replace(/\.png$/, "")] = {x: fixX, y: fixY};
+                            }
+                        }
 
-                        var frameData = framesData[fName];
+                        var badgeUrl = resources[unitType]["url"].replace(/\.json$/,"_badge.png");
+                        var texture = PIXI.Texture.fromImage(badgeUrl);
 
-                        var fixX = frameData["fixX"];
-                        var fixY = frameData["fixY"];
-                        if (fixX != null || fixY != null) {
-                            fixes[fName.replace(/\.png$/, "")] = {x: fixX, y: fixY};
+                        for (var fName in framesData) {
+                            var r = framesData[fName].frame;
+                            badgeTextures[fName.replace(/\.png$/, "")] = new PIXI.Texture(texture, new PIXI.Rectangle(r.x, r.y, r.w, r.h))
                         }
                     }
 
+                    load("footman");
+                    load("archer");
 
-                    var badgeUrl = resources["footman"]["url"].replace(/\.json$/,"_badge.png");
-                    var texture = PIXI.Texture.fromImage(badgeUrl);
-
-                    for (var fName in framesData) {
-                        var r = framesData[fName].frame;
-                        badgeTextures[fName.replace(/\.png$/, "")] = new PIXI.Texture(texture, new PIXI.Rectangle(r.x, r.y, r.w, r.h))
-                    }
                 },
                 getTexture: function(type, state, stateNum, directionNum) {
                     var texture = textures[type + "_" + state + stateNum + "_" + directionNum];
@@ -59,14 +62,15 @@
             };
         })
 
-        .factory("UnitTypes", function(UnitTexture, FootmanRender) {
+        .factory("UnitTypes", function(UnitTexture, FootmanRender, ArcherRender) {
             var aniSpeed = 10;
 
             FootmanRender.aniSpeed = aniSpeed;
+            ArcherRender.aniSpeed = aniSpeed;
             var types = {
                 "footman": FootmanRender,
+                "archer": ArcherRender,
                 "circle": {
-
                     createUnitSprites: function(unit) {
                         var g = new PIXI.Graphics();
 
@@ -100,30 +104,31 @@
         })
 
         .factory("Pixi", function() {
-            var loaded = {};
-            var loadings = {};
-            var onLoads = {};
+            var loaded;
+            var loading;
+            var onLoads = [];
             return {
-                load: function(name, url) {
+                load: function(resources) {
 
-                    if (!loaded[name] && !loadings[name]) {
-                        loadings[name] = true;
-                        PIXI.loader
-                            .add(name, url)
-                            .load(function(evt) {
-                                loaded[name] = evt;
-                                if (onLoads[name]) {
-                                    Fs.invokeAll(onLoads[name], evt);
-                                }
-                            });
+                    if (!loaded && !loading) {
+                        loading = true;
+
+                        for (var i = 0; i < resources.length; i++) {
+                            var res = resources[i];
+                            PIXI.loader.add(res.name, res.url);
+                        }
+                        PIXI.loader.load(function(evt) {
+                            loaded = evt;
+                            Fs.invokeAll(onLoads, evt);
+                        });
                     }
 
                     return {
                         then: function(onLoad1) {
-                            if (loaded[name]) {
-                                onLoad1(loaded[name]);
+                            if (loaded) {
+                                onLoad1(loaded);
                             } else {
-                                Cols.addList(name, onLoad1, onLoads);
+                                onLoads.push(onLoad1);
                             }
                         }
                     };
@@ -270,7 +275,12 @@
 
                     var onLoad;
                     var loaded = false;
-                    Pixi.load('footman', assetsLoc + '/sprites/footman.json').then(function (event) {
+                    //assetsLoc + '/sprites/footman.json',
+                    //assetsLoc + '/sprites/archer.json',
+                    Pixi.load([
+                        {name: "footman", url: assetsLoc + '/sprites/footman.json'},
+                        {name: "archer", url: assetsLoc + '/sprites/archer.json'}
+                    ]).then(function (event) {
                         if (onLoad) onLoad();
                         loaded = true;
 
