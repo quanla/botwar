@@ -1,12 +1,20 @@
 <div class="row">
     <div class="col-lg-12 col-xs-3">
-        <button class="btn btn-link" ng-click="showFootmanSpriteSheetGrid()">Footman Sprite Sheet Grid</button>
+        <button class="btn text-capitalize" ng-repeat="ut in ['footman','archer']" ng-class="{'btn-primary': unitType == ut}" ng-click="setUnitType(ut)">{{ut}}</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-xs-3">
+        <button class="btn btn-link text-capitalize" ng-click="showSpriteSheet(unitType, true)">{{unitType}} Sprite Sheet Grid</button>
     </div>
     <div class="col-lg-12 col-xs-3">
-        <button class="btn btn-link" ng-click="showFootmanSpriteSheetPos()">Footman Sprite Sheet Pos</button>
+        <button class="btn btn-link text-capitalize" ng-click="showSpriteSheet(unitType, false)">{{unitType}} Sprite Sheet Pos</button>
     </div>
     <div class="col-lg-12 col-xs-3">
-        <button class="btn btn-link" ng-click="showFootmanStand()">Footman Stand</button>
+        <button class="btn btn-link text-capitalize" ng-click="showStand(unitType)">{{unitType}} Stand</button>
+    </div>
+    <div class="col-lg-12 col-xs-3">
+        <button class="btn btn-primary text-capitalize" ng-click="saveSpriteSheet()">Save sprite Sheet</button>
     </div>
 </div>
 

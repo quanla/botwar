@@ -17,15 +17,12 @@
                     var height = attrs.height || 600;
 
                     var editor;
-                    $http.get($scope.spriteSheet.jsonUrl).success(function(data) {
-                        var imageUrl = $scope.spriteSheet.jsonUrl.replace(/\w+\.json$/, '') + data.meta.image;
-                        editor = SSE.createSSE(elem[0], width, height, data, imageUrl, $scope.spriteSheet.gridMode);
 
-                        editor.onChangeData(function() {
-                            $http.post($scope.spriteSheet.jsonUrl, data);
-                        });
-                    });
+                    editor = SSE.createSSE(elem[0], width, height, $scope.spriteSheet.data, $scope.spriteSheet.imageUrl, $scope.spriteSheet.gridMode);
 
+                    if ($scope.spriteSheet.onChange) {
+                        editor.onChangeData($scope.spriteSheet.onChange);
+                    }
 
                     $scope.$on("$destroy", function() {
                         if (editor) {
@@ -72,12 +69,16 @@
                         gGrid.endFill();
                     }
 
+                    var onHover;
+                    var onOut;
                     // set the mouseover callback...
                     gGrid.on('mouseover', function() {
+                        if (onHover) onHover();
                         over = true;
                         paint();
                     });
                     gGrid.on('mouseout', function() {
+                        if (onOut) onOut();
                         over = false;
                         paint();
                     });
@@ -98,7 +99,13 @@
                     paint();
 
                     container.addChild(gGrid);
-                    return container;
+                    return {
+                        container: container,
+                        hover: function(onHover1, onOut1) {
+                            onHover = onHover1;
+                            onOut = onOut1;
+                        }
+                    };
                 }
             };
         })
@@ -252,7 +259,7 @@
             return {
                 createSSE: function (elem, width, height, data, imageUrl, isGrid) {
 
-                    var renderer = PIXI.autoDetectRenderer(width, height, { antialias: true });
+                    var renderer = PIXI.autoDetectRenderer(width, height, { antialias: false });
 
                     elem.appendChild(renderer.view);
 
@@ -289,11 +296,31 @@
                             if (onChangeData) onChangeData();
                         }));
                     } else {
-                        for (var frameName in data.frames) {
-                            var frameData = data.frames[frameName];
+
+                        var style = {
+                            font : '10px Arial normal italic',
+                            stroke : '#000000',
+                            strokeThickness : 1
+                        };
+
+                        var richText = new PIXI.Text('',style);
+
+                        Cols.eachEntry(data.frames, function(frameName, frameData) {
                             var frameSprite = SSESprites.createFrameSprite(frameData);
-                            editControlContainer.addChild(frameSprite);
-                        }
+                            editControlContainer.addChild(frameSprite.container);
+
+                            frameSprite.hover(
+                                function() {
+                                    richText.x = frameData.frame.x;
+                                    richText.y = frameData.frame.y - 13;
+                                    richText.text = frameName;
+                                },
+                                function() {
+                                }
+                            )
+                        });
+
+                        editControlContainer.addChild(richText);
                     }
 
                     return {

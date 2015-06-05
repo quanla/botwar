@@ -1,0 +1,446 @@
+{
+  "frames": {
+    "archer_stand0_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixY": -13,
+      "fixX": 1
+    },
+    "archer_stand0_1.png": {
+      "frame": {
+        "x": 58,
+        "y": 0,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": 2,
+      "fixY": -12
+    },
+    "archer_stand0_2.png": {
+      "frame": {
+        "x": 116,
+        "y": 0,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": 3,
+      "fixY": -5
+    },
+    "archer_stand0_3.png": {
+      "frame": {
+        "x": 174,
+        "y": 0,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixY": -7
+    },
+    "archer_stand0_4.png": {
+      "frame": {
+        "x": 232,
+        "y": 0,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": -2,
+      "fixY": -7
+    },
+    "archer_walk0_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 74,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": 3,
+      "fixY": -13
+    },
+    "archer_walk0_1.png": {
+      "frame": {
+        "x": 58,
+        "y": 74,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixY": -12,
+      "fixX": 2
+    },
+    "archer_walk0_2.png": {
+      "frame": {
+        "x": 116,
+        "y": 74,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": 3,
+      "fixY": -12
+    },
+    "archer_walk0_3.png": {
+      "frame": {
+        "x": 174,
+        "y": 74,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": 3,
+      "fixY": -9
+    },
+    "archer_walk0_4.png": {
+      "frame": {
+        "x": 232,
+        "y": 74,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": 2,
+      "fixY": -7
+    },
+    "archer_walk1_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 148,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": 1,
+      "fixY": -13
+    },
+    "archer_walk1_1.png": {
+      "frame": {
+        "x": 58,
+        "y": 148,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": 1,
+      "fixY": -10
+    },
+    "archer_walk1_2.png": {
+      "frame": {
+        "x": 116,
+        "y": 148,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": 4,
+      "fixY": -13
+    },
+    "archer_walk1_3.png": {
+      "frame": {
+        "x": 174,
+        "y": 148,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": 3,
+      "fixY": -7
+    },
+    "archer_walk1_4.png": {
+      "frame": {
+        "x": 232,
+        "y": 148,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixY": -6
+    },
+    "archer_walk2_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 222,
+        "w": 58,
+        "h": 75
+      },
+      "trimmed": false,
+      "fixX": -2,
+      "fixY": -13
+    },
+    "archer_walk2_1.png": {
+      "frame": {
+        "x": 58,
+        "y": 222,
+        "w": 58,
+        "h": 75
+      },
+      "trimmed": false,
+      "fixX": 4,
+      "fixY": -10
+    },
+    "archer_walk2_2.png": {
+      "frame": {
+        "x": 116,
+        "y": 222,
+        "w": 58,
+        "h": 75
+      },
+      "trimmed": false,
+      "fixY": -8
+    },
+    "archer_walk2_3.png": {
+      "frame": {
+        "x": 174,
+        "y": 222,
+        "w": 58,
+        "h": 75
+      },
+      "trimmed": false,
+      "fixY": -5
+    },
+    "archer_walk2_4.png": {
+      "frame": {
+        "x": 232,
+        "y": 222,
+        "w": 58,
+        "h": 75
+      },
+      "trimmed": false,
+      "fixY": -7,
+      "fixX": -2
+    },
+    "archer_walk3_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 297,
+        "w": 58,
+        "h": 70
+      },
+      "trimmed": false,
+      "fixY": -13
+    },
+    "archer_walk3_1.png": {
+      "frame": {
+        "x": 58,
+        "y": 297,
+        "w": 58,
+        "h": 70
+      },
+      "trimmed": false,
+      "fixX": 2,
+      "fixY": -10
+    },
+    "archer_walk3_2.png": {
+      "frame": {
+        "x": 116,
+        "y": 297,
+        "w": 58,
+        "h": 70
+      },
+      "trimmed": false,
+      "fixX": 2,
+      "fixY": -11
+    },
+    "archer_walk3_3.png": {
+      "frame": {
+        "x": 174,
+        "y": 297,
+        "w": 58,
+        "h": 70
+      },
+      "trimmed": false,
+      "fixY": -9
+    },
+    "archer_walk3_4.png": {
+      "frame": {
+        "x": 232,
+        "y": 297,
+        "w": 58,
+        "h": 70
+      },
+      "trimmed": false,
+      "fixY": -9
+    },
+    "archer_fight0_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 367,
+        "w": 58,
+        "h": 75
+      },
+      "trimmed": false,
+      "fixX": 1,
+      "fixY": -6
+    },
+    "archer_fight0_1.png": {
+      "frame": {
+        "x": 58,
+        "y": 367,
+        "w": 58,
+        "h": 75
+      },
+      "trimmed": false,
+      "fixX": -2,
+      "fixY": -15
+    },
+    "archer_fight0_2.png": {
+      "frame": {
+        "x": 116,
+        "y": 367,
+        "w": 58,
+        "h": 75
+      },
+      "trimmed": false,
+      "fixX": -2,
+      "fixY": -10
+    },
+    "archer_fight0_3.png": {
+      "frame": {
+        "x": 174,
+        "y": 367,
+        "w": 58,
+        "h": 75
+      },
+      "trimmed": false,
+      "fixY": -12,
+      "fixX": -1
+    },
+    "archer_fight0_4.png": {
+      "frame": {
+        "x": 232,
+        "y": 367,
+        "w": 58,
+        "h": 75
+      },
+      "trimmed": false,
+      "fixX": -2,
+      "fixY": -9
+    },
+    "archer_fight1_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 442,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixY": -7
+    },
+    "archer_fight1_1.png": {
+      "frame": {
+        "x": 58,
+        "y": 442,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixY": -15
+    },
+    "archer_fight1_2.png": {
+      "frame": {
+        "x": 116,
+        "y": 442,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": -3,
+      "fixY": -9
+    },
+    "archer_fight1_3.png": {
+      "frame": {
+        "x": 174,
+        "y": 442,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixX": -2,
+      "fixY": -12
+    },
+    "archer_fight1_4.png": {
+      "frame": {
+        "x": 232,
+        "y": 442,
+        "w": 58,
+        "h": 74
+      },
+      "trimmed": false,
+      "fixY": -12
+    },
+    "archer_die0_1.png": {
+      "frame": {
+        "x": 0,
+        "y": 516,
+        "w": 58,
+        "h": 67
+      },
+      "trimmed": false,
+      "fixX": -20,
+      "fixY": -11
+    },
+    "archer_die0_3.png": {
+      "frame": {
+        "x": 58,
+        "y": 516,
+        "w": 58,
+        "h": 67
+      },
+      "trimmed": false,
+      "fixX": -12,
+      "fixY": -21
+    },
+    "archer_die1_1.png": {
+      "frame": {
+        "x": 116,
+        "y": 516,
+        "w": 58,
+        "h": 67
+      },
+      "trimmed": false,
+      "fixX": -23,
+      "fixY": 15
+    },
+    "archer_die1_3.png": {
+      "frame": {
+        "x": 174,
+        "y": 516,
+        "w": 58,
+        "h": 67
+      },
+      "trimmed": false,
+      "fixX": -17,
+      "fixY": -28
+    },
+    "archer_die2_1.png": {
+      "frame": {
+        "x": 232,
+        "y": 516,
+        "w": 58,
+        "h": 67
+      },
+      "trimmed": false,
+      "fixX": -18,
+      "fixY": 12
+    },
+    "archer_die2_3.png": {
+      "frame": {
+        "x": 0,
+        "y": 583,
+        "w": 58,
+        "h": 64
+      },
+      "trimmed": false,
+      "fixX": -24,
+      "fixY": -18
+    }
+  },
+  "meta": {"image": "archer.png"}
+}

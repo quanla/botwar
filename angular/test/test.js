@@ -27,7 +27,7 @@
                 };
             };
 
-            $scope.showSpriteSheet = function(spriteSheet) {
+            $scope.showSpriteSheetEditor = function(spriteSheet) {
                 $scope.showing = {
                     spriteSheet: spriteSheet
                 };

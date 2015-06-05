@@ -19,27 +19,38 @@
         }])
 
 
-        .controller("bw.test.sprite.Ctrl", function($scope) {
-            $scope.showFootmanSpriteSheetGrid = function() {
-                $scope.showSpriteSheet({
-                    jsonUrl: "../../assets/sprites/footman.json",
-                    gridMode: true
-                    //gridMode: false
-                });
-            };
-            $scope.showFootmanSpriteSheetPos = function() {
-                $scope.showSpriteSheet({
-                    jsonUrl: "../../assets/sprites/footman.json",
-                    //gridMode: true
-                    gridMode: false
+        .controller("bw.test.sprite.Ctrl", function($scope, $http) {
+            //$scope.unitType = "footman";
+            $scope.unitType = "archer";
+
+            $scope.showSpriteSheet = function(unit, gridMode) {
+                var jsonUrl = "../../assets/sprites/" + unit + ".json";
+                $http.get(jsonUrl).success(function(data) {
+                    var imageUrl = jsonUrl.replace(/\w+\.json$/, '') + data.meta.image;
+                    $scope.showSpriteSheetEditor({
+                        imageUrl: imageUrl,
+                        data: data,
+                        gridMode: gridMode,
+                        onChange: function() {
+                            $scope.saveSpriteSheet();
+                        }
+                    });
+
+                    $scope.saveSpriteSheet = function() {
+                        $http.post(jsonUrl, data);
+                    };
                 });
             };
 
-            $scope.showFootmanStand = function() {
+            $scope.setUnitType = function(ut) {
+                $scope.unitType = ut;
+            };
+
+            $scope.showStand = function(unit) {
 
                 function create(position, direction, state, num) {
                     return {
-                        type: "footman",
+                        type: unit,
                         position: position,
                         direction: direction,
                         state: {
@@ -82,7 +93,9 @@
                 });
             };
 
-            $scope.showFootmanSpriteSheetPos();
+            //$scope.showSpriteSheet($scope.unitType, true);
+            $scope.showSpriteSheet($scope.unitType, false);
+
         })
     ;
 
