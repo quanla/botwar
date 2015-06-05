@@ -13,7 +13,13 @@
                     </colgroup>
                     <tbody>
                     <tr class="bot-row" ng-repeat="unit in side.units">
-                        <td class="text-capitalize" ng-bind="::unit.type">Footman</td>
+                        <td >
+
+                            <div class="bot-row-hover">
+                                <select class="text-capitalize" ng-options="ut for ut in ['footman', 'archer']" ng-model="unit.type"></select>
+                            </div>
+                            <div class="bot-row-out text-capitalize" ng-bind="unit.type"></div>
+                        </td>
                         <td class="text-center">
                             <div class="bot-row-hover">
                                 <button class="btn btn-sm btn-default" ng-click="removeBot(unit)">-</button>
