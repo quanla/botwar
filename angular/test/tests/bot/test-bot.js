@@ -18,7 +18,7 @@
             ;
         }])
 
-        .controller("bw.test.bot.Ctrl", function($scope, SampleFightBot, SampleRunBot, SamplePreemptBot) {
+        .controller("bw.test.bot.Ctrl", function($scope, SampleFightBot, SampleRunBot, SampleVeteranBot) {
 
             function randomGame(bot, eneBot) {
                 var blueUnits = [];
@@ -66,7 +66,7 @@
             });
 
             var veteranBot;
-             SamplePreemptBot.createSampleBot(function(bot) {
+            SampleVeteranBot.createSampleBot(function(bot) {
                  veteranBot = bot;
             });
 

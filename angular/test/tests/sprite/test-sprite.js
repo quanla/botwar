@@ -35,8 +35,6 @@
                 });
             };
 
-
-
             $scope.showFootmanStand = function() {
 
                 function create(position, direction, state, num) {
@@ -62,17 +60,17 @@
 
                 var a=1;
                 //createCol(a++, "stand", null);
-                createCol(a++, "walk", 0);
-                createCol(a++, "walk", 1);
-                createCol(a++, "walk", 2);
-                createCol(a++, "walk", 3);
+                //createCol(a++, "walk", 0);
+                //createCol(a++, "walk", 1);
+                //createCol(a++, "walk", 2);
+                //createCol(a++, "walk", 3);
                 //createCol(a++, "fight", 0);
                 //createCol(a++, "fight", 1);
                 //createCol(a++, "fight", 2);
                 //createCol(a++, "fight", 3);
-                //createCol(a++, "die", 0);
-                //createCol(a++, "die", 1);
-                //createCol(a++, "die", 2);
+                createCol(a++, "die", 0);
+                createCol(a++, "die", 1);
+                createCol(a++, "die", 2);
 
                 $scope.showGame({
                     sides: [
@@ -83,7 +81,8 @@
                     ]
                 });
             };
-            $scope.showFootmanStand();
+
+            $scope.showFootmanSpriteSheetPos();
         })
     ;
 

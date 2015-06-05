@@ -18,11 +18,8 @@
 
                     var editor;
                     $http.get($scope.spriteSheet.jsonUrl).success(function(data) {
-                        editor = SSE.create(elem[0], width, height, data, $scope.spriteSheet.jsonUrl.replace(/\w+\.json$/, '') + data.meta.image);
-
-                        $scope.$watch(function() { return $scope.spriteSheet.gridMode; }, function(gridMode) {
-                            editor.setGridMode(gridMode);
-                        });
+                        var imageUrl = $scope.spriteSheet.jsonUrl.replace(/\w+\.json$/, '') + data.meta.image;
+                        editor = SSE.createSSE(elem[0], width, height, data, imageUrl, $scope.spriteSheet.gridMode);
 
                         editor.onChangeData(function() {
                             $http.post($scope.spriteSheet.jsonUrl, data);
@@ -44,44 +41,63 @@
                 createFrameSprite: function (frameData) {
                     var container = new PIXI.Container();
 
-                    var g = new PIXI.Graphics();
-                    g.hitArea = new PIXI.Rectangle(frameData.frame.x, frameData.frame.y, frameData.frame.w, frameData.frame.h);
+                    var gGrid = new PIXI.Graphics();
+                    gGrid.interactive = true;
+                    gGrid.hitArea = new PIXI.Rectangle(frameData.frame.x, frameData.frame.y, frameData.frame.w, frameData.frame.h);
 
                     var over = false;
 
-
                     function paint() {
-                        g.clear();
-
-                        g.moveTo(frameData.frame.x, frameData.frame.y);
-                        g.lineStyle(1, 0xAAAAAA, 1);
-                        g.lineTo(frameData.frame.x + frameData.frame.w, frameData.frame.y);
-                        g.lineTo(frameData.frame.x + frameData.frame.w, frameData.frame.y + frameData.frame.h);
-                        g.lineTo(frameData.frame.x, frameData.frame.y + frameData.frame.h);
-                        g.lineTo(frameData.frame.x, frameData.frame.y);
-
-                        g.interactive = true;
+                        gGrid.clear();
 
                         if (over) {
-                            g.beginFill(0xAAAA44, 0.1);
-                            g.drawRect(frameData.frame.x, frameData.frame.y, frameData.frame.w, frameData.frame.h);
-                            g.endFill();
+                            gGrid.moveTo(frameData.frame.x, frameData.frame.y);
+                            gGrid.lineStyle(1, 0xAAAAAA, 1);
+                            gGrid.lineTo(frameData.frame.x + frameData.frame.w, frameData.frame.y);
+                            gGrid.lineTo(frameData.frame.x + frameData.frame.w, frameData.frame.y + frameData.frame.h);
+                            gGrid.lineTo(frameData.frame.x, frameData.frame.y + frameData.frame.h);
+                            gGrid.lineTo(frameData.frame.x, frameData.frame.y);
+
                         }
+
+                        gGrid.beginFill(0xFF0000, 0.5);
+                        gGrid.lineStyle(null);
+                        var rw = 6;
+                        var rh = 4;
+                        gGrid.drawEllipse(
+                            frameData.frame.x +  frameData.frame.w / 2 - (frameData.fixX||0),
+                            frameData.frame.y + frameData.frame.h / 2 - (frameData.fixY||0),
+                            rw,
+                            rh);
+                        gGrid.endFill();
                     }
 
                     // set the mouseover callback...
-                    g.on('mouseover', function() {
+                    gGrid.on('mouseover', function() {
                         over = true;
                         paint();
                     });
-                    g.on('mouseout', function() {
+                    gGrid.on('mouseout', function() {
                         over = false;
+                        paint();
+                    });
+
+                    gGrid.on('mouseup', function(event) {
+                        var newPosition = event.data.getLocalPosition(this.parent);
+                        frameData.fixX = Math.round(-(newPosition.x - (frameData.frame.x +  frameData.frame.w / 2)));
+                        frameData.fixY = Math.round(-(newPosition.y - (frameData.frame.y +  frameData.frame.h / 2)));
+                        if (frameData.fixX == 0) {
+                            delete frameData.fixX;
+                        }
+                        if (frameData.fixY == 0) {
+                            delete frameData.fixY;
+                        }
                         paint();
                     });
 
                     paint();
 
-                    container.addChild(g);
+                    container.addChild(gGrid);
                     return container;
                 }
             };
@@ -234,7 +250,7 @@
             }
 
             return {
-                create: function (elem, width, height, data, imageUrl) {
+                createSSE: function (elem, width, height, data, imageUrl, isGrid) {
 
                     var renderer = PIXI.autoDetectRenderer(width, height, { antialias: true });
 
@@ -268,24 +284,19 @@
 
                     var onChangeData;
 
-                    return {
-                        setGridMode: function(gridMode1) {
-                            for (var i = editControlContainer.children.length - 1; i >= 0; i--) {
-                                editControlContainer.removeChild(editControlContainer.children[i]);
-                            }
+                    if (isGrid) {
+                        editControlContainer.addChild(SSEGridMode.createGrid(data.frames, width, height, function() {
+                            if (onChangeData) onChangeData();
+                        }));
+                    } else {
+                        for (var frameName in data.frames) {
+                            var frameData = data.frames[frameName];
+                            var frameSprite = SSESprites.createFrameSprite(frameData);
+                            editControlContainer.addChild(frameSprite);
+                        }
+                    }
 
-                            if (gridMode1) {
-                                editControlContainer.addChild(SSEGridMode.createGrid(data.frames, width, height, function() {
-                                    if (onChangeData) onChangeData();
-                                }));
-                            } else {
-                                for (var frameName in data.frames) {
-                                    var frameData = data.frames[frameName];
-                                    var frameSprite = SSESprites.createFrameSprite(frameData);
-                                    editControlContainer.addChild(frameSprite);
-                                }
-                            }
-                        },
+                    return {
                         destroy: function() {
                             stopped = true;
                         },
