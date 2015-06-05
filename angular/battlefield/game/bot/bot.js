@@ -5,10 +5,15 @@
     angular.module('bw.battlefield.game.bot', [
     ])
 
-        .factory("BotControl", function() {
-            function alive(unit) {
-                return unit.state == null || unit.state.name != "die" ? unit : null;
-            }
+        .factory("UnitUtil", function() {
+            return {
+                alive: function(unit) {
+                    return unit.state == null || unit.state.name != "die" ? unit : null;
+                }
+            };
+        })
+
+        .factory("BotControl", function(UnitUtil) {
             function info(unit) {
                 return unit== null ? null : {
                     position: ObjectUtil.clone(unit.position),
@@ -19,8 +24,7 @@
                 return unit== null ? null : info(unit);
             }
             return {
-                alive: alive,
-                createControl: function(unit, round, sides, side) {
+                createControl: function(unit, round, game) {
                     return {
                         round: round,
                         position: ObjectUtil.clone(unit.position),
@@ -51,11 +55,11 @@
                         },
                         getEnemies: function() {
                             var total = [];
-                            for (var i = 0; i < sides.length; i++) {
-                                var side1 = sides[i];
-                                if (side1 !== side) {
+                            for (var i = 0; i < game.sides.length; i++) {
+                                var side1 = game.sides[i];
+                                if (side1 !== unit.side) {
                                     // Enemy side
-                                    var alives = Cols.yield(side1.units, Fs.chain(alive, info));
+                                    var alives = Cols.yield(side1.units, Fs.chain(UnitUtil.alive, info));
                                     Cols.addAll(alives, total);
                                 }
                             }
@@ -65,7 +69,7 @@
                             var notSelf = function (unit1) {
                                 return unit1 == unit ? null : unit1;
                             };
-                            return Cols.yield(side.units, Fs.chain(notSelf,alive, friendInfo));
+                            return Cols.yield(unit.side.units, Fs.chain(notSelf, UnitUtil.alive, friendInfo));
                         },
                         setDirection: function(pos) {
                             this.direction = Vectors.toVector( Vectors.subtractPos(pos, unit.position)).direction;
@@ -95,7 +99,7 @@
                             var unit = side.units[j];
                             if (unit.bot && !isLocked(unit, round)) {
 
-                                var control = BotControl.createControl(unit, round, game.sides, side);
+                                var control = BotControl.createControl(unit, round, game);
 
                                 unit.bot.run(control);
 

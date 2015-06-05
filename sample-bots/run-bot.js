@@ -2,7 +2,8 @@ function Bot() {
     this.run = function (control) {
         var enemies = control.getEnemies();
         if (Cols.isEmpty(enemies)) {
-            return; // Relax, no one around
+            control.stand();  // Relax, no one around
+            return;
         }
 
         // Find the nearest enemy

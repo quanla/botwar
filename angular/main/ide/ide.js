@@ -11,37 +11,47 @@
                 restrict: "E",
                 scope: {
                     bots: "=",
+                    currentBot: "=",
                     changeBot: "&"
                 },
                 templateUrl: "angular/main/ide/ide.html",
                 link: function($scope, elem, attrs) {
 
                     $scope.$watch("bots", function() {
-                        $scope.currentBot = $scope.bots[0];
+                        if ($scope.bot == null) {
+                            $scope.bot = $scope.bots[0];
+                        }
+                    });
+                    $scope.$watch("currentBot", function(currentBot) {
+                        if (currentBot != null) {
+                            $scope.bot = currentBot;
+                        }
                     });
 
                     $scope.createNewBot = function() {
                         User.newBot().then(function(newBot) {
                             $scope.bots.splice(0,0, newBot);
-                            $scope.currentBot = newBot;
+                            $scope.bot = newBot;
                         });
                     };
 
                     $scope.deleteBot = function() {
-                        User.deleteBot($scope.bots.indexOf($scope.currentBot));
-                        Cols.remove($scope.currentBot, $scope.bots);
-                        $scope.currentBot = $scope.bots[0];
+                        User.deleteBot($scope.bots.indexOf($scope.bot));
+                        Cols.remove($scope.bot, $scope.bots);
+                        $scope.bot = $scope.bots[0];
                     };
 
                     var saveCurrentBot = function () {
-                        User.saveBot($scope.currentBot, $scope.bots.indexOf($scope.currentBot));
+                        if ($scope.bot != null) {
+                            User.saveBot($scope.bot, $scope.bots.indexOf($scope.bot));
+                        }
                     };
-                    $scope.$watch("currentBot.code", saveCurrentBot);
-                    $scope.$watch("currentBot.name", saveCurrentBot);
+                    $scope.$watch("bot.code", saveCurrentBot);
+                    $scope.$watch("bot.name", saveCurrentBot);
 
                     if ($scope.changeBot) {
-                        $scope.$watch("currentBot", function(currentBot) {
-                            $scope.changeBot({bot: currentBot});
+                        $scope.$watch("bot", function(bot) {
+                            $scope.changeBot({bot: bot});
                         });
                     }
 

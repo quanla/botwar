@@ -5,7 +5,7 @@
     angular.module('bw.battlefield.game', [
         'bw.battlefield.game.bot'
     ])
-        .factory("GameRunner", function(BotRunner, BotControl, UnitDynamics) {
+        .factory("GameRunner", function(BotRunner, UnitDynamics, GameUtil, UnitUtil) {
             function initGame(game, width, height) {
                 // Fill missing values
                 if (game.nature == null) {
@@ -39,7 +39,6 @@
                 }
             }
 
-
             return {
                 newGameRunner: function(game, options, width, height) {
                     var skip = options == null || options.skip == null ? 0 : options.skip;
@@ -60,7 +59,7 @@
 
                     initGame(game, width, height);
 
-                    function updateGameState(game) {
+                    function updateGameState(game, round) {
                         if (game.isFinished) return;
 
                         var result = isGameFinished(game);
@@ -74,7 +73,7 @@
                         var winningSide;
                         for (var i = 0; i < game.sides.length; i++) {
                             var side = game.sides[i];
-                            var hasAlive = Cols.find(side.units, BotControl.alive) != null;
+                            var hasAlive = Cols.find(side.units, UnitUtil.alive) != null;
                             if (hasAlive) {
                                 winningSide = side;
                                 count++;
@@ -92,8 +91,8 @@
                     return gameRunner = {
                         updateUI: null,
                         onEachRound: function() {
-                            if (!skipper() && !pause && !game.isFinished) {
-                                for (var i = 0; i< consume;i++) {
+                            if (!skipper() && !pause) {
+                                for (var i = 0; i < consume; i++) {
                                     // Decide to move, change state
                                     BotRunner.runBots(game, round);
 
@@ -101,17 +100,22 @@
                                     // action impacts
                                     UnitDynamics.applyDynamics(game, round);
 
+                                    // Invoke listeners
                                     if (game.afterRoundDynamics) {
                                         game.afterRoundDynamics();
                                     }
 
                                     // Check battle finished
-                                    updateGameState(game);
+                                    updateGameState(game, round);
 
                                     round++;
                                 }
+
+                                // Sprite update
                                 gameRunner.updateUI(round - 1);
+
                             } else {
+                                // Sprite update
                                 gameRunner.updateUI(round);
                             }
                         },
@@ -269,7 +273,7 @@
                 // Add vectors
                 var result = Vectors.add({value: accel, direction: direction}, velocity || {value: 0, direction: 0});
                 // Speed limit
-                var maxSpeed = 1.5;
+                var maxSpeed = 1;
                 if (result.value > maxSpeed) {
                     result.value = maxSpeed;
                 } else if (result.value < -maxSpeed) {
