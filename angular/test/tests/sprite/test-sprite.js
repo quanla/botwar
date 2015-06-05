@@ -64,31 +64,34 @@
                 var units = [];
 
                 function createCol(row, state, num) {
-                    for (var i = 0; i < 8; i++) {
+                    for (var i = 0; i < 5; i++) {
                         units.push(create({x: 60 * row, y: 40 + i * 70}, i * Math.PI/4, state, num));
                     }
                 }
 
                 var a=1;
-                //createCol(a++, "stand", null);
+                createCol(a++, "stand", null);
                 //createCol(a++, "walk", 0);
                 //createCol(a++, "walk", 1);
                 //createCol(a++, "walk", 2);
                 //createCol(a++, "walk", 3);
-                createCol(a++, "fight", 0);
-                createCol(a++, "fight", 1);
-                if (unit == "footman") {
-                    createCol(a++, "fight", 2);
-                    createCol(a++, "fight", 3);
-                }
-                createCol(a++, "die", 0);
-                createCol(a++, "die", 1);
-                createCol(a++, "die", 2);
+                //createCol(a++, "fight", 0);
+                //createCol(a++, "fight", 1);
+                //if (unit == "footman") {
+                //    createCol(a++, "fight", 2);
+                //    createCol(a++, "fight", 3);
+                //}
+                //createCol(a++, "die", 0);
+                //createCol(a++, "die", 1);
+                //createCol(a++, "die", 2);
+
+                //$scope.color = "blue";
+                $scope.color = "red";
 
                 $scope.showGame({
                     sides: [
                         {
-                            color: "blue",
+                            color: $scope.color,
                             units: units
                         }
                     ]

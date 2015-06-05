@@ -18,6 +18,12 @@
         }])
 
         .controller("bw.test.ani.Ctrl", function($scope) {
+            //$scope.unitType = "footman";
+            $scope.unitType = "archer";
+
+            var direction = 2* Math.PI / 4;
+            var position = null;
+            //var direction = 3* Math.PI / 4;
 
             function singleGame(bot) {
                 return {
@@ -26,8 +32,8 @@
                             color: "blue",
                             units: [
                                 {
-                                    type: "footman",
-                                    position: {x: 400, y: 100},
+                                    type: $scope.unitType,
+                                    position: position || {x: 400, y: 100},
                                     direction: 0,
                                     bot: bot
                                 }
@@ -36,6 +42,9 @@
                     ]
                 };
             }
+            $scope.setUnitType = function(ut) {
+                $scope.unitType = ut;
+            };
 
             $scope.testRotate = function() {
                 var rotateBot = {
@@ -48,7 +57,6 @@
             };
 
 
-            var direction = 3* Math.PI / 4;
             $scope.changeDir = function() {
                 direction += Math.PI / 4;
             };
@@ -57,6 +65,7 @@
                     run: function (control) {
                         control.direction = direction;
                         control.goForward();
+                        position = control.position;
                     }
                 };
                 $scope.showGame(singleGame(walkBot));
@@ -76,7 +85,7 @@
                 $scope.showGame(singleGame(fightBot));
             };
 
-            $scope.testFight();
+            $scope.testWalk();
         })
     ;
 

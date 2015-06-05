@@ -5,15 +5,45 @@
     angular.module('bw.battlefield.renderer.unit.footman', [
     ])
         .factory("FootmanRender", function(LandUnitRender) {
-            return LandUnitRender.createLandUnitRender();
+            return LandUnitRender.createLandUnitRender({
+                steps: [0,1,2,3]
+            });
         })
         .factory("ArcherRender", function(LandUnitRender) {
-            return LandUnitRender.createLandUnitRender();
+            return LandUnitRender.createLandUnitRender({
+                steps: [0,0,0,1]
+            });
         })
 
-        .factory("LandUnitRender", function(UnitTexture, HitFilter, ColorMatrixCombi) {
+        .factory("ColorMatrix", function() {
             return {
-                createLandUnitRender: function() {
+                red: [
+                    0,   0, 0.8,   0,  0,
+                    0,   1,   0,   0,  0,
+                    1,   0,   0,   0,  0,
+                    0,   0,   0,   1,  0
+                ],
+                white: [
+                    0,   0,   1,   0,  0,
+                    0,   0,   1,   0,  0,
+                    0,   0,   1,   0,  0,
+                    0,   0,   0,   1,  0
+                ],
+                green: [
+                    1,   0,   0,   0,  0,
+                    0,   0, 0.7,   0,  0,
+                    0,   1,   0,   0,  0,
+                    0,   0,   0,   1,  0
+                ]
+            };
+        })
+
+        .factory("LandUnitRender", function(UnitTexture, HitFilter, ColorMatrixCombi, ColorMatrix) {
+            function getFightStateNum(stateAge, fightConfig) {
+                return fightConfig.steps[stateAge];
+            }
+            return {
+                createLandUnitRender: function(fightConfig) {
                     var render;
                     return render = {
                         aniSpeed: null,
@@ -40,12 +70,7 @@
                             if (unit.side.color != "blue") {
                                 colorBadge = new PIXI.Sprite(UnitTexture.getBadgeTexture(unit.type, "stand", 0, 0));
                                 var filter = new PIXI.filters.ColorMatrixFilter();
-                                filter.matrix = [
-                                    0,   0,   1,   0,  0,
-                                    0,   1,   0,   0,  0,
-                                    1,   0,   0,   0,  0,
-                                    0,   0,   0,   1,  0
-                                ];
+                                filter.matrix = ColorMatrix[unit.side.color];
                                 colorBadge.filters = [filter];
                                 container.addChild(colorBadge);
                             }
@@ -95,7 +120,7 @@
                                         } else if (state.name == "walk") {
                                             stateNum = Math.floor(stateAge % 4);
                                         } else if (state.name == "fight") {
-                                            stateNum = Math.floor(stateAge % 4);
+                                            stateNum = getFightStateNum(stateAge, fightConfig);
                                         } else if (state.name == "die") {
                                             stateNum = Math.min(stateAge, 2);
                                             if (stateAge > 100) {
