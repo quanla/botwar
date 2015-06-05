@@ -5,6 +5,7 @@
     angular.module("bw.test.app", [
         'bw.test.ani',
         'bw.test.action',
+        'bw.test.posture',
         'bw.test.color',
         'bw.test.bot',
         'bw.test.sprite',

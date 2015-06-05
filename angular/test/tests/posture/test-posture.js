@@ -2,105 +2,88 @@
 
 (function () {
 
-    angular.module('bw.test.sprite', [
-        'bw.sprite.editor',
+    angular.module('bw.test.posture', [
+        'bw.posture.editor',
         'ui.router'
     ])
 
         .config(["$stateProvider", function ($stateProvider) {
 
             $stateProvider
-                .state('sprite', {
-                    url: '/sprite',
-                    templateUrl: "tests/sprite/test-sprite.html",
-                    controller: "bw.test.sprite.Ctrl"
+                .state('posture', {
+                    url: '/posture',
+                    templateUrl: "tests/posture/test-posture.html",
+                    controller: "bw.test.posture.Ctrl"
                 })
             ;
         }])
 
 
-        .controller("bw.test.sprite.Ctrl", function($scope, $http) {
+        .controller("bw.test.posture.Ctrl", function($scope, $http) {
             //$scope.unitType = "footman";
             $scope.unitType = "archer";
+            $scope.direction = 0;
+            //$scope.direction = 2;
 
-            $scope.showSpriteSheet = function(unit, gridMode) {
-                var jsonUrl = "../../assets/sprites/" + unit + ".json";
+            $scope.states = ["stand", "walk"];
+
+            $scope.postureEditor = {};
+
+            $scope.set = function(name, value) {
+                $scope[name] = value;
+            };
+
+            var updateEditor = function () {
+                var frames = [];
+
+                for (var i = 0; i < $scope.states.length; i++) {
+                    var state = $scope.states[i];
+                    if (state == "stand") {
+                        frames.push($scope.unitType + "_stand0_" + $scope.direction + ".png");
+                    }
+                    if (state == "walk") {
+                        for (var j = 0; j < 4; j++) {
+                            frames.push($scope.unitType + "_walk" + j + "_" + $scope.direction + ".png");
+
+                        }
+                    }
+                    if (state == "fight") {
+                        for (var j = 0; j < ($scope.unitType=='footman' ? 4 : 2); j++) {
+                            frames.push($scope.unitType + "_fight" + j + "_" + $scope.direction + ".png");
+
+                        }
+                    }
+                    if (state == "die") {
+                        for (var j = 0; j < 3; j++) {
+                            var dir = Math.floor($scope.direction / 2) * 2 + 1;
+                            frames.push($scope.unitType + "_die" + j + "_" + dir + ".png");
+                        }
+                    }
+                }
+                $scope.postureEditor.frames = frames;
+            };
+
+            $scope.$watch("unitType", show);
+            $scope.$watch("direction", updateEditor);
+            $scope.$watch("states", updateEditor);
+
+
+            function show() {
+                var jsonUrl = "../../assets/sprites/" + $scope.unitType + ".json";
                 $http.get(jsonUrl).success(function(data) {
                     var imageUrl = jsonUrl.replace(/\w+\.json$/, '') + data.meta.image;
-                    $scope.showSpriteSheetEditor({
-                        imageUrl: imageUrl,
-                        data: data,
-                        gridMode: gridMode,
-                        onChange: function() {
-                            $scope.saveSpriteSheet();
-                        }
-                    });
 
+                    $scope.postureEditor.imageUrl = imageUrl;
+                    $scope.postureEditor.data = data.frames;
+
+                    $scope.postureEditor.data["archer_stand0_0.png"].x = 123123;
+
+                    updateEditor();
                     $scope.saveSpriteSheet = function() {
                         $http.post(jsonUrl, data);
                     };
                 });
-            };
-
-            $scope.setUnitType = function(ut) {
-                $scope.unitType = ut;
-            };
-
-            $scope.showStand = function(unit) {
-
-                function create(position, direction, state, num) {
-                    return {
-                        type: unit,
-                        position: position,
-                        direction: direction,
-                        state: {
-                            name: state,
-                            freezeNum: num
-                        },
-                        decor: "circle"
-                    };
-                }
-
-                var units = [];
-
-                function createCol(row, state, num) {
-                    for (var i = 0; i < 5; i++) {
-                        units.push(create({x: 60 * row, y: 40 + i * 70}, i * Math.PI/4, state, num));
-                    }
-                }
-
-                var a=1;
-                createCol(a++, "stand", null);
-                //createCol(a++, "walk", 0);
-                //createCol(a++, "walk", 1);
-                //createCol(a++, "walk", 2);
-                //createCol(a++, "walk", 3);
-                //createCol(a++, "fight", 0);
-                //createCol(a++, "fight", 1);
-                //if (unit == "footman") {
-                //    createCol(a++, "fight", 2);
-                //    createCol(a++, "fight", 3);
-                //}
-                //createCol(a++, "die", 0);
-                //createCol(a++, "die", 1);
-                //createCol(a++, "die", 2);
-
-                //$scope.color = "blue";
-                $scope.color = "red";
-
-                $scope.showGame({
-                    sides: [
-                        {
-                            color: $scope.color,
-                            units: units
-                        }
-                    ]
-                });
-            };
-
-            //$scope.showSpriteSheet($scope.unitType, true);
-            $scope.showSpriteSheet($scope.unitType, false);
-
+            }
         })
     ;
 
