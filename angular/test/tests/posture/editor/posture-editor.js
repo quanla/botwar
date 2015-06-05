@@ -15,8 +15,8 @@
 
                     var editor = PE.createSSE(elem[0], width, height);
 
-                    $scope.$watch("postureEditor.imageUrl", function(imageUrl) {
-                        editor.setData(imageUrl, $scope.postureEditor.data);
+                    $scope.$watch("postureEditor.data", function() {
+                        editor.setData($scope.postureEditor.imageUrl, $scope.postureEditor.data);
                     });
                     $scope.$watch("postureEditor.frames", function(frames) {
                         editor.setFrames(frames);
@@ -142,7 +142,7 @@
                     var frameIndex;
 
                     function reloadFrames() {
-                        if (Cols.isNotEmpty(frames) && spriteTexture != null) {
+                        if (Cols.isNotEmpty(frames) && framesData != null && spriteTexture != null) {
                             frameIndex = 0;
 
                             reloadFrame();
@@ -155,6 +155,7 @@
                         if (frameIndex!=null) {
 
                             var frame = framesData[frames[frameIndex]];
+                            if (frame==null) return;
                             var f = frame.frame;
                             frameSprite.texture = new PIXI.Texture(spriteTexture, new PIXI.Rectangle(f.x, f.y, f.w, f.h ));
 

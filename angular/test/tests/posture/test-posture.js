@@ -70,16 +70,16 @@
 
             function show() {
                 var jsonUrl = "../../assets/sprites/" + $scope.unitType + ".json";
+                console.log(jsonUrl);
                 $http.get(jsonUrl).success(function(data) {
                     var imageUrl = jsonUrl.replace(/\w+\.json$/, '') + data.meta.image;
 
                     $scope.postureEditor.imageUrl = imageUrl;
                     $scope.postureEditor.data = data.frames;
 
-                    $scope.postureEditor.data["archer_stand0_0.png"].x = 123123;
-
                     updateEditor();
                     $scope.saveSpriteSheet = function() {
+                        console.log(jsonUrl);
                         $http.post(jsonUrl, data);
                     };
                 });

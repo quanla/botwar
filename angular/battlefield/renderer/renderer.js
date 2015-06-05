@@ -242,7 +242,8 @@
         .factory("Renderers", function(UnitRender, BotRunner, Dynamics, Pixi, $http) {
 
             function addBackground(stage, renderer, assetsLoc) {
-                var grassTexture = PIXI.Texture.fromImage(assetsLoc + '/grass.png');
+                var grassTexture = PIXI.Texture.fromImage(assetsLoc + '/grass.jpg');
+                //var grassTexture = PIXI.Texture.fromImage(assetsLoc + '/grass.png');
                 var grassTile = new PIXI.extras.TilingSprite(grassTexture, renderer.width, renderer.height);
                 stage.addChild(grassTile);
             }

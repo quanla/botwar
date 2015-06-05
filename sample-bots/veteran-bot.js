@@ -6,15 +6,15 @@ function Bot() {
         }
 
         // Find the nearest enemy
-        var minDisE = Cols.findMin(enemies, function(enemy) {
+        var nearestEnemy = Cols.findMin(enemies, function(enemy) {
             return Distance.between(control.position, enemy.position);
         });
 
         // Turn face toward enemy
-        control.setDirection(minDisE.position);
+        control.setDirection(nearestEnemy.position);
 
         // Check the distance
-        if (Distance.between(control.position, minDisE.position) < 70) {
+        if (Distance.between(control.position, nearestEnemy.position) < 70) {
             // Close enough, attack.
             // The distance here is longer than the distance configured in Fighter bot
             control.fight();

@@ -96,11 +96,16 @@
                         $scope.game = createGame(true);
                     };
 
+                    $scope.$watch("sides", function(value) {
+                        $scope.game = createGame(false);
+                    }, true);
+
+
                     $scope.addBot = function(unit) {
-                        if (unit.count >= 5) return;
+                        if (unit.count >= 10) return;
                         unit.count ++;
 
-                        $scope.game = createGame(false);
+                        //$scope.game = createGame(false);
                     };
 
                     $scope.removeBot = function(unit) {

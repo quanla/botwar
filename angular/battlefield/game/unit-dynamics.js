@@ -155,12 +155,13 @@
                         }
 
                         if (unit.type == "arrow") {
-                            if (impact("arrow",{
+                            if (
+                                impact("arrow",{
                                     position: unit.position,
                                     side: unit.side
-                                })) {
-                                Cols.remove(unit, game.nature);
-                            } else if (Distance.between(unit.position, unit.start) > 200) {
+                                })
+                                || Distance.between(unit.position, unit.start) > 200
+                            ) {
                                 Cols.remove(unit, game.nature);
                             }
                         }

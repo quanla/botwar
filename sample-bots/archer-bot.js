@@ -7,16 +7,17 @@ function Bot() {
         }
 
         // Find the nearest enemy
-        var minDisE = Cols.findMin(enemies, function(enemy) {
+        var nearestEnemy = Cols.findMin(enemies, function(enemy) {
             return Distance.between(control.position, enemy.position);
         });
 
-        // Turn face toward enemy
-        control.setDirection(minDisE.position);
 
-        if (Distance.between(control.position, minDisE.position) > 200) {
+        // Turn face toward enemy
+        control.setDirection(nearestEnemy.position);
+
+        if (Distance.between(control.position, nearestEnemy.position) > 270) {
             // Check the distance, if too far then go forward
-            control.goForward();
+            control.stand();
         } else {
             // Check the distance, if close enough then fight
             control.fight();
