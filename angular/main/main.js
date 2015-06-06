@@ -7,7 +7,8 @@
         'bw.main.challenge',
         'bw.main.hello',
         'bw.main.user',
-        'bw.main.skirmish'
+        'bw.main.skirmish',
+        'ui.bootstrap'
     ])
     ;
 })();

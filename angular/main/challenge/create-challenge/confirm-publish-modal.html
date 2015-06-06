@@ -1,0 +1,18 @@
+<div class="modal-header "><h4 class="modal-title">Publish your Champion - Challenge the world</h4></div>
+<div class="modal-body">
+    <form class="">
+        <div class="form-group">
+            <label class="control-label">Challenge Title</label>
+            <input class="form-control" ng-model="challenge.title" placeholder="Greatest bot alive..." required>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Description (optional)</label>
+            <textarea class="form-control" rows="3" ng-model="challenge.description"></textarea>
+            <div class="help-block">By publishing, other people can view your bot's current source code</div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer ">
+    <a class="btn btn-default" ng-click="cancel()">Close</a>
+    <a class="btn btn-primary" ng-click="publish()"><i class="glyphicon glyphicon-upload"></i> Publish</a>
+</div>

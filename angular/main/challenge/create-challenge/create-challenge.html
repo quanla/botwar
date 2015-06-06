@@ -40,7 +40,7 @@
     <div class="col-lg-6 text-center">
         <div width="500" height="500" battlefield="game" options="options"></div>
     </div>
-    <div class="col-lg-3 text-center">
+    <div class="col-lg-3">
 
         <div class="panel panel-success">
             <div class="panel-heading text-capitalize">
@@ -57,7 +57,11 @@
             </div>
         </div>
 
-        <button class="btn btn-lg btn-success" ng-click="">Publish this challenge</button>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <button class="btn btn-lg btn-success" ng-click="showPublishConfirm()"><i class="glyphicon glyphicon-upload"></i> Publish this challenge</button>
+            </div>
+        </div>
 
     </div>
 </div>

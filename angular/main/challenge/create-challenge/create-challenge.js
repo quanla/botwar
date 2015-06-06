@@ -17,8 +17,8 @@
             ;
         }])
         
-        .controller("create-challenge.ctrl", function($scope, User, PositionGenerator, BotSource) {
-            User.loadUserBots().then(function(bots) {
+        .controller("create-challenge.ctrl", function($scope, User, PositionGenerator, BotSource, $modal) {
+            User.loadUserBots().then(function (bots) {
                 $scope.bots = bots;
                 $scope.myChampion = bots[0];
                 $scope.oppoBot = bots[0];
@@ -26,7 +26,7 @@
 
             $scope.showCodeEditor = false;
 
-            $scope.changeBot = function(bot) {
+            $scope.changeBot = function (bot) {
                 $scope.myChampion = bot;
             };
 
@@ -57,8 +57,8 @@
                             units.push({
                                 type: unitConfig.type,
                                 position: positions(),
-                                direction: sideNum*Math.PI + Math.PI / 2,
-                                bot: bot==null ? null: BotSource.createBot(bot.code)
+                                direction: sideNum * Math.PI + Math.PI / 2,
+                                bot: bot == null ? null : BotSource.createBot(bot.code)
                             });
                         }
                     }
@@ -77,12 +77,27 @@
 
             createGame();
 
-            $scope.$watch("myUnits", function() { createGame(); }, true);
-            $scope.$watch("oppoUnits", function() { createGame(); }, true);
+            $scope.$watch("myUnits", function () {
+                createGame();
+            }, true);
+            $scope.$watch("oppoUnits", function () {
+                createGame();
+            }, true);
 
-            $scope.testFight = function() {
+            $scope.testFight = function () {
                 createGame($scope.myChampion, $scope.oppoBot);
-            }
+            };
+
+
+            $scope.showPublishConfirm = function () {
+                $modal.open({
+                    templateUrl: "angular/main/challenge/create-challenge/confirm-publish-modal.html",
+                    controller: "create-challenge.confirm-modal.Ctrl"
+                });
+            };
+        })
+
+        .controller("create-challenge.confirm-modal.Ctrl", function($scope) {
 
         })
 
