@@ -3,6 +3,7 @@
 (function () {
 
     angular.module('bw.main.challenge', [
+        'bw.main.create-challenge',
         'ui.router'
     ])
 
@@ -17,8 +18,8 @@
             ;
         }])
 
-        .controller("challenge.ctrl", function($scope) {
-
+        .controller("challenge.ctrl", function($scope, $state) {
+            $state.go("create-challenge");
         })
 
     ;

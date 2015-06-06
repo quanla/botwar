@@ -104,15 +104,11 @@
                     $scope.addBot = function(unit) {
                         if (unit.count >= 10) return;
                         unit.count ++;
-
-                        //$scope.game = createGame(false);
                     };
 
                     $scope.removeBot = function(unit) {
                         if (unit.count <= 1) return;
                         unit.count --;
-
-                        $scope.game = createGame(false);
                     }
                 }
             };
