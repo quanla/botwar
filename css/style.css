@@ -20,3 +20,7 @@ canvas[battlefield] {
 .bot-row:hover .bot-row-out {
     display: none;
 }
+
+select.text-capitalize option {
+    text-transform: capitalize;
+}

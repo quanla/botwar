@@ -1,0 +1,29 @@
+<table class="table" >
+    <colgroup>
+        <col width="20">
+        <col width="100">
+        <col width="100">
+    </colgroup>
+    <tr class="bot-row" ng-repeat="unit in units">
+
+        <td class="text-right" ng-bind="unit.count">
+        </td>
+
+        <td class="text-center">
+            <div class="bot-row-hover">
+                <button class="btn btn-sm btn-default" ng-click="removeUnit(unit)">-</button>
+                <button class="btn btn-sm btn-default" ng-click="addUnit(unit)">+</button>
+            </div>
+            <div class="bot-row-out">
+                x
+            </div>
+        </td>
+
+        <td>
+            <div class="bot-row-hover">
+                <select class="text-capitalize" ng-options="ut for ut in ['footman', 'archer']" ng-model="unit.type"></select>
+            </div>
+            <div class="bot-row-out text-capitalize" ng-bind="unit.type"></div>
+        </td>
+    </tr>
+</table>
