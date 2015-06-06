@@ -16,7 +16,7 @@
 <div class="row">
     <div class="col-lg-6">
         <div class="form-group">
-            <select class="form-control" ng-model="challenge" ng-options="c as c.name for c in challenges"></select>
+            <select class="form-control" ng-model="mission" ng-options="c as c.name for c in missions"></select>
         </div>
 
         <div class="jumbotron">
@@ -25,13 +25,13 @@
         </div>
 
         <div ng-show="!finished">
-            <p ng-repeat="msg in challenge.messages" ng-bind="::msg"></p>
+            <p ng-repeat="msg in mission.messages" ng-bind="::msg"></p>
         </div>
         <div ng-show="finished">
-            <p ng-show="nextChallenge() == null">
-                Right now we don't have any more challenges for you. Please come again later
+            <p ng-show="nextMission() == null">
+                Right now we don't have any more missions for you. Please come again later
             </p>
-            <p ng-show="nextChallenge() != null">Next challenge: <a href="" ng-click="toNextChallenge()" ng-bind="nextChallenge().intro"></a></p>
+            <p ng-show="nextMission() != null">Next mission: <a href="" ng-click="toNextMission()" ng-bind="nextMission().intro"></a></p>
         </div>
 
     </div>

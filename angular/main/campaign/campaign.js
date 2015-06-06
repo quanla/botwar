@@ -2,26 +2,26 @@
 
 (function () {
 
-    angular.module('bw.main.challenges', [
+    angular.module('bw.main.campaign', [
         'bw.main.plugin.code-mirror',
-        'bw.main.challenges.c1',
-        'bw.main.challenges.c2',
-        'bw.main.challenges.c3',
+        'bw.main.campaign.m1',
+        'bw.main.campaign.m2',
+        'bw.main.campaign.m3',
         'ui.router'
     ])
 
         .config(["$stateProvider", function ($stateProvider) {
 
             $stateProvider
-                .state('challenges', {
-                    url: '/challenges',
-                    templateUrl: "angular/main/challenges/challenges.html",
-                    controller: "challenges.ctrl"
+                .state('campaign', {
+                    url: '/campaign',
+                    templateUrl: "angular/main/campaign/campaign.html",
+                    controller: "campaign.ctrl"
                 })
             ;
         }])
 
-        .controller("challenges.ctrl", function(User, $scope, BotSource, Challenges) {
+        .controller("campaign.ctrl", function(User, $scope, BotSource, Campaign) {
             User.loadUserBots().then(function(bots) {
                 $scope.bots = bots;
                 $scope.currentBot = bots[0];
@@ -32,31 +32,31 @@
                 $scope.currentBot = bot;
             };
 
-            $scope.challenges = Challenges.challenges;
-            $scope.challenge = $scope.challenges[0];
-            //$scope.challenge = $scope.challenges[2];
+            $scope.missions = Campaign.missions;
+            $scope.mission = $scope.missions[0];
+            //$scope.mission = $scope.mission[2];
 
-            $scope.nextChallenge = function() {
-                return $scope.challenges[$scope.challenges.indexOf($scope.challenge) + 1];
+            $scope.nextMission = function() {
+                return $scope.missions[$scope.missions.indexOf($scope.mission) + 1];
             };
-            $scope.toNextChallenge = function() {
-                $scope.challenge = $scope.nextChallenge();
+            $scope.toNextMission = function() {
+                $scope.mission = $scope.nextMission();
             };
 
-            $scope.$watch("challenge", function() {
+            $scope.$watch("mission", function() {
                 $scope.finished = false;
 
                 $scope.failMessage = null;
 
-                $scope.game = Challenges.setupGame($scope.challenge);
+                $scope.game = Campaign.setupGame($scope.mission);
             });
 
             $scope.jumbotron = function() {
-                return $scope.failMessage || (!$scope.finished ? $scope.challenge.jumbotron : $scope.challenge.congrats);
+                return $scope.failMessage || (!$scope.finished ? $scope.mission.jumbotron : $scope.mission.congrats);
             };
 
             $scope.startGame = function() {
-                $scope.game = Challenges.setupGame($scope.challenge, BotSource.createBot($scope.currentBot.code),
+                $scope.game = Campaign.setupGame($scope.mission, BotSource.createBot($scope.currentBot.code),
                     function() {
                         $scope.$apply(function() {
                             $scope.failMessage = null;
@@ -65,37 +65,37 @@
                     },
                     function(failMessage) {
                         $scope.$apply(function() {
-                            $scope.failMessage = failMessage || $scope.challenge.failMessage;
+                            $scope.failMessage = failMessage || $scope.mission.failMessage;
                         });
                     }
                 );
             };
         })
 
-        .factory("Challenges", function(SampleBot, BotSource,
-                                        Challenge1, Challenge2, Challenge3) {
+        .factory("Campaign", function(SampleBot, BotSource,
+                                        Mission1, Mission2, Mission3) {
 
             var bots = {};
             var getBot = function(name) {
                 return BotSource.createBot(bots[name]);
             };
 
-            var challenges = [
-                Challenge1,
-                Challenge2,
-                Challenge3
+            var missions = [
+                Mission1,
+                Mission2,
+                Mission3
             ];
 
             return {
-                getChallenge: function(index) {
-                    return challenges[index];
+                getMission: function(index) {
+                    return missions[index];
                 },
-                challenges: challenges,
-                setupGame: function(challenge, userBot, onFinish, onFail) {
+                missions: missions,
+                setupGame: function(mission, userBot, onFinish, onFail) {
 
                     var battleSetup = {};
-                    if (challenge.battleSetup) {
-                        battleSetup = challenge.battleSetup();
+                    if (mission.battleSetup) {
+                        battleSetup = mission.battleSetup();
                         SampleBot.loadBot(battleSetup.redBot, function(source) {
                             bots[battleSetup.redBot] = source;
                         });

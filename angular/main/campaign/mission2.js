@@ -2,11 +2,11 @@
 
 (function () {
 
-    angular.module('bw.main.challenges.c2', [
+    angular.module('bw.main.campaign.m2', [
     ])
-        .factory("Challenge2", function() {
+        .factory("Mission2", function() {
             return {
-                name: "Challenge 2 - Now... run",
+                name: "Mission 2 - Now... run",
                 intro: "This time you won't be allowed to fight",
                 jumbotron: {
                     h2: "So you can fight, huh?",

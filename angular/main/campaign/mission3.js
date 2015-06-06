@@ -2,11 +2,11 @@
 
 (function () {
 
-    angular.module('bw.main.challenges.c3', [
+    angular.module('bw.main.campaign.m3', [
     ])
-        .factory("Challenge3", function() {
+        .factory("Mission3", function() {
             return {
-                name: "Challenge 3 - Super dodger",
+                name: "Mission 3 - Super dodger",
                 intro: "Dare your enemy to hit you",
                 jumbotron: {
                     h2: "No running away.",

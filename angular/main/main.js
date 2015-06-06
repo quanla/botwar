@@ -3,7 +3,7 @@
 (function () {
     /* App Module */
     angular.module("bw.main", [
-        'bw.main.challenges',
+        'bw.main.campaign',
         'bw.main.hello',
         'bw.main.user',
         'bw.main.skirmish'

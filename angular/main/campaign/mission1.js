@@ -2,14 +2,14 @@
 
 (function () {
 
-    angular.module('bw.main.challenges.c1', [
+    angular.module('bw.main.campaign.m1', [
     ])
-        .factory("Challenge1", function() {
+        .factory("Mission1", function() {
             return {
-                name: "Challenge 1 - Idle bot",
+                name: "Mission 1 - Idle bot",
                 jumbotron: {
                     h2: "Hi there!",
-                    p: "Welcome to the Arena, where your bot will take challenges from various battle hardened " +
+                    p: "Welcome to the Arena, where your bot will take missions from various battle hardened " +
                     "warriors"
                 },
                 messages: [
