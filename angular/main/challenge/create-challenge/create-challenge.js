@@ -3,6 +3,7 @@
 (function () {
 
     angular.module('bw.main.create-challenge', [
+        'bw.main.challenge-api',
         'ui.router'
     ])
 
@@ -17,7 +18,7 @@
             ;
         }])
         
-        .controller("create-challenge.ctrl", function($scope, User, PositionGenerator, BotSource, $modal) {
+        .controller("create-challenge.ctrl", function($scope, User, BattleSetup, PositionGenerator, BotSource, $modal) {
             User.loadUserBots().then(function (bots) {
                 $scope.bots = bots;
                 $scope.myChampion = bots[0];
@@ -29,7 +30,6 @@
             $scope.changeBot = function (bot) {
                 $scope.myChampion = bot;
             };
-
 
             $scope.myUnits = [
                 {
@@ -44,35 +44,8 @@
                 }
             ];
 
-            function createGame(myBot, oppoBot) {
-
-                var sides = [];
-
-                function addSide(sideNum, unitConfigs, bot) {
-                    var units = [];
-                    var positions = PositionGenerator.generatePositions(sideNum, unitConfigs);
-                    for (var j = 0; j < unitConfigs.length; j++) {
-                        var unitConfig = unitConfigs[j];
-                        for (var k = 0; k < unitConfig.count; k++) {
-                            units.push({
-                                type: unitConfig.type,
-                                position: positions(),
-                                direction: sideNum * Math.PI + Math.PI / 2,
-                                bot: bot == null ? null : BotSource.createBot(bot.code)
-                            });
-                        }
-                    }
-                    sides.push({
-                        color: sideNum == 0 ? "blue" : "red",
-                        units: units
-                    });
-                }
-
-                addSide(0, $scope.oppoUnits, oppoBot);
-                addSide(1, $scope.myUnits, myBot);
-                $scope.game = {
-                    sides: sides
-                };
+            function createGame() {
+                $scope.game = BattleSetup.createGame(createBattleSetup());
             }
 
             createGame();
@@ -89,16 +62,79 @@
             };
 
 
+            function createBattleSetup() {
+                return {
+                    sides: [
+                        {
+                            color: "blue",
+                            units: $scope.oppoUnits
+                        },
+                        {
+                            color: "red",
+                            units: $scope.myUnits,
+                            bot: $scope.myChampion
+                        }
+                    ]
+                };
+            }
+
+
             $scope.showPublishConfirm = function () {
                 $modal.open({
                     templateUrl: "angular/main/challenge/create-challenge/confirm-publish-modal.html",
-                    controller: "create-challenge.confirm-modal.Ctrl"
+                    controller: "create-challenge.confirm-modal.Ctrl",
+                    resolve: { getBattleSetup: function() {return createBattleSetup; } }
                 });
             };
         })
 
-        .controller("create-challenge.confirm-modal.Ctrl", function($scope) {
+        .factory("BattleSetup", function(PositionGenerator, BotSource) {
+            return {
+                createGame: function(battleSetup, useBot) {
 
+                    var sides = [];
+
+                    function addSide(sideNum, side, useBot) {
+                        var units = [];
+                        var positions = PositionGenerator.generatePositions(sideNum, side.units);
+                        for (var j = 0; j < side.units.length; j++) {
+                            var unitConfig = side.units[j];
+                            for (var k = 0; k < unitConfig.count; k++) {
+                                units.push({
+                                    type: unitConfig.type,
+                                    position: positions(),
+                                    direction: sideNum * Math.PI + Math.PI / 2,
+                                    bot: side.bot == null || !useBot ? null : BotSource.createBot(side.bot.code)
+                                });
+                            }
+                        }
+                        sides.push({
+                            color: sideNum == 0 ? "blue" : "red",
+                            units: units
+                        });
+                    }
+
+                    addSide(0, battleSetup.sides[0], useBot);
+                    addSide(1, battleSetup.sides[1], useBot);
+
+                    return {
+                        sides: sides
+                    };
+                }
+            };
+        })
+
+        .controller("create-challenge.confirm-modal.Ctrl", function($scope, ChallengeServer, $modalInstance, getBattleSetup) {
+
+            $scope.challenge = {
+                battleSetup: getBattleSetup()
+            };
+
+            $scope.publish = function() {
+                ChallengeServer.postChallenge($scope.challenge);
+            };
+
+            $scope.cancel = $modalInstance.dismiss;
         })
 
         .directive("unitsSelector", function() {

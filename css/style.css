@@ -24,3 +24,12 @@ canvas[battlefield] {
 select.text-capitalize option {
     text-transform: capitalize;
 }
+
+.list-group.challenge-list > .list-group-item:hover {
+    background-color: #EEEEEE;
+    cursor: pointer;
+}
+.list-group.challenge-list > .list-group-item.focused:hover {
+    background-color: #ffffff;
+    cursor: auto;
+}
