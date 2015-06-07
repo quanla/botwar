@@ -2,6 +2,7 @@ package qj.app.botwar.server;
 
 import com.google.gson.Gson;
 import org.apache.commons.dbcp2.BasicDataSource;
+import qj.app.botwar.server.challenge.Get;
 import qj.app.botwar.server.challenge.Post;
 import qj.app.botwar.server.challenge.Url;
 import qj.util.IOUtil;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -40,7 +42,7 @@ public class ChallengeServlets {
         challengeServlet.prepareResource(Connection.class, () -> {
             Connection connection = dbPool.getConnection.e();
             return new Douce<Connection,P0>(connection, () -> {
-                System.out.println("Close conn");
+//                System.out.println("Close conn");
                 IOUtil.close(connection);
             });
         });
@@ -65,16 +67,17 @@ public class ChallengeServlets {
 
         @Override
         protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            resp.addHeader("Access-Control-Allow-Origin", "*");
             if (Objects.equals(req.getMethod(), "OPTIONS")) {
-                resp.addHeader("Access-Control-Allow-Origin", "*");
                 resp.addHeader("Access-Control-Allow-Headers", "origin, content-type, accept");
                 resp.addHeader("Access-Control-Allow-Credentials", "true");
                 return;
             }
 
             String requestURI = req.getRequestURI();
+            String method = req.getMethod();
             for (JsonAction action : actions) {
-                if (Objects.equals(action.url, requestURI)) {
+                if (Objects.equals(action.url, requestURI) && Objects.equals(action.method, method)) {
                     Gson gson = new Gson();
 
                     LinkedList<P0> afterExec = new LinkedList<>();
@@ -91,7 +94,10 @@ public class ChallengeServlets {
                     Fs.invokeAll(afterExec);
 
                     if (ret != null) {
-                        gson.toJson(ret, resp.getWriter());
+                        resp.addHeader("Content-Type", "application/json");
+                        PrintWriter writer = resp.getWriter();
+                        gson.toJson(ret, writer);
+                        writer.flush();
                     }
                     return;
                 }
@@ -124,22 +130,44 @@ public class ChallengeServlets {
 
     private static void resolveActions(String pkg, P1<JsonAction> p) {
         LangUtil.eachClass(pkg, ChallengeServlet.class.getClassLoader(), (clazz) -> {
-            JsonAction jsonAction = new JsonAction();
-            jsonAction.url = ((Url) clazz.getAnnotation(Url.class)).value();
-            jsonAction.method = clazz.getAnnotation(Post.class) != null ? "POST" : "GET";
+            String url = ((Url) clazz.getAnnotation(Url.class)).value();
+            String method = clazz.getAnnotation(Post.class) != null ? "POST" :
+                    clazz.getAnnotation(Get.class) != null ? "GET" :
+                            null;
 
 
-            Method method = ReflectUtil.getMethod("exec", clazz);
+            if (method != null) {
+                p.e(createAction( ReflectUtil.getMethod("exec", clazz), clazz, url, method));
+            } else {
+                ReflectUtil.eachMethod(clazz, (m) -> {
+                    String httpMethod = m.getAnnotation(Post.class) != null ? "POST" :
+                            m.getAnnotation(Get.class) != null ? "GET" :
+                                    null;
 
-
-            jsonAction.requestParams = method.getParameterTypes();
-            jsonAction.response = method.getReturnType();
-            jsonAction.exec = (params) -> {
-                Object action = ReflectUtil.newInstance4(clazz);
-                return ReflectUtil.invoke(method, action, params);
-            };
-            p.e(jsonAction);
+                    if (httpMethod != null) {
+                        p.e(createAction(m, clazz, url, httpMethod));
+                    }
+                    return false;
+                });
+            }
         });
+    }
+
+    private static JsonAction createAction(Method m, Class clazz, String url, String method) {
+        JsonAction jsonAction = new JsonAction();
+        jsonAction.url = url;
+        jsonAction.method = method;
+
+
+
+        jsonAction.requestParams = m.getParameterTypes();
+        jsonAction.response = m.getReturnType();
+        jsonAction.exec = (params) -> {
+            Object action = ReflectUtil.newInstance4(clazz);
+            return ReflectUtil.invoke(m, action, params);
+        };
+
+        return jsonAction;
     }
 
 

@@ -6,6 +6,7 @@ package qj.app.botwar.server.challenge.model;
 public class Challenge {
     public Long id;
     public String title;
+    public String from;
     public String description;
     public Object battleSetup;
 }
