@@ -34,6 +34,10 @@
             $scope.changeBot = function(bot) {
                 $scope.currentBot = bot;
             };
+
+            $scope.startGame = function() {
+                $scope.game = BattleSetup.createGame($scope.challenge.battleSetup, $scope.currentBot);
+            }
         })
 
     ;
