@@ -90,11 +90,11 @@
 
         .factory("BattleSetup", function(PositionGenerator, BotSource) {
             return {
-                createGame: function(battleSetup, useBot) {
+                createGame: function(battleSetup, blueBot) {
 
                     var sides = [];
 
-                    function addSide(sideNum, side, useBot) {
+                    function addSide(sideNum, side, blueBot) {
                         var units = [];
                         var positions = PositionGenerator.generatePositions(sideNum, side.units);
                         for (var j = 0; j < side.units.length; j++) {
@@ -104,7 +104,8 @@
                                     type: unitConfig.type,
                                     position: positions(),
                                     direction: sideNum * Math.PI + Math.PI / 2,
-                                    bot: side.bot == null || !useBot ? null : BotSource.createBot(side.bot.code)
+                                    bot: sideNum == 0 ? (!blueBot ? null : BotSource.createBot(blueBot.code)) :
+                                            side.bot == null || !blueBot ? null : BotSource.createBot(side.bot.code)
                                 });
                             }
                         }
@@ -114,8 +115,8 @@
                         });
                     }
 
-                    addSide(0, battleSetup.sides[0], useBot);
-                    addSide(1, battleSetup.sides[1], useBot);
+                    addSide(0, battleSetup.sides[0], blueBot);
+                    addSide(1, battleSetup.sides[1], blueBot);
 
                     return {
                         sides: sides

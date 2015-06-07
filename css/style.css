@@ -33,3 +33,7 @@ select.text-capitalize option {
     background-color: #ffffff;
     cursor: auto;
 }
+.list-group.challenge-list > .list-group-item.focused {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

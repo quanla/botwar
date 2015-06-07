@@ -18,10 +18,15 @@
             ;
         }])
 
-        .controller("challenge.ctrl", function($scope, $state, ChallengeServer) {
+        .controller("challenge.ctrl", function($scope, $state, ChallengeServer, User) {
             $scope.view = {
 
             };
+
+            User.loadUserBots().then(function (bots) {
+                $scope.bots = bots;
+            });
+
 
             ChallengeServer.getChallenges().success(function(challenges) {
                 $scope.challenges = challenges;
@@ -30,10 +35,14 @@
 
         .directive("challengeBattlePreview", function(BattleSetup) {
             return {
-                restrict: "A",
+                restrict: "E",
                 templateUrl: "angular/main/challenge/challenge-battle-preview.html",
                 link: function($scope, elem, attrs) {
                     $scope.game = BattleSetup.createGame($scope.challenge.battleSetup, false);
+
+                    $scope.testBattle = function(myBot) {
+                        $scope.game = BattleSetup.createGame($scope.challenge.battleSetup, myBot)
+                    };
                 }
             };
         })
