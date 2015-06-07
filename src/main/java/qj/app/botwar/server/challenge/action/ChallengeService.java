@@ -21,6 +21,7 @@ public class ChallengeService {
 
     @Post
     public void createChallenge(Challenge challenge, Connection conn) {
+        challenge.from = "Quan Le";
         template.insert(challenge, conn);
     }
 
