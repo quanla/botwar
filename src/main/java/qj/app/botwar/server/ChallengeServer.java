@@ -1,6 +1,7 @@
 package qj.app.botwar.server;
 
 import qj.tool.web.HttpServer;
+import qj.util.PropertiesUtil;
 import qj.util.ThreadUtil;
 import qj.util.funct.Fs;
 import qj.util.funct.P0;
@@ -21,7 +22,7 @@ public class ChallengeServer {
 
         LinkedList<P0> stops = new LinkedList<>();
 
-        ChallengeServlets.ChallengeServlet JsonServlet = ChallengeServlets.createServlet();
+        ChallengeServlets.ChallengeServlet JsonServlet = ChallengeServlets.createServlet(PropertiesUtil.loadPropertiesFromFile("botwar-server.properties"));
         stops.add(JsonServlet::close);
         stops.add(new HttpServer()
                 .addServlet("/",
