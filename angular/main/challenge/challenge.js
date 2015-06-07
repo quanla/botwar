@@ -4,6 +4,7 @@
 
     angular.module('bw.main.challenge', [
         'bw.main.create-challenge',
+        'bw.main.challenge.challenge-taker',
         'ui.router'
     ])
 

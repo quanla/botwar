@@ -10,10 +10,13 @@
 
             return {
                 postChallenge: function(challenge) {
-                    return $http.post(host + "/challenge", challenge);
+                    return $http.post(host + "/challenges", challenge);
                 },
-                getChallenges: function(challenge) {
-                    return $http.get(host + "/challenge", challenge);
+                getChallenges: function() {
+                    return $http.get(host + "/challenges");
+                },
+                getChallenge: function(challengeId) {
+                    return $http.get(host + "/challenge/" + challengeId);
                 }
             };
         })
