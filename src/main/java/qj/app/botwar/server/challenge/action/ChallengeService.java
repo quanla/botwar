@@ -1,11 +1,11 @@
 package qj.app.botwar.server.challenge.action;
 
-import qj.app.botwar.server.challenge.Get;
-import qj.app.botwar.server.challenge.Post;
-import qj.app.botwar.server.challenge.Url;
 import qj.app.botwar.server.challenge.model.Challenge;
 import qj.tool.sql.Builder;
 import qj.tool.sql.Template;
+import qj.tool.web.json.Get;
+import qj.tool.web.json.Post;
+import qj.tool.web.json.Url;
 
 import java.sql.Connection;
 import java.util.List;
