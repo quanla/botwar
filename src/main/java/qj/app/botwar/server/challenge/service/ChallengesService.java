@@ -1,4 +1,4 @@
-package qj.app.botwar.server.challenge.action;
+package qj.app.botwar.server.challenge.service;
 
 import qj.app.botwar.server.challenge.model.Challenge;
 import qj.tool.sql.Builder;
@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Created by quan on 6/7/2015.
  */
-@Url("/challenge")
-public class ChallengeService {
-    static Template template = new Builder(Challenge.class)
+@Url("/challenges")
+public class ChallengesService {
+    public static Template<Challenge> template = new Builder<>(Challenge.class)
             .embeded("battleSetup")
             .build();
 

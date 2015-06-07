@@ -32,7 +32,7 @@ public class ChallengeServlets {
             });
         });
 
-        String pkg = "qj.app.botwar.server.challenge.action";
+        String pkg = "qj.app.botwar.server.challenge.service";
         JsonServlet.resolveActions(pkg, ChallengeServlet.class.getClassLoader(), challengeServlet::addAction);
 
         return challengeServlet;
