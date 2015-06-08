@@ -20,7 +20,9 @@
                     if (["fight", "die"].indexOf(unit.state.name) > -1) {
                         return true;
                     }
-                } else if (round < unit.botBlockedUtil) {
+                }
+
+                if (round < unit.botBlockedUtil) {
                     return true;
                 }
                 return false;
