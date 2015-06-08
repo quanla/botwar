@@ -1,5 +1,6 @@
 package qj.app.botwar.server.challenge.service;
 
+import qj.app.botwar.server.challenge.model.Authen;
 import qj.app.botwar.server.challenge.model.Challenge;
 import qj.tool.sql.Builder;
 import qj.tool.sql.Template;
@@ -20,13 +21,22 @@ public class ChallengesService {
             .build();
 
     @Post
-    public void createChallenge(Challenge challenge, Connection conn) {
+    public void createChallenge(Authen authen, Challenge challenge, Connection conn) {
+        challenge.fromAuthenType = authen.type;
+        challenge.fromId = authen.id;
+        challenge.fromName = authen.username;
+        challenge.fromEmail = authen.email;
+
         template.insert(challenge, conn);
     }
 
     @Get
     public List getAll(Connection conn) {
-        return template.selectAll(conn);
+        List<Challenge> challenges = template.selectAll(conn);
+        challenges.forEach((c) -> {
+            c.fromId = null;
+        });
+        return challenges;
     }
 }
 

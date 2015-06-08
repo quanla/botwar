@@ -1,6 +1,7 @@
 package qj.app.botwar.server;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import qj.app.botwar.server.challenge.model.Authen;
 import qj.tool.web.json.JsonServlet;
 import qj.util.IOUtil;
 import qj.util.funct.*;
@@ -25,11 +26,25 @@ public class ChallengeServlets {
             }
         };
 
-        challengeServlet.prepareResource(Connection.class, () -> {
+        challengeServlet.prepareResource(Connection.class, (req) -> {
             Connection connection = dbPool.getConnection.e();
             return new Douce<Connection,P0>(connection, () -> {
                 IOUtil.close(connection);
             });
+        });
+
+        challengeServlet.prepareResource(Authen.class, (req) -> {
+            String authenType = req.getHeader("Authen-Type");
+            String authenId = req.getHeader("Authen-Id");
+            String authenUsername = req.getHeader("Authen-Username");
+            String authenEmail = req.getHeader("Authen-Email");
+
+            if (authenType != null && authenId != null && authenUsername != null && authenEmail != null) {
+                return new Douce<Authen,P0>(new Authen(authenType, authenId, authenUsername, authenEmail), null);
+            } else {
+                return null;
+            }
+
         });
 
         String pkg = "qj.app.botwar.server.challenge.service";
