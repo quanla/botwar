@@ -44,8 +44,8 @@
                 }
             ];
 
-            function createGame() {
-                $scope.game = BattleSetup.createGame(createBattleSetup());
+            function createGame(oppoBot) {
+                $scope.game = BattleSetup.createGame(createBattleSetup(), oppoBot);
             }
 
             createGame();
@@ -58,7 +58,7 @@
             }, true);
 
             $scope.testFight = function () {
-                createGame($scope.myChampion, $scope.oppoBot);
+                createGame($scope.oppoBot);
             };
 
 

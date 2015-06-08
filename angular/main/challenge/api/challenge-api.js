@@ -6,7 +6,7 @@
     ])
         .factory("ChallengeServer", function($http) {
 
-            var host = "http://localhost:1006";
+            var host = "http://192.168.1.70:1006";
 
             return {
                 postChallenge: function(challenge) {

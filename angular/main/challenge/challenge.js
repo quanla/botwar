@@ -41,9 +41,13 @@
                 link: function($scope, elem, attrs) {
                     $scope.game = BattleSetup.createGame($scope.challenge.battleSetup, false);
 
+                    var recentlyUseBot;
                     $scope.testBattle = function(myBot) {
+                        recentlyUseBot = myBot;
                         $scope.game = BattleSetup.createGame($scope.challenge.battleSetup, myBot)
                     };
+
+
                 }
             };
         })
