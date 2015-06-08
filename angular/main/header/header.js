@@ -9,14 +9,15 @@
 
             };
         })
-        .directive("bwMainHeader", function($modal, User) {
+        .directive("bwMainHeader", function(SecurityService, User, $rootScope) {
             return {
                 restrict: "A",
                 scope: true,
                 link: function($scope, elem, attrs) {
+                    var googleReady = false;
+
                     var gAuth;
                     gapi.load('auth2', function(){
-                        console.log(111);
                         // Retrieve the singleton for the GoogleAuth library and set up the client.
                         gAuth = gapi.auth2.init({
                             client_id: '571408501053-cs49dg32cc4g5k61dj8md39e9va1sfn6.apps.googleusercontent.com'
@@ -24,6 +25,10 @@
                             // Request scopes in addition to 'profile' and 'email'
                             //scope: 'additional_scope'
                         });
+
+                        googleReady = true;
+
+                        if (!$rootScope.$$phase) $rootScope.$digest();
 
                         gAuth.isSignedIn.listen(function() {
                             if (gAuth.isSignedIn.get()) {
@@ -41,8 +46,9 @@
                                 delete User.google;
                             }
 
-                            if (!$scope.$$phase) $scope.$digest();
+                            if (!$rootScope.$$phase) $rootScope.$digest();
                         });
+
 
                         $scope.userName = function() {
                             if (User.google) {
@@ -59,30 +65,48 @@
                         }
                     };
 
+                    $scope.ready = function() {
+                        return googleReady;
+                    };
+
                     $scope.signin = function() {
-                        $modal.open({
-                            templateUrl: "angular/main/header/sign-in-modal.html",
-                            controller: "header.signin-modal"
-                        });
+                        SecurityService.showSigninModal();
                     };
                 }
             };
         })
 
-        .controller("header.signin-modal", function($scope, $modalInstance, User) {
+        .factory("SecurityService", function(User, $modal) {
+            return {
+                showSigninModal: function() {
+                    return $modal.open({
+                        templateUrl: "angular/main/header/sign-in-modal.html",
+                        controller: "header.signin-modal"
+                    }).result;
+                },
+                isSignedIn: function() {
+                    return User.google != null;
+                }
+            };
+        })
 
+        .controller("header.signin-modal", function($scope, $modalInstance, SecurityService, User) {
 
             $scope.signinGoogle = function() {
-                console.log("Siggeg " + User.google);
                 if (User.google == null) {
                     gapi.auth2.getAuthInstance().signIn({
                         scope: "profile email"
-                    })
-                        .then(function() {
-                            $modalInstance.close();
-                        });
+                    });
+
+
                 }
             };
+
+            $scope.$watch(function() { return SecurityService.isSignedIn(); }, function(signedIn) {
+                if (signedIn) {
+                    $modalInstance.close();
+                }
+            });
 
             $scope.cancel = $modalInstance.dismiss;
         })

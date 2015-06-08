@@ -125,14 +125,24 @@
             };
         })
 
-        .controller("create-challenge.confirm-modal.Ctrl", function($scope, ChallengeServer, $modalInstance, getBattleSetup) {
+        .controller("create-challenge.confirm-modal.Ctrl", function($scope, ChallengeServer, SecurityService, $modalInstance, getBattleSetup) {
 
             $scope.challenge = {
                 battleSetup: getBattleSetup()
             };
 
             $scope.publish = function() {
-                ChallengeServer.postChallenge($scope.challenge);
+                if (!SecurityService.isSignedIn()) {
+                    SecurityService.showSigninModal().then(function() {
+                        ChallengeServer.postChallenge($scope.challenge).success(function() {
+                            $modalInstance.close();
+                        });
+                    });
+                } else {
+                    ChallengeServer.postChallenge($scope.challenge).success(function() {
+                        $modalInstance.close();
+                    });
+                }
             };
 
             $scope.cancel = $modalInstance.dismiss;
