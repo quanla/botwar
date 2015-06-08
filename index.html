@@ -3,8 +3,10 @@
 <head>
     <title>BotwarJS</title>
 
+
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="css/style.css">
@@ -36,8 +38,18 @@
                         <a ui-sref="challenge">Challenges</a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <!--<li><a href="http://blog.getbootstrap.com" onclick="ga('send', 'event', 'Navbar', 'Community links', 'Blog');">Blog</a></li>-->
+                <ul class="nav navbar-nav navbar-right" bw-main-header>
+                    <li class="dropdown" ng-if="userName()">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span ng-bind="userName()"></span> <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <!--<li><a href="#">Action</a></li>-->
+                            <!--<li><a href="#">Another action</a></li>-->
+                            <!--<li><a href="#">Something else here</a></li>-->
+                            <!--<li class="divider"></li>-->
+                            <li><a href="" ng-click="signout()">Sign out your google account</a></li>
+                        </ul>
+                    </li>
+                    <li ng-if="!userName()"><a href="" ng-click="signin()">Sign-in</a></li>
                 </ul>
             </nav>
         </div>
@@ -95,6 +107,7 @@
     <script src="/botwar/angular/main/challenge/challenge-taker/challenge-taker.js"></script>
     <script src="/botwar/angular/main/challenge/challenge.js"></script>
     <script src="/botwar/angular/main/challenge/create-challenge/create-challenge.js"></script>
+    <script src="/botwar/angular/main/header/header.js"></script>
     <script src="/botwar/angular/main/hello/hello.js"></script>
     <script src="/botwar/angular/main/ide/ide.js"></script>
     <script src="/botwar/angular/main/main.js"></script>
@@ -111,5 +124,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.0.0/codemirror.min.js"></script>
     <script src="js/codemirror_javascript.js"></script>
 
+
+    <script src="https://apis.google.com/js/platform.js" defer></script>
 </body>
 </html>
