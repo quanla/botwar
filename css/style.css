@@ -37,3 +37,8 @@ select.text-capitalize option {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+.list-group.challenge-list > .list-group-item:not(.focused) {
+    margin-left: 30px;
+    margin-right: 30px;
+}

@@ -4,20 +4,19 @@
 
     angular.module('bw.main.challenge-api', [
     ])
-        .factory("ChallengeServer", function($http, User) {
 
-            var host = "http://192.168.1.70:1006";
+
+        .factory("ChallengeServer", function($http, Api) {
 
             return {
                 postChallenge: function(challenge) {
-                    challenge.from = User.google.email;
-                    return $http.post(host + "/challenges", challenge);
+                    return Api.post("challenges", challenge);
                 },
                 getChallenges: function() {
-                    return $http.get(host + "/challenges");
+                    return Api.get("challenges");
                 },
                 getChallenge: function(challengeId) {
-                    return $http.get(host + "/challenge/" + challengeId);
+                    return Api.get("challenge/" + challengeId);
                 }
             };
         })

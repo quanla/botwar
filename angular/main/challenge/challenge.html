@@ -1,11 +1,23 @@
 <div class="list-group challenge-list">
-    <div class="list-group-item" ng-class="view.focused == challenge ? 'focused' : ''" ng-repeat="challenge in challenges" ng-click="view.focused = challenge">
-        <div class="row" ng-show="view.focused != challenge">
-            <div class="col-lg-3" ng-bind="challenge.from"></div>
+    <div class="list-group-item" ng-class="view.focused == challenge ? 'focused' : ''" ng-repeat="challenge in challenges" >
+        <div class="pull-right" ng-if="view.focused == challenge" >
+            <a href="" ng-click="view.focused = null"><strong>[-]</strong></a>
+        </div>
+
+        <div class="row" ng-show="view.focused != challenge" ng-click="view.focused = challenge">
+            <div class="col-lg-3">
+                <span ng-bind="challenge.fromName"></span>
+                <span class="text-muted" ng-bind="'(' + challenge.fromEmail + ')'"></span>
+            </div>
             <div class="col-lg-5" ng-bind="challenge.title"></div>
         </div>
+
         <challenge-battle-preview ng-if="view.focused == challenge"></challenge-battle-preview>
+
     </div>
 </div>
 
-<button class="btn btn-lg btn-default" ng-click="$state.go('create-challenge')">Create Challenge</button>
+<div class="text-center">
+
+    <button class="btn btn-lg btn-default" ng-click="$state.go('create-challenge')">Create Challenge</button>
+</div>

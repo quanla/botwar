@@ -4,11 +4,6 @@
 
     angular.module('bw.main.header', [
     ])
-        .factory("User", function() {
-            return {
-
-            };
-        })
         .directive("bwMainHeader", function(SecurityService, User, $rootScope) {
             return {
                 restrict: "A",
@@ -76,40 +71,6 @@
             };
         })
 
-        .factory("SecurityService", function(User, $modal) {
-            return {
-                showSigninModal: function() {
-                    return $modal.open({
-                        templateUrl: "angular/main/header/sign-in-modal.html",
-                        controller: "header.signin-modal"
-                    }).result;
-                },
-                isSignedIn: function() {
-                    return User.google != null;
-                }
-            };
-        })
-
-        .controller("header.signin-modal", function($scope, $modalInstance, SecurityService, User) {
-
-            $scope.signinGoogle = function() {
-                if (User.google == null) {
-                    gapi.auth2.getAuthInstance().signIn({
-                        scope: "profile email"
-                    });
-
-
-                }
-            };
-
-            $scope.$watch(function() { return SecurityService.isSignedIn(); }, function(signedIn) {
-                if (signedIn) {
-                    $modalInstance.close();
-                }
-            });
-
-            $scope.cancel = $modalInstance.dismiss;
-        })
     ;
 
 })();
