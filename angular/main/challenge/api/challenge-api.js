@@ -17,6 +17,9 @@
                 },
                 getChallenge: function(challengeId) {
                     return Api.get("challenge/" + challengeId);
+                },
+                deleteChallenge: function(challengeId) {
+                    return Api.delete("challenge/" + challengeId);
                 }
             };
         })

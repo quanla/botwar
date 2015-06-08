@@ -1,23 +1,38 @@
+
+<div class="text-right">
+    <button class="btn btn-lg btn-default" ng-click="$state.go('create-challenge')">
+        <span class="glyphicon glyphicon-plus"></span>
+        Create Challenge</button>
+</div>
+
+        <br/>
+        <br/>
+
 <div class="list-group challenge-list">
     <div class="list-group-item" ng-class="view.focused == challenge ? 'focused' : ''" ng-repeat="challenge in challenges" >
         <div class="pull-right" ng-if="view.focused == challenge" >
             <a href="" ng-click="view.focused = null"><strong>[-]</strong></a>
         </div>
 
-        <div class="row" ng-show="view.focused != challenge" ng-click="view.focused = challenge">
-            <div class="col-lg-3">
-                <span ng-bind="challenge.fromName"></span>
-                <span class="text-muted" ng-bind="'(' + challenge.fromEmail + ')'"></span>
+        <div class="row" ng-if="view.focused != challenge" challenge-row>
+            <div class="col-lg-6" ng-bind="::challenge.title" ng-click="view.focused = challenge"></div>
+            <div class="col-lg-4">
+                <span ng-bind="::challenge.fromName"></span>
+                <span class="text-muted" ng-bind="::'(' + challenge.fromEmail + ')'"></span>
             </div>
-            <div class="col-lg-5" ng-bind="challenge.title"></div>
+            <div class="col-lg-2">
+                <div ng-if="isMine()">
+                    <div class="text-right text-muted on-out">Your Challenge</div>
+                    <div class="text-right on-hover">
+                        <button class="btn btn-sm btn-danger" ng-click="deleteChallenge()">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            Delete</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <challenge-battle-preview ng-if="view.focused == challenge"></challenge-battle-preview>
 
     </div>
-</div>
-
-<div class="text-center">
-
-    <button class="btn btn-lg btn-default" ng-click="$state.go('create-challenge')">Create Challenge</button>
 </div>

@@ -25,6 +25,9 @@ select.text-capitalize option {
     text-transform: capitalize;
 }
 
+.list-group.challenge-list > .list-group-item {
+    min-height: 60px;
+}
 .list-group.challenge-list > .list-group-item:hover {
     background-color: #EEEEEE;
     cursor: pointer;
@@ -40,5 +43,16 @@ select.text-capitalize option {
 
 .list-group.challenge-list > .list-group-item:not(.focused) {
     margin-left: 30px;
-    margin-right: 30px;
+    /*margin-right: 30px;*/
+}
+
+.list-group.challenge-list > .list-group-item:hover .on-hover {
+    display: block;
+}
+.list-group.challenge-list > .list-group-item:hover .on-out {
+    display: none;
+}
+
+.list-group.challenge-list > .list-group-item .on-hover {
+    display: none;
 }

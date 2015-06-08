@@ -51,6 +51,27 @@
                 }
             };
         })
+
+        .directive("challengeRow", function(User, ChallengeServer) {
+            return {
+                restrict: "A",
+                link: function($scope, elem, attrs) {
+
+                    $scope.isMine = function() {
+                        if (User.google == null) {
+                            return null;
+                        }
+                        return $scope.challenge.fromAuthenType == "google" && $scope.challenge.fromEmail == User.google.email;
+                    };
+
+                    $scope.deleteChallenge = function() {
+                        ChallengeServer.deleteChallenge($scope.challenge.id).success(function() {
+                            Cols.remove($scope.challenge, $scope.challenges);
+                        });
+                    };
+                }
+            };
+        })
     ;
 
 })();

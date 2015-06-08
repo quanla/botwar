@@ -94,7 +94,7 @@
                 var sendHttp = function(method, url, data) {
                     var headers = {};
                     if (User.google != null) {
-                        headers["Authen-Type"] = "Google";
+                        headers["Authen-Type"] = "google";
                         headers["Authen-Id"] = User.google.id;
                         headers["Authen-Username"] = User.google.name;
                         headers["Authen-Email"] = User.google.email;
