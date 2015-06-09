@@ -1,5 +1,6 @@
 package qj.app.botwar.server.challenge.service;
 
+import qj.app.botwar.server.AuthorizationException;
 import qj.app.botwar.server.challenge.model.Authen;
 import qj.app.botwar.server.challenge.model.Challenge;
 import qj.tool.web.json.Delete;

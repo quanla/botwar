@@ -1,0 +1,2 @@
+qj.app.botwar.server.challenge.service.ChallengeService
+qj.app.botwar.server.challenge.service.ChallengesService

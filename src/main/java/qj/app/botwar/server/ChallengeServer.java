@@ -2,6 +2,8 @@ package qj.app.botwar.server;
 
 import qj.ac.deploy.DeployUtil;
 import qj.tool.web.HttpServer;
+import qj.util.FileUtil;
+import qj.util.LangUtil;
 import qj.util.PropertiesUtil;
 import qj.util.ThreadUtil;
 import qj.util.funct.F1;
@@ -17,7 +19,22 @@ import java.util.LinkedList;
 public class ChallengeServer {
 
     public static void main(String[] args) throws Exception {
+
+
+        String pkg = "qj.app.botwar.server.challenge.service";
+        StringBuilder classes = new StringBuilder();
+        LangUtil.eachClass(pkg, null, (c) -> {
+            classes.append(c.getName() + "\n");
+        });
+        FileUtil.writeToFile(classes.toString(), new File("data/build/service-class-names.txt"));
+
         startServer();
+    }
+
+    public static class Production {
+        public static void main(String[] args) throws Exception {
+            startServer();
+        }
     }
 
     private static void startServer() throws Exception {
@@ -47,13 +64,14 @@ public class ChallengeServer {
         static String host = "54.254.246.157";
         static String key = "mf934jf2098a3";
         public static void main(String[] args) {
-            byte[] deploy = deploy();
-            DeployUtil.deploy("Botwar_Challenge", host + ":1213", key, deploy);
+//            DeployUtil.deploy("Botwar_Challenge", host + ":1213", key, deploy());
+//            DeployUtil.restart("Botwar_Challenge", host + ":1213", key);
+            DeployUtil.stop("Botwar_Challenge", host + ":1213", key);
         }
 
         private static byte[] deploy() {
 
-            byte[] content = DeployUtil.profile(ChallengeServer.class)
+            byte[] content = DeployUtil.profile(ChallengeServer.Production.class)
 //                    .exclude((F1<File, Boolean>) (file) -> file.getName().contains("groovy"))
                     .toZipFile();
             return content;

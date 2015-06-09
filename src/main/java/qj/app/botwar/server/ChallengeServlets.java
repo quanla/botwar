@@ -3,11 +3,15 @@ package qj.app.botwar.server;
 import org.apache.commons.dbcp2.BasicDataSource;
 import qj.app.botwar.server.challenge.model.Authen;
 import qj.tool.web.json.JsonServlet;
+import qj.util.FileUtil;
 import qj.util.IOUtil;
+import qj.util.LangUtil;
 import qj.util.funct.*;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -47,8 +51,14 @@ public class ChallengeServlets {
 
         });
 
-        String pkg = "qj.app.botwar.server.challenge.service";
-        JsonServlet.resolveActions(pkg, ChallengeServlet.class.getClassLoader(), challengeServlet::addAction);
+
+        Arrays.asList(FileUtil.readFileToString(new File("data/build/service-class-names.txt")).split("\\s+|\r?\n")).forEach((cName) -> {
+            try {
+                JsonServlet.resolveActions(ChallengeServlet.class.getClassLoader().loadClass(cName), challengeServlet::addAction);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
         return challengeServlet;
     }

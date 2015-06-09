@@ -1,5 +1,9 @@
 CREATE SCHEMA `botwar` ;
 
+CREATE USER `botwar`@`%` IDENTIFIED BY 'qweqweqwe';
+GRANT ALL PRIVILEGES ON `botwar`.* TO `botwar`@`%`;
+
+
 CREATE TABLE `challenge` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,

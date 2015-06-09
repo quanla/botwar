@@ -1,4 +1,4 @@
-package qj.app.botwar.server.challenge.service;
+package qj.app.botwar.server;
 
 /**
  * Created by quan on 6/8/2015.
