@@ -16,7 +16,7 @@
 
         <div class="row" ng-if="view.focused != challenge" challenge-row>
             <div class="col-lg-6" ng-bind="::challenge.title" ng-click="view.focused = challenge"></div>
-            <div class="col-lg-4">
+            <div class="col-lg-4" ng-click="view.focused = challenge">
                 <span ng-bind="::challenge.fromName"></span>
                 <span class="text-muted" ng-bind="::'(' + challenge.fromEmail + ')'"></span>
             </div>
