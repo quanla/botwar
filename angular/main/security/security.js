@@ -32,8 +32,6 @@
                     gapi.auth2.getAuthInstance().signIn({
                         scope: "profile email"
                     });
-
-
                 }
             };
 
