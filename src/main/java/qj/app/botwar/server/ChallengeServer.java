@@ -20,19 +20,18 @@ public class ChallengeServer {
 
     public static void main(String[] args) throws Exception {
 
-
-        String pkg = "qj.app.botwar.server.challenge.service";
-        StringBuilder classes = new StringBuilder();
-        LangUtil.eachClass(pkg, null, (c) -> {
-            classes.append(c.getName() + "\n");
-        });
-        FileUtil.writeToFile(classes.toString(), new File("data/build/service-class-names.txt"));
-
         startServer();
     }
 
-    public static class Production {
+    public static class Development {
         public static void main(String[] args) throws Exception {
+            String pkg = "qj.app.botwar.server.challenge.service";
+            StringBuilder classes = new StringBuilder();
+            LangUtil.eachClass(pkg, null, (c) -> {
+                classes.append(c.getName() + "\n");
+            });
+            FileUtil.writeToFile(classes.toString(), new File("data/build/service-class-names.txt"));
+
             startServer();
         }
     }
@@ -51,7 +50,7 @@ public class ChallengeServer {
                 .start(port));
 
         qj.util.SystemUtil.onReturn((line) -> {
-            if (line.equals("q")) {
+            if (line.equals("")) {
                 Fs.invokeAll(stops);
                 ThreadUtil.sleep(500);
                 System.exit(0);
@@ -64,14 +63,14 @@ public class ChallengeServer {
         static String host = "54.254.246.157";
         static String key = "mf934jf2098a3";
         public static void main(String[] args) {
-//            DeployUtil.deploy("Botwar_Challenge", host + ":1213", key, deploy());
+            DeployUtil.deploy("Botwar_Challenge", host + ":1213", key, deploy());
 //            DeployUtil.restart("Botwar_Challenge", host + ":1213", key);
-            DeployUtil.stop("Botwar_Challenge", host + ":1213", key);
+//            DeployUtil.stop("Botwar_Challenge", host + ":1213", key);
         }
 
         private static byte[] deploy() {
 
-            byte[] content = DeployUtil.profile(ChallengeServer.Production.class)
+            byte[] content = DeployUtil.profile(ChallengeServer.class)
 //                    .exclude((F1<File, Boolean>) (file) -> file.getName().contains("groovy"))
                     .toZipFile();
             return content;
