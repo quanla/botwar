@@ -8,10 +8,10 @@
             var styles = {
                 "footman": {
                     isHit: function (round, unit) {
-                        return (round - unit.state.since) == UnitRender.aniSpeed * 3;
+                        return (round - unit.state.since) == 10 * 3;
                     },
                     isFinished: function (round, unit) {
-                        return (round - unit.state.since) == (UnitRender.aniSpeed * 4);
+                        return (round - unit.state.since) == (10 * 4);
                     },
                     isCreateArrow: function (round, unit) {
                         return false;
@@ -22,10 +22,10 @@
                         return false;
                     },
                     isFinished: function (round, unit) {
-                        return (round - unit.state.since) == (UnitRender.aniSpeed * 4);
+                        return (round - unit.state.since) == (10 * 4);
                     },
                     isCreateArrow: function (round, unit) {
-                        return (round - unit.state.since) == UnitRender.aniSpeed * 3;
+                        return (round - unit.state.since) == 10 * 3;
                     }
                 }
             };

@@ -6,14 +6,22 @@
         'bw.battlefield.renderer.unit.arrow'
     ])
         .factory("FootmanRender", function(LandUnitRender) {
-            return LandUnitRender.createLandUnitRender({
-                steps: [0,1,2,3]
-            });
+            return {
+                createFootmanRender: function(assetsLoc) {
+                    return LandUnitRender.createLandUnitRender("footman", {
+                        steps: [0,1,2,3]
+                    }, assetsLoc);
+                }
+            };
         })
         .factory("ArcherRender", function(LandUnitRender) {
-            return LandUnitRender.createLandUnitRender({
-                steps: [0,0,0,1]
-            });
+            return {
+                createArcherRender: function(assetsLoc) {
+                    return LandUnitRender.createLandUnitRender("archer", {
+                        steps: [0,0,0,1]
+                    }, assetsLoc);
+                }
+            };
         })
 
         .factory("ColorMatrix", function() {
@@ -39,16 +47,93 @@
             };
         })
 
-        .factory("LandUnitRender", function(UnitTexture, HitFilter, ColorMatrixCombi, ColorMatrix) {
+        .factory("LandUnitRender", function(HitFilter, ColorMatrix, $http) {
+
+
             function getFightStateNum(stateAge, fightConfig) {
                 return fightConfig.steps[stateAge];
             }
+
             return {
-                createLandUnitRender: function(fightConfig) {
-                    var render;
-                    return render = {
-                        aniSpeed: null,
+                createLandUnitRender: function(unitType, fightConfig, assetsLoc) {
+                    var textures = null;
+                    var badgeTexturess = {};
+                    var createBadgeTextures;
+                    var fixes = {};
+                    var inited = false;
+
+                    function setTexture(type, state, stateNum, directionNum, textures, sprite) {
+                        if (textures==null) {
+                            return;
+                        }
+                        var texture = textures[type + "_" + state + stateNum + "_" + directionNum];
+                        if (texture != null) {
+                            sprite.texture = texture;
+                        }
+                    }
+                    function getFixTexture(type, state, stateNum, directionNum) {
+                        return fixes[type + "_" + state + stateNum + "_" + directionNum];
+                    }
+
+                    function getBadgeBaseTextures(color) {
+                        var badgeTextures = badgeTexturess[color];
+
+                        if (badgeTextures == null && createBadgeTextures != null) {
+                            badgeTextures = createBadgeTextures(color);
+                            badgeTexturess[color] = badgeTextures;
+                        }
+
+                        return badgeTextures;
+                    }
+
+
+                    var init = function() {
+                        inited = true;
+
+                        var baseTexture = PIXI.Texture.fromImage(assetsLoc + "/sprites/" + unitType + ".png");
+
+                        $http.get(assetsLoc + "/sprites/" + unitType + ".json").success(function(res) {
+                            textures = {};
+                            var framesData = res.frames;
+                            for (var fName in framesData) {
+                                var frameData = framesData[fName];
+                                var r = frameData.frame;
+
+                                var rect = new PIXI.Rectangle(r.x, r.y, r.w, r.h);
+                                textures[fName.replace(/\.png$/, "")] = new PIXI.Texture(baseTexture, rect);
+
+                                var fixX = frameData["fixX"];
+                                var fixY = frameData["fixY"];
+                                if (fixX != null || fixY != null) {
+                                    fixes[fName.replace(/\.png$/, "")] = {x: fixX, y: fixY};
+                                }
+                            }
+
+
+                            createBadgeTextures = function(color) {
+                                var baseTexture = PIXI.Texture.fromImage(assetsLoc + "/sprites/" + unitType + "_badge_" + color + ".png");
+
+                                var badgeTextures = {};
+                                for (var fName in framesData) {
+                                    var r = framesData[fName].frame;
+                                    badgeTextures[fName.replace(/\.png$/, "")] = new PIXI.Texture(baseTexture, new PIXI.Rectangle(r.x, r.y, r.w, r.h))
+                                }
+                                return badgeTextures;
+                            };
+                        });
+
+                    };
+
+                    init();
+
+
+                    var aniSpeed = 10;
+                    return {
                         createUnitSprites: function(unit) {
+                            if (!inited) {
+                                init();
+                            }
+
                             var container = new PIXI.Container();
 
                             if (unit.decor) {
@@ -58,25 +143,17 @@
                                 container.addChild(g);
                             }
 
-                            var texture = UnitTexture.getTexture(unit.type, "stand", 0, 0);
-
-                            var body = new PIXI.Sprite(texture);
-
+                            var body = new PIXI.Sprite();
 
                             container.addChild(body);
 
-                            var colorMatrixCombi = ColorMatrixCombi.createColorMatrixCombi();
-
                             var colorBadge;
                             if (unit.side.color != "blue") {
-                                colorBadge = new PIXI.Sprite(UnitTexture.getBadgeTexture(unit.type, "stand", 0, 0));
-                                var filter = new PIXI.filters.ColorMatrixFilter();
-                                filter.matrix = ColorMatrix[unit.side.color];
-                                colorBadge.filters = [filter];
+                                colorBadge = new PIXI.Sprite();
                                 container.addChild(colorBadge);
                             }
 
-                            var hitFilter = HitFilter.createHitFilter(colorMatrixCombi);
+                            //var hitFilter = HitFilter.createHitFilter(colorMatrixCombi);
 
                             function eachBody(f) {
                                 f(body);
@@ -86,7 +163,6 @@
                             }
 
                             eachBody(function(body) {
-                                //body.filters = [colorMatrixCombi.filter];
                                 body.anchor.set(0.5, 0.5);
                             });
 
@@ -115,7 +191,7 @@
                                     if (state.freezeNum != null) {
                                         stateNum = state.freezeNum;
                                     } else {
-                                        var stateAge = Math.floor((round - state.since) / render.aniSpeed);
+                                        var stateAge = Math.floor((round - state.since) / aniSpeed);
                                         if (state.name == "stand") {
                                             stateNum = 0;
                                         } else if (state.name == "walk") {
@@ -132,27 +208,27 @@
                                         }
                                     }
 
-
                                     container.position.x = Math.round(unit.position.x);
                                     container.position.y = Math.round(unit.position.y);
 
-                                    var fixTexture = UnitTexture.fixTexture(unit.type, state.name, stateNum, dirNum);
+                                    var fixTexture = getFixTexture(unit.type, state.name, stateNum, dirNum);
 
                                     eachBody(function(body) {
                                         body.scale.x = flipped ? -1 : 1;
                                         body.position.x = fixTexture && fixTexture.x ? fixTexture.x * (flipped ? -1:1) : 0;
                                         body.position.y = fixTexture && fixTexture.y ? fixTexture.y : 0;
                                     });
-                                    body.texture = UnitTexture.getTexture(unit.type, state.name, stateNum, dirNum);
+
+                                    setTexture(unit.type, state.name, stateNum, dirNum, textures, body);
                                     if (colorBadge) {
-                                        colorBadge.texture = UnitTexture.getBadgeTexture(unit.type, state.name, stateNum, dirNum);
+                                        setTexture(unit.type, state.name, stateNum, dirNum, getBadgeBaseTextures(unit.side.color), colorBadge);
                                     }
 
-                                    if (unit.isHit) {
-                                        hitFilter.show(round - unit.isHit.since);
-                                    } else {
-                                        hitFilter.hide();
-                                    }
+                                    //if (unit.isHit) {
+                                    //    hitFilter.show(round - unit.isHit.since);
+                                    //} else {
+                                    //    hitFilter.hide();
+                                    //}
                                 }
                             };
                         }

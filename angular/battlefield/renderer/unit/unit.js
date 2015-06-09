@@ -6,56 +6,6 @@
         'bw.battlefield.renderer.unit.land-unit'
     ])
 
-        .factory("ColorMatrixCombi", function() {
-            return {
-                createColorMatrixCombi: function() {
-
-                    var filter = new PIXI.filters.ColorMatrixFilter();
-
-                    var normal = [
-                        1,   0,   0,   0, 0,
-                        0,   1,   0,   0, 0,
-                        0,   0,   1,   0, 0,
-                        0,   0,   0,   1, 0
-                    ];
-
-                    filter.matrix = normal;
-
-                    var matrixes = [];
-
-                    function update() {
-                        if (matrixes.length == 0) {
-                            filter.matrix = normal;
-                        } else {
-                            var ret = ObjectUtil.clone(matrixes[0]);
-                            for (var i = 1; i < matrixes.length; i++) {
-                                var matrix = matrixes[i];
-
-                                for (var j = 0; j < ret.length; j++) {
-                                    ret[j] += matrix[j];
-                                }
-                            }
-                            filter.matrix = ret;
-                        }
-                    }
-
-                    return {
-                        filter: filter,
-                        matrixes: matrixes,
-                        update: update,
-                        addMatrix: function(matrix) {
-                            matrixes.push(matrix);
-                            update();
-                        },
-                        removeMatrix: function(matrix) {
-                            Cols.remove(matrix, matrixes);
-                            update();
-                        }
-                    }
-                }
-            };
-        })
-
         .factory("HitFilter", function() {
             return {
                 createHitFilter: function(colorMatrixCombi) {

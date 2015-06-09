@@ -15,7 +15,11 @@
                     options: "="
                 },
                 link: function($scope, elem, attrs) {
-                    var renderer = Renderers.createRenderer(elem[0], attrs.width, attrs.height, attrs.assetsLoc || "assets");
+                    var assetsLoc = attrs.assetsLoc || "assets";
+
+                    UnitSprites.init(assetsLoc);
+
+                    var renderer = Renderers.createRenderer(elem[0], attrs.width, attrs.height, assetsLoc);
 
                     renderer.load(function() {
                         var unitSprites;

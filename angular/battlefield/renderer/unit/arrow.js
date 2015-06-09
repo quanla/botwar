@@ -5,10 +5,9 @@
     angular.module('bw.battlefield.renderer.unit.arrow', [
     ])
 
-        .factory("ArrowRender", function(UnitTexture) {
+        .factory("ArrowRender", function() {
             var render;
             return render = {
-                aniSpeed: null,
                 createUnitSprites: function(unit) {
                     var container = new PIXI.Container();
 
