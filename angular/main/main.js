@@ -14,8 +14,8 @@
     ])
 
         .config(["ApiProvider", function (ApiProvider) {
-            //ApiProvider.setHost("http://54.254.246.157:1006");
-            ApiProvider.setHost("http://192.168.1.70:1006");
+            ApiProvider.setHost("http://54.254.246.157:1006");
+            //ApiProvider.setHost("http://192.168.1.70:1006");
         }])
     ;
 })();
