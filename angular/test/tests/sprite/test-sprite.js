@@ -21,34 +21,36 @@
 
         .controller("bw.test.sprite.Ctrl", function($scope, $http) {
             //$scope.unitType = "footman";
-            $scope.unitType = "archer";
-
-            $scope.showSpriteSheet = function(unit, gridMode) {
-                var jsonUrl = "../../assets/sprites/" + unit + ".json";
-                $http.get(jsonUrl).success(function(data) {
-                    var imageUrl = jsonUrl.replace(/\w+\.json$/, '') + data.meta.image;
-                    $scope.spriteSheet = {
-                        imageUrl: imageUrl,
-                        data: data,
-                        gridMode: gridMode,
-                        onChange: function() {
-                            $scope.saveSpriteSheet();
-                        }
-                    };
-
-                    $scope.saveSpriteSheet = function() {
-                        $http.post(jsonUrl, data);
-                    };
-                });
+            $scope.view = {
+                unitType: "peasant"
             };
 
-            $scope.setUnitType = function(ut) {
-                $scope.unitType = ut;
-                $scope.showSpriteSheet($scope.unitType, true);
+            $scope.spriteSheet = {
+                imageUrl: null,
+                data: null
             };
 
-            //$scope.showSpriteSheet($scope.unitType, true);
-            $scope.showSpriteSheet($scope.unitType, false);
+            $scope.showSpriteSheet = function(unit) {
+                var jsonUrl  = "../../assets/sprites/" + unit + ".json";
+                var imageUrl = "../../assets/sprites/" + unit + ".png";
+
+                $scope.spriteSheet.imageUrl = imageUrl;
+                $scope.spriteSheet.data = null;
+
+                $http.get(jsonUrl)
+                    .success(function(data) {
+                        $scope.spriteSheet.data = data;
+                    })
+                ;
+
+                $scope.saveSpriteSheet = function() {
+                    $http.post(jsonUrl, $scope.spriteSheet.data);
+                };
+            };
+
+            $scope.$watch("view.unitType", function(unitType) {
+                $scope.showSpriteSheet(unitType);
+            });
 
         })
     ;

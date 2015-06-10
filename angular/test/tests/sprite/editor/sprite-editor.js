@@ -18,11 +18,14 @@
 
                     var editor;
 
-                    editor = SSE.createSSE(elem[0], width, height, $scope.spriteSheet.data, $scope.spriteSheet.imageUrl, $scope.spriteSheet.gridMode);
+                    editor = SSE.createSSE(elem[0], width, height);
 
-                    if ($scope.spriteSheet.onChange) {
-                        editor.onChangeData($scope.spriteSheet.onChange);
-                    }
+                    $scope.$watch("spriteSheet.imageUrl", function(imageUrl) {
+                        editor.setImageUrl(imageUrl);
+                    });
+                    $scope.$watch("spriteSheet.data", function(data) {
+                        editor.setData(data);
+                    });
 
                     $scope.$on("$destroy", function() {
                         if (editor) {
@@ -257,7 +260,7 @@
             }
 
             return {
-                createSSE: function (elem, width, height, data, imageUrl, isGrid) {
+                createSSE: function (elem, width, height) {
 
                     var renderer = PIXI.autoDetectRenderer(width, height, { antialias: false });
 
@@ -273,8 +276,8 @@
                     }
 
                     var container = new PIXI.Container();
-                    var texture = PIXI.Texture.fromImage(imageUrl);
-                    container.addChild(new PIXI.Sprite(texture));
+                    var spriteSheet = new PIXI.Sprite();
+                    container.addChild(spriteSheet);
                     container.position.set(50, 50);
 
                     var editControlContainer = new PIXI.Container();
@@ -291,39 +294,24 @@
 
                     var onChangeData;
 
-                    if (isGrid) {
-                        editControlContainer.addChild(SSEGridMode.createGrid(data.frames, width, height, function() {
-                            if (onChangeData) onChangeData();
-                        }));
-                    } else {
-
-                        var style = {
-                            font : '10px Arial normal italic',
-                            stroke : '#000000',
-                            strokeThickness : 1
-                        };
-
-                        var richText = new PIXI.Text('',style);
-
-                        Cols.eachEntry(data.frames, function(frameName, frameData) {
-                            var frameSprite = SSESprites.createFrameSprite(frameData);
-                            editControlContainer.addChild(frameSprite.container);
-
-                            frameSprite.hover(
-                                function() {
-                                    richText.x = frameData.frame.x;
-                                    richText.y = frameData.frame.y - 13;
-                                    richText.text = frameName;
-                                },
-                                function() {
-                                }
-                            )
-                        });
-
-                        editControlContainer.addChild(richText);
-                    }
-
                     return {
+                        setData: function(data) {
+                            for (var i = editControlContainer.children.length - 1; i >= 0; i--) {
+                                editControlContainer.removeChild(editControlContainer.children[i]);
+                            }
+
+                            if (data != null) {
+                                editControlContainer.addChild(SSEGridMode.createGrid(data.frames, width, height, function () {
+                                    if (onChangeData) onChangeData();
+                                }));
+                            }
+                        },
+                        setImageUrl: function(imageUrl) {
+                            if (imageUrl != null) {
+                                var texture = PIXI.Texture.fromImage(imageUrl);
+                                spriteSheet.texture = texture;
+                            }
+                        },
                         destroy: function() {
                             stopped = true;
                         },
