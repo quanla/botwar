@@ -4,6 +4,7 @@
 
     angular.module('bw.battlefield', [
         'bw.battlefield.game',
+        'bw.battlefield.all-units',
         'bw.battlefield.renderer'
     ])
 
@@ -15,11 +16,10 @@
                     options: "="
                 },
                 link: function($scope, elem, attrs) {
-                    var assetsLoc = attrs.assetsLoc || "assets";
 
-                    UnitSprites.init(assetsLoc);
+                    UnitSprites.init();
 
-                    var renderer = Renderers.createRenderer(elem[0], attrs.width, attrs.height, assetsLoc);
+                    var renderer = Renderers.createRenderer(elem[0], attrs.width, attrs.height);
 
                     renderer.load(function() {
                         var unitSprites;

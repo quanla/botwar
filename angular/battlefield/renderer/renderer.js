@@ -3,7 +3,6 @@
 (function () {
 
     angular.module('bw.battlefield.renderer', [
-        'bw.battlefield.renderer.unit'
     ])
 
         .factory("UnitSprites", function(UnitRender) {
@@ -18,15 +17,13 @@
             }
 
             var inited = false;
-            var unitRender;
             return {
-                init: function(assetsLoc) {
+                init: function() {
                     if (!inited) {
                         inited = true;
-                        unitRender = UnitRender.createUnitRender(assetsLoc);
                     }
                 },
-                createUnitSprites: function(game, stage, assetsLoc) {
+                createUnitSprites: function(game, stage) {
                     var orderCache = [];
 
                     function checkOrder() {
@@ -48,7 +45,7 @@
                     function createUnitsLink (units) {
                         return new ColLink(units,
                             function (unit) {
-                                var unitSprites = unitRender.createUnitSprites(unit);
+                                var unitSprites = UnitRender.createUnitSprites(unit);
 
                                 stage.addChild(unitSprites.container);
                                 orderCache.push(unitSprites);
@@ -116,57 +113,66 @@
             };
         })
 
-        .factory("Renderers", function() {
+        .provider("Renderers", function() {
+            var renderers = this;
+            renderers.assetsLoc = "assets";
 
-            function addBackground(stage, renderer, assetsLoc) {
-                var grassTexture = PIXI.Texture.fromImage(assetsLoc + '/grass.jpg');
+            function addBackground(stage, renderer) {
+                var grassTexture = PIXI.Texture.fromImage(renderers.assetsLoc + '/grass.jpg');
                 //var grassTexture = PIXI.Texture.fromImage(assetsLoc + '/grass.png');
                 var grassTile = new PIXI.extras.TilingSprite(grassTexture, renderer.width, renderer.height);
                 stage.addChild(grassTile);
             }
 
-            return {
-                createRenderer: function(holder, width, height, assetsLoc) {
+            this.$get = function() {
 
-                    var renderer = PIXI.autoDetectRenderer(width || 800, height || 600, { antialias: false });
-                    holder.appendChild(renderer.view);
 
-                    // create the root of the scene graph
-                    var stage = new PIXI.Container();
+                return {
+                    getAssetsLoc: function() {
+                        return renderers.assetsLoc;
+                    },
+                    createRenderer: function(holder, width, height) {
 
-                    addBackground(stage, renderer, assetsLoc);
+                        var renderer = PIXI.autoDetectRenderer(width || 800, height || 600, { antialias: false });
+                        holder.appendChild(renderer.view);
 
-                    var stopped = false;
-                    function animate() {
+                        // create the root of the scene graph
+                        var stage = new PIXI.Container();
 
-                        if (onEachRound) {
-                            onEachRound();
+                        addBackground(stage, renderer);
+
+                        var stopped = false;
+                        function animate() {
+
+                            if (onEachRound) {
+                                onEachRound();
+                            }
+
+                            renderer.render(stage);
+                            if (!stopped) {
+                                requestAnimationFrame( animate );
+                            }
                         }
 
-                        renderer.render(stage);
-                        if (!stopped) {
-                            requestAnimationFrame( animate );
-                        }
+                        var onEachRound;
+
+                        requestAnimationFrame( animate );
+
+                        return {
+                            load: function(onLoad1) {
+                                onLoad1();
+                            },
+                            unitStage: stage,
+                            onEachRound: function(onEachRound1) {
+                                onEachRound = onEachRound1;
+                            },
+                            destroy: function() {
+                                stopped = true;
+                            }
+                        };
                     }
-
-                    var onEachRound;
-
-                    requestAnimationFrame( animate );
-
-                    return {
-                        load: function(onLoad1) {
-                            onLoad1();
-                        },
-                        unitStage: stage,
-                        onEachRound: function(onEachRound1) {
-                            onEachRound = onEachRound1;
-                        },
-                        destroy: function() {
-                            stopped = true;
-                        }
-                    };
-                }
-            };
+                };
+            }
         })
     ;
 

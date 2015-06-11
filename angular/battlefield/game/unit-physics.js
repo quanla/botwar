@@ -19,7 +19,7 @@
             };
             return {
                 getUnitPhysics: function(unit) {
-                    if (unit.type == "footman" || unit.type == "archer") {
+                    if (unit.type == "footman" || unit.type == "archer" || unit.type == "peasant") {
                         if (unit.state == null || unit.state.name != "die") {
                             return landNormal;
                         } else {

@@ -20,13 +20,16 @@
         .controller("bw.test.ani.Ctrl", function($scope) {
             //$scope.unitType = "footman";
             $scope.view = {
-                unitType : "footman"
-                //unitType : "peasant"
+                //unitType : "footman"
+                unitType : "peasant"
             };
 
-            var direction = 2* Math.PI / 4;
-            var position = null;
+            //var direction = 0* Math.PI / 4;
+            //var direction = 1* Math.PI / 4;
+            //var direction = 2* Math.PI / 4;
             //var direction = 3* Math.PI / 4;
+            var direction = 4* Math.PI / 4;
+            var position = null;
 
             function singleGame(bot) {
                 return {

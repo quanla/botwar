@@ -16,5 +16,8 @@
                 // If the url is ever invalid, e.g. '/asdf', then redirect to '/' aka the home state
                 .otherwise("/bot");
         }])
+        .config(function (RenderersProvider) {
+            RenderersProvider.assetsLoc = "../../assets";
+        })
     ;
 })();

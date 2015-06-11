@@ -12,7 +12,7 @@
                     if (type == "hit") {
                         // Resolve impact
                         GameUtil.eachUnit(game, function(unit) {
-                            if (unit.type == "footman" || unit.type == "archer") {
+                            if (unit.type == "footman" || unit.type == "archer" || unit.type == "peasant") {
                                 if (unit.state != null && unit.state.name == "die" ) {
                                     return; // Immune to damage
                                 }
@@ -52,7 +52,7 @@
                         };
                     } else if (type == "arrow") {
                         return GameUtil.eachUnit(game, function(unit) {
-                            if (unit.type == "footman" || unit.type == "archer") {
+                            if (unit.type == "footman" || unit.type == "archer" || unit.type == "peasant") {
                                 if (unit.state != null && unit.state.name == "die" ) {
                                     return; // Immune to damage
                                 }

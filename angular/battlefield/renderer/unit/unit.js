@@ -3,46 +3,28 @@
 (function () {
 
     angular.module('bw.battlefield.renderer.unit', [
-        'bw.battlefield.renderer.unit.land-unit'
     ])
 
-        .factory("UnitRender", function(FootmanRender, ArcherRender, ArrowRender) {
-
-            return {
-                createUnitRender: function(assetsLoc) {
-                    var types = {
-                        "footman": FootmanRender.createFootmanRender(assetsLoc),
-                        "archer": ArcherRender.createArcherRender(assetsLoc),
-                        "arrow": ArrowRender,
-                        "circle": {
-                            createUnitSprites: function(unit) {
-                                var g = new PIXI.Graphics();
-
-                                g.beginFill(0xFF0000);
-                                g.drawCircle(0, 0, 5);
-                                g.endFill();
-
-                                return {
-                                    container: g,
-                                    sync: function(round) {
-                                        g.position.x = unit.position.x;
-                                        g.position.y = unit.position.y;
-                                    }
-                                };
-                            }
-                        }
-                    };
-
-
-                    return {
-                        createUnitSprites: function(unit) {
-                            var unitSprites = types[unit.type].createUnitSprites(unit);
-                            unitSprites.unit = unit;
-                            return unitSprites;
-                        }
-                    };
-                }
+        .provider("UnitRender", function() {
+            var typeConfigs = {};
+            this.addType = function(name, creater) {
+                typeConfigs[name] = creater;
             };
+            this.$get = function(Renderers, $injector) {
+                var types = {};
+                for (var typeName in typeConfigs) {
+                    types[typeName] = $injector.invoke(typeConfigs[typeName], null, {assetsLoc: Renderers.getAssetsLoc()});
+                }
+
+                return {
+                    createUnitSprites: function(unit) {
+                        var unitSprites = types[unit.type].createUnitSprites(unit);
+                        unitSprites.unit = unit;
+                        return unitSprites;
+                    }
+                };
+            }
+            ;
 
         })
 
