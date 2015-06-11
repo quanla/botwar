@@ -5,75 +5,84 @@
     angular.module('bw.battlefield.unit-dynamics', [
     ])
 
-        .factory("UnitImpact", function(GameUtil, UnitPhysics) {
-            return {
-                impact: function(type, props, game, round) {
+        .provider("UnitImpact", function() {
+            var types = {};
 
-                    if (type == "hit") {
-                        // Resolve impact
-                        GameUtil.eachUnit(game, function(unit) {
-                            if (unit.type == "footman" || unit.type == "archer" || unit.type == "peasant") {
+            this.addUnitType = function(unitType, impactConfig) {
+                types[unitType] = impactConfig;
+            };
+
+            this.$get = function(GameUtil, UnitPhysics) {
+                return {
+                    impact: function(type, props, game, round) {
+
+                        if (type == "hit") {
+                            // Resolve impact
+                            GameUtil.eachUnit(game, function(unit) {
                                 if (unit.state != null && unit.state.name == "die" ) {
                                     return; // Immune to damage
                                 }
 
-                                if (Distance.between(unit.position, props.position) < 15) {
-                                    unit.hitpoint -= 50;
-                                    unit.isHit = {since: round};
+                                if (types[unit.type].takeHit) {
+                                    if (Distance.between(unit.position, props.position) < 15) {
+                                        unit.hitpoint -= props.damage;
+                                        unit.isHit = {since: round};
 
-                                    if (unit.hitpoint <= 0) {
-                                        unit.state = {
-                                            name: "die",
-                                            since: round
-                                        };
-                                        unit.moveAccel = 0;
+                                        if (unit.hitpoint <= 0) {
+                                            unit.state = {
+                                                name: "die",
+                                                since: round
+                                            };
+                                            unit.moveAccel = 0;
+                                        }
                                     }
                                 }
-                            }
-                        });
-                    } else if (type == "makeWay") {
-                        var blocking = GameUtil.eachUnit(game, function(unit) {
-                            if (unit == props.source) {
-                                return;
-                            }
-                            var unitPhysics = UnitPhysics.getUnitPhysics(unit);
-                            if (unitPhysics.needWay) {
-                                if (Distance.between(unit.position, props.position) < 20) {
-                                    return true;
+                            });
+                        } else if (type == "makeWay") {
+                            var blocking = GameUtil.eachUnit(game, function(unit) {
+                                if (unit == props.source) {
+                                    return;
                                 }
-                            }
-                        });
-                        return {
-                            then: function(todo) {
-                                if (!blocking) {
-                                    todo();
+                                var unitPhysics = UnitPhysics.getUnitPhysics(unit);
+                                if (unitPhysics.needWay) {
+                                    if (Distance.between(unit.position, props.position) < 20) {
+                                        return true;
+                                    }
                                 }
-                            }
-                        };
-                    } else if (type == "arrow") {
-                        return GameUtil.eachUnit(game, function(unit) {
-                            if (unit.type == "footman" || unit.type == "archer" || unit.type == "peasant") {
+                            });
+                            return {
+                                then: function(todo) {
+                                    if (!blocking) {
+                                        todo();
+                                    }
+                                }
+                            };
+                        } else if (type == "arrow") {
+                            return GameUtil.eachUnit(game, function(unit) {
                                 if (unit.state != null && unit.state.name == "die" ) {
                                     return; // Immune to damage
                                 }
 
-                                if (Distance.between(unit.position, props.position) < 15) {
-                                    unit.hitpoint -= 50;
-                                    unit.isHit = {since: round};
+                                if (types[unit.type].takeHit) {
 
-                                    if (unit.hitpoint <= 0) {
-                                        unit.state = {
-                                            name: "die",
-                                            since: round
-                                        };
-                                        unit.moveAccel = 0;
+                                    if (Distance.between(unit.position, props.position) < 15) {
+                                        unit.hitpoint -= props.damage;
+                                        unit.isHit = {since: round};
+
+                                        if (unit.hitpoint <= 0) {
+                                            unit.state = {
+                                                name: "die",
+                                                since: round
+                                            };
+                                            unit.moveAccel = 0;
+                                        }
+                                        return true;
                                     }
-                                    return true;
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
-                }
+                };
             };
         })
 
@@ -127,24 +136,26 @@
                         if (unit.state != null) {
                             if (unit.state.name == "fight") {
                                 var fightingStyle = UnitFightingStyle.getUnitFightingStyle(unit);
-                                if (fightingStyle.isHit(round, unit)) {
+                                if (fightingStyle.createHitImpact && (round - unit.state.since) == fightingStyle.createHitImpact) {
                                     impact("hit", {
                                         position: Vectors.addPos(unit.position, Vectors.vectorPos({
                                             direction: unit.direction,
                                             value: 30
                                         })),
-                                        source: unit
+                                        source: unit,
+                                        damage: fightingStyle.damage
                                     });
-                                } else if (fightingStyle.isCreateArrow(round, unit)) {
+                                } else if (fightingStyle.launchCreateArrow && (round - unit.state.since) == fightingStyle.launchCreateArrow) {
                                     game.nature.push({
                                         type: "arrow",
                                         position: ObjectUtil.clone(unit.position),
                                         start: ObjectUtil.clone(unit.position),
                                         direction: unit.direction,
                                         side: unit.side,
+                                        damage: fightingStyle.damage,
                                         moveAccel: 100
                                     });
-                                } else if (fightingStyle.isFinished(round, unit)) {
+                                } else if ((round - unit.state.since) == fightingStyle.fightFinish) {
                                     unit.state = null;
                                 }
                             } else if (unit.state.name == "die") {
@@ -158,7 +169,8 @@
                             if (
                                 impact("arrow",{
                                     position: unit.position,
-                                    side: unit.side
+                                    side: unit.side,
+                                    damage: unit.damage
                                 })
                                 || Distance.between(unit.position, unit.start) > 200
                             ) {

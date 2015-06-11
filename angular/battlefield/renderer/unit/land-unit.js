@@ -3,34 +3,9 @@
 (function () {
 
     angular.module('bw.battlefield.renderer.unit.land-unit', [
-        'bw.battlefield.renderer.unit'
+        'bw.battlefield.renderer.unit',
+        'bw.battlefield.unit-physics'
     ])
-        .config(function(UnitRenderProvider) {
-            UnitRenderProvider.addType("footman", function(assetsLoc, LandUnitRender) {
-                    return LandUnitRender.createLandUnitRender("footman", {
-                        steps: [0,1,2,3]
-                    }, assetsLoc);
-                }
-            );
-        })
-
-        .config(function(UnitRenderProvider) {
-            UnitRenderProvider.addType("archer", function(assetsLoc, LandUnitRender) {
-                    return LandUnitRender.createLandUnitRender("archer", {
-                        steps: [0,0,0,1]
-                    }, assetsLoc);
-                }
-            );
-        })
-
-        .config(function(UnitRenderProvider) {
-            UnitRenderProvider.addType("peasant", function(assetsLoc, LandUnitRender) {
-                    return LandUnitRender.createLandUnitRender("peasant", {
-                        steps: [0,1,2,3,4]
-                    }, assetsLoc);
-                }
-            );
-        })
 
         .factory("ColorMatrix", function() {
             return {

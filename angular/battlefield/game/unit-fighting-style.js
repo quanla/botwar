@@ -4,46 +4,18 @@
 
     angular.module('bw.battlefield.unit-fighting-style', [
     ])
-        .factory("UnitFightingStyle", function(UnitRender) {
-            var styles = {
-                "footman": {
-                    isHit: function (round, unit) {
-                        return (round - unit.state.since) == 10 * 3;
-                    },
-                    isFinished: function (round, unit) {
-                        return (round - unit.state.since) == (10 * 4);
-                    },
-                    isCreateArrow: function (round, unit) {
-                        return false;
-                    }
-                },
-                "peasant": {
-                    isHit: function (round, unit) {
-                        return (round - unit.state.since) == 10 * 3;
-                    },
-                    isFinished: function (round, unit) {
-                        return (round - unit.state.since) == (10 * 5);
-                    },
-                    isCreateArrow: function (round, unit) {
-                        return false;
-                    }
-                },
-                "archer": {
-                    isHit: function (round, unit) {
-                        return false;
-                    },
-                    isFinished: function (round, unit) {
-                        return (round - unit.state.since) == (10 * 4);
-                    },
-                    isCreateArrow: function (round, unit) {
-                        return (round - unit.state.since) == 10 * 3;
-                    }
-                }
+        .provider("UnitFightingStyle", function() {
+            var styles = {};
+            this.addStyle = function(unitType, fightingStyle) {
+                styles[unitType] = fightingStyle;
             };
-            return {
-                getUnitFightingStyle: function(unit) {
-                    return styles[unit.type];
-                }
+
+            this.$get = function () {
+                return {
+                    getUnitFightingStyle: function(unit) {
+                        return styles[unit.type];
+                    }
+                };
             };
         })
     ;

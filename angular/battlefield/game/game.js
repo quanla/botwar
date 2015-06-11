@@ -3,12 +3,28 @@
 (function () {
 
     angular.module('bw.battlefield.game', [
-        'bw.battlefield.unit-physics',
         'bw.battlefield.unit-fighting-style',
         'bw.battlefield.unit-dynamics',
         'bw.battlefield.game.bot'
     ])
-        .factory("GameRunner", function(BotRunner, UnitDynamics, GameUtil, UnitUtil) {
+        .provider("GameSetup", function() {
+            var types = {};
+
+            this.addUnitType = function(unitType, setup) {
+                types[unitType] = setup;
+            };
+
+            this.$get = function() {
+
+                return {
+                    getDefaultHitpoint : function(unitType) {
+                        return types[unitType].defaultHitpoint;
+                    }
+                };
+            };
+        })
+
+        .factory("GameRunner", function(BotRunner, UnitDynamics, GameUtil, UnitUtil, GameSetup) {
             function initGame(game, width, height) {
                 // Fill missing values
                 if (game.nature == null) {
@@ -35,7 +51,7 @@
                     for (var j = 0; j < side.units.length; j++) {
                         var unit = side.units[j];
                         if (unit.hitpoint == null) {
-                            unit.hitpoint = 100;
+                            unit.hitpoint = GameSetup.getDefaultHitpoint(unit.type);
                         }
                         unit.side = side;
                     }

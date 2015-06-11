@@ -4,32 +4,29 @@
 
     angular.module('bw.battlefield.unit-physics', [
     ])
-        .factory("UnitPhysics", function() {
-            var landNormal = {
-                needWay: true,
-                maxSpeed: 1
+        .provider("UnitPhysics", function() {
+            var types = {};
+
+            this.addUnitType = function(unitType, physics) {
+                types[unitType] = physics;
             };
-            var arrow = {
-                needWay: false,
-                maxSpeed: 20
-            };
+
             var dirt = {
                 needWay: false,
                 maxSpeed: 1
             };
-            return {
-                getUnitPhysics: function(unit) {
-                    if (unit.type == "footman" || unit.type == "archer" || unit.type == "peasant") {
+
+            this.$get = function() {
+                return {
+                    getUnitPhysics: function(unit) {
                         if (unit.state == null || unit.state.name != "die") {
-                            return landNormal;
+                            return types[unit.type];
                         } else {
                             return dirt;
                         }
-                    } else if (unit.type == "arrow") {
-                        return arrow;
+                        return dirt;
                     }
-                    return dirt;
-                }
+                };
             };
         })
     ;
