@@ -27,7 +27,7 @@
             });
 
             UnitRenderProvider.addType("peasant", function(assetsLoc, LandUnitRender) {
-                    return LandUnitRender.createLandUnitRender("peasant", {
+                    return LandUnitRender.createLandUnitRender("peasant", "blue", {
                         steps: [0,1,2,3,4]
                     }, assetsLoc);
                 }

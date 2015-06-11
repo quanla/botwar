@@ -26,7 +26,7 @@
             });
 
             UnitRenderProvider.addType("archer", function(assetsLoc, LandUnitRender) {
-                return LandUnitRender.createLandUnitRender("archer", {
+                return LandUnitRender.createLandUnitRender("archer", "blue", {
                     steps: [0,0,0,1]
                 }, assetsLoc);
             });

@@ -19,5 +19,7 @@
         .config(function (RenderersProvider) {
             RenderersProvider.assetsLoc = "../../assets";
         })
+
+        .value("testTypes", ['footman','archer','peasant','grunt','zerling'])
     ;
 })();

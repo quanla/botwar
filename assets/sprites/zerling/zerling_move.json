@@ -1,0 +1,977 @@
+{
+  "frames": {
+    "zerling_stand0_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_stand0_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 0,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_stand0_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 0,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_stand0_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_stand0_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 0,
+        "w": 41,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_stand0_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 0,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_stand0_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 0,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_stand0_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 0,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_stand0_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 0,
+        "w": 40,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go0_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 42,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go0_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 42,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go0_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 42,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go0_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 42,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go0_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 42,
+        "w": 41,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go0_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 42,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go0_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 42,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go0_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 42,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go0_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 42,
+        "w": 40,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go1_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 84,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go1_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 84,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go1_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 84,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go1_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 84,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go1_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 84,
+        "w": 41,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go1_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 84,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go1_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 84,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go1_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 84,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go1_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 84,
+        "w": 40,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go2_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 126,
+        "w": 43,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_go2_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 126,
+        "w": 42,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_go2_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 126,
+        "w": 43,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_go2_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 126,
+        "w": 44,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_go2_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 126,
+        "w": 41,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_go2_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 126,
+        "w": 44,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_go2_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 126,
+        "w": 44,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_go2_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 126,
+        "w": 42,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_go2_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 126,
+        "w": 40,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_go3_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 167,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go3_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 167,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go3_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 167,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go3_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 167,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go3_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 167,
+        "w": 41,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go3_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 167,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go3_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 167,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go3_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 167,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go3_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 167,
+        "w": 40,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go4_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 209,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go4_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 209,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go4_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 209,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go4_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 209,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go4_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 209,
+        "w": 41,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go4_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 209,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go4_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 209,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go4_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 209,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go4_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 209,
+        "w": 40,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go5_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 251,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go5_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 251,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go5_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 251,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go5_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 251,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go5_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 251,
+        "w": 41,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go5_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 251,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go5_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 251,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go5_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 251,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_go5_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 251,
+        "w": 40,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight0_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 293,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight0_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 293,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight0_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 293,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight0_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 293,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight0_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 293,
+        "w": 41,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight0_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 293,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight0_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 293,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight0_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 293,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight0_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 293,
+        "w": 40,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight1_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 335,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight1_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 335,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight1_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 335,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight1_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 335,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight1_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 335,
+        "w": 41,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight1_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 335,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight1_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 335,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight1_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 335,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight1_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 335,
+        "w": 40,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight2_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 377,
+        "w": 43,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_fight2_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 377,
+        "w": 42,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_fight2_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 377,
+        "w": 43,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_fight2_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 377,
+        "w": 44,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_fight2_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 377,
+        "w": 41,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_fight2_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 377,
+        "w": 44,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_fight2_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 377,
+        "w": 44,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_fight2_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 377,
+        "w": 42,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_fight2_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 377,
+        "w": 40,
+        "h": 41
+      },
+      "trimmed": false
+    },
+    "zerling_fight3_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 418,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight3_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 418,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight3_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 418,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight3_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 418,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight3_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 418,
+        "w": 41,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight3_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 418,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight3_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 418,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight3_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 418,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight3_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 418,
+        "w": 40,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight4_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 460,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight4_1.png": {
+      "frame": {
+        "x": 43,
+        "y": 460,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight4_2.png": {
+      "frame": {
+        "x": 85,
+        "y": 460,
+        "w": 43,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight4_3.png": {
+      "frame": {
+        "x": 128,
+        "y": 460,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight4_4.png": {
+      "frame": {
+        "x": 172,
+        "y": 460,
+        "w": 41,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight4_5.png": {
+      "frame": {
+        "x": 213,
+        "y": 460,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight4_6.png": {
+      "frame": {
+        "x": 257,
+        "y": 460,
+        "w": 44,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight4_7.png": {
+      "frame": {
+        "x": 301,
+        "y": 460,
+        "w": 42,
+        "h": 42
+      },
+      "trimmed": false
+    },
+    "zerling_fight4_8.png": {
+      "frame": {
+        "x": 343,
+        "y": 460,
+        "w": 40,
+        "h": 42
+      },
+      "trimmed": false
+    }
+  },
+  "meta": {"image": "zerling.png"}
+}

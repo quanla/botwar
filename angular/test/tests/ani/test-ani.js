@@ -17,7 +17,8 @@
             ;
         }])
 
-        .controller("bw.test.ani.Ctrl", function($scope) {
+        .controller("bw.test.ani.Ctrl", function($scope, testTypes) {
+            $scope.testTypes = testTypes;
             //$scope.unitType = "footman";
             $scope.view = {
                 //unitType : "footman"

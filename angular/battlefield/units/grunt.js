@@ -2,33 +2,33 @@
 
 (function () {
 
-    angular.module('bw.battlefield.units.footman', [
+    angular.module('bw.battlefield.units.grunt', [
         'bw.battlefield.renderer.unit.land-unit',
         'bw.battlefield.unit-dynamics'
     ])
 
         .config(function(GameSetupProvider, UnitRenderProvider, UnitFightingStyleProvider, UnitPhysicsProvider, UnitImpactProvider) {
-            GameSetupProvider.addUnitType("footman", {
+            GameSetupProvider.addUnitType("grunt", {
                 defaultHitpoint: 100
             });
 
-            UnitFightingStyleProvider.addStyle("footman", {
+            UnitFightingStyleProvider.addStyle("grunt", {
                 createHitImpact: 10 * 3,
                 fightFinish: 10 * 4,
                 damage: 20
             });
 
-            UnitPhysicsProvider.addUnitType("footman", {
+            UnitPhysicsProvider.addUnitType("grunt", {
                 needWay: true,
                 maxSpeed: 1
             });
 
-            UnitImpactProvider.addUnitType("footman", {
+            UnitImpactProvider.addUnitType("grunt", {
                 takeHit: true
             });
 
-            UnitRenderProvider.addType("footman", function(assetsLoc, LandUnitRender) {
-                return LandUnitRender.createLandUnitRender("footman", "blue", {
+            UnitRenderProvider.addType("grunt", function(assetsLoc, LandUnitRender) {
+                return LandUnitRender.createLandUnitRender("grunt", "red", {
                     steps: [0,1,2,3]
                 }, assetsLoc);
             });

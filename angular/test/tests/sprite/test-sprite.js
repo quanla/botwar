@@ -19,10 +19,15 @@
         }])
 
 
-        .controller("bw.test.sprite.Ctrl", function($scope, $http, SpriteSheetEditors) {
+        .controller("bw.test.sprite.Ctrl", function($scope, $http, SpriteSheetEditors, testTypes) {
             //$scope.unitType = "footman";
+            $scope.spriteNames = [
+                ["footman", "footman"],
+                ["zerling", "zerling_move"]
+            ];
+
             $scope.view = {
-                unitType: "footman"
+                spriteName: $scope.spriteNames[0]
                 //unitType: "peasant"
             };
 
@@ -32,9 +37,9 @@
                 data: null
             };
 
-            $scope.showSpriteSheet = function(unit) {
-                var jsonUrl  = "../../assets/sprites/" + unit + ".json";
-                var imageUrl = "../../assets/sprites/" + unit + ".png";
+            $scope.showSpriteSheet = function(folder, spriteName) {
+                var jsonUrl  = "../../assets/sprites/" + folder + "/" + spriteName + ".json";
+                var imageUrl = "../../assets/sprites/" + folder + "/" + spriteName + ".png";
 
                 $scope.sse.setImageUrl(imageUrl);
                 $scope.sse.setGrid(null);
@@ -49,8 +54,8 @@
                 };
             };
 
-            $scope.$watch("view.unitType", function(unitType) {
-                $scope.showSpriteSheet(unitType);
+            $scope.$watch("view.spriteName", function(spriteName) {
+                $scope.showSpriteSheet(spriteName[0], spriteName[1]);
             });
 
             $scope.createSpriteSheet = function() {
@@ -126,7 +131,7 @@
 
                 var grid = $scope.sse.grid;
                 //$scope.lineNames
-                var unitType = $scope.view.unitType;
+                var unitType = $scope.view.spriteName[0];
                 for (var i = 0; i < grid.ys.length - 1; i++) {
                     var y = grid.ys[i];
                     var h = grid.ys[i + 1] - y;
@@ -137,7 +142,7 @@
                         var w = grid.xs[j + 1] - x;
 
                         var frame = {x:x,y:y,w:w,h:h};
-                        var name = unitType + "_" + lineName + "_" + j;
+                        var name = unitType + "_" + lineName + "_" + j + ".png";
 
                         frames[name] = {
                             frame: frame,
@@ -148,7 +153,7 @@
 
                 return {
                     frames: frames,
-                    "meta":{"image": unitType + ".png"}
+                    "meta":{"image": $scope.view.spriteName[1] + ".png"}
                 };
             };
         })

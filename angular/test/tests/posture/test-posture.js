@@ -19,11 +19,13 @@
         }])
 
 
-        .controller("bw.test.posture.Ctrl", function($scope, $http) {
+        .controller("bw.test.posture.Ctrl", function($scope, $http, testTypes) {
+            $scope.testTypes = testTypes;
             //$scope.unitType = "footman";
             $scope.view = {
                 //unitType: "archer"
-                unitType: "peasant"
+                //unitType: "peasant"
+                unitType: "grunt"
             };
             $scope.direction = 0;
             //$scope.direction = 2;
@@ -51,7 +53,7 @@
                         }
                     }
                     if (state == "fight") {
-                        for (var j = 0; j < ($scope.view.unitType=='footman' ? 4 : $scope.view.unitType=='peasant' ? 5 : 2); j++) {
+                        for (var j = 0; j < ($scope.view.unitType=='grunt' ? 4 : $scope.view.unitType=='footman' ? 4 : $scope.view.unitType=='peasant' ? 5 : 2); j++) {
                             frames.push($scope.view.unitType + "_fight" + j + "_" + $scope.direction + ".png");
                         }
                     }
@@ -71,8 +73,8 @@
 
 
             function show() {
-                var jsonUrl = "../../assets/sprites/" + $scope.view.unitType + ".json";
-                var imageUrl = "../../assets/sprites/" + $scope.view.unitType + ".png";
+                var jsonUrl = "../../assets/sprites/" + $scope.view.unitType + "/" + $scope.view.unitType + ".json";
+                var imageUrl = "../../assets/sprites/" + $scope.view.unitType + "/" + $scope.view.unitType + ".png";
                 $http.get(jsonUrl).success(function(data) {
                     $scope.postureEditor.imageUrl = imageUrl;
                     $scope.postureEditor.data = data.frames;

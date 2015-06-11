@@ -18,8 +18,13 @@
         }])
 
 
-        .controller("bw.test.color.Ctrl", function($scope) {
-            $scope.unitType = "footman";
+        .controller("bw.test.color.Ctrl", function($scope, testTypes) {
+
+            $scope.testTypes = testTypes;
+
+            $scope.view = {
+                unitType: "footman"
+            };
 
             $scope.showStand = function() {
 
@@ -44,20 +49,20 @@
                 }
 
                 var a=1;
-                createCol(a++, $scope.unitType, "stand", 0);
-                createCol(a++, $scope.unitType, "walk", 0);
-                createCol(a++, $scope.unitType, "walk", 1);
-                createCol(a++, $scope.unitType, "walk", 2);
-                createCol(a++, $scope.unitType, "walk", 3);
-                createCol(a++, $scope.unitType, "fight", 0);
-                createCol(a++, $scope.unitType, "fight", 1);
-                if ($scope.unitType == "footman") {
-                    createCol(a++, $scope.unitType, "fight", 2);
-                    createCol(a++, $scope.unitType, "fight", 3);
+                createCol(a++, $scope.view.unitType, "stand", 0);
+                createCol(a++, $scope.view.unitType, "walk", 0);
+                createCol(a++, $scope.view.unitType, "walk", 1);
+                createCol(a++, $scope.view.unitType, "walk", 2);
+                createCol(a++, $scope.view.unitType, "walk", 3);
+                createCol(a++, $scope.view.unitType, "fight", 0);
+                createCol(a++, $scope.view.unitType, "fight", 1);
+                if ($scope.view.unitType == "footman") {
+                    createCol(a++, $scope.view.unitType, "fight", 2);
+                    createCol(a++, $scope.view.unitType, "fight", 3);
                 }
-                createCol(a++, $scope.unitType, "die", 0);
-                createCol(a++, $scope.unitType, "die", 1);
-                createCol(a++, $scope.unitType, "die", 2);
+                createCol(a++, $scope.view.unitType, "die", 0);
+                createCol(a++, $scope.view.unitType, "die", 1);
+                createCol(a++, $scope.view.unitType, "die", 2);
 
                 $scope.game = {
                     sides: [
@@ -73,10 +78,8 @@
                 $scope.color = color;
                 $scope.showStand();
             };
-            $scope.setUnitType = function(ut) {
-                $scope.unitType = ut;
-                $scope.showStand();
-            };
+
+            $scope.$watch("view.unitType", $scope.showStand);
 
             $scope.color = "white";
             $scope.showStand();
