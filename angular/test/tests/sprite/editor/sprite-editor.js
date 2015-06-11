@@ -236,12 +236,12 @@
                 createGrid: function(grid, width, height) {
 
                     var container = new PIXI.Container();
-                    for (var i = 0; i < grid.xs.length; i++) {
-                        var x = grid.xs[i];
+
+                    Cols.eachEntry(grid.xs, function(i, x) {
                         container.addChild(createVerLine(x, height, function(pos) {
                             grid.xs[i] = Math.round(pos.x);
                         }))
-                    }
+                    });
                     Cols.eachEntry(grid.ys, function(i, y) {
                         container.addChild(createHorLine(y, width, function(pos) {
                             grid.ys[i] = Math.round(pos.y);

@@ -44,6 +44,9 @@
                         $scope.sse.setGrid(getGrid(data));
                     })
                 ;
+                $scope.saveSpriteSheet = function() {
+                    $http.post(jsonUrl, createData());
+                };
             };
 
             $scope.$watch("view.unitType", function(unitType) {
@@ -60,20 +63,25 @@
 
                 var width = $scope.sse.getSpriteSheetWidth();
                 var xs = [];
-                for (var i = 0; i < cols - 1; i++) {
-                    xs.push(width / cols * (i+1));
+                for (var i = 0; i < cols + 1; i++) {
+                    xs.push(Math.round(width / cols * i));
                 }
 
                 var height = $scope.sse.getSpriteSheetHeight();
                 var ys = [];
-                for (var i = 0; i < rows - 1; i++) {
-                    ys.push(height / rows * (i+1));
+                for (var i = 0; i < rows + 1; i++) {
+                    ys.push(Math.round(height / rows * i));
                 }
 
                 $scope.sse.setGrid({
                     xs: xs,
                     ys: ys
                 });
+
+                $scope.lineNames = [];
+                for (var i = 0; i < rows; i++) {
+                    $scope.lineNames.push("");
+                }
             };
 
             function getGrid(data) {
@@ -111,6 +119,38 @@
                     ys: ys
                 };
             }
+
+            function createData() {
+
+                var frames = {};
+
+                var grid = $scope.sse.grid;
+                //$scope.lineNames
+                var unitType = $scope.view.unitType;
+                for (var i = 0; i < grid.ys.length - 1; i++) {
+                    var y = grid.ys[i];
+                    var h = grid.ys[i + 1] - y;
+
+                    var lineName = $scope.lineNames[i];
+                    for (var j = 0; j < grid.xs.length - 1; j++) {
+                        var x = grid.xs[j];
+                        var w = grid.xs[j + 1] - x;
+
+                        var frame = {x:x,y:y,w:w,h:h};
+                        var name = unitType + "_" + lineName + "_" + j;
+
+                        frames[name] = {
+                            frame: frame,
+                            trimmed: false
+                        };
+                    }
+                }
+
+                return {
+                    frames: frames,
+                    "meta":{"image": unitType + ".png"}
+                };
+            };
         })
     ;
 

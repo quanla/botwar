@@ -15,6 +15,15 @@
             </div>
         </div>
 
+        Line names:
+        <div class="row">
+            <div class="col-lg-12 col-xs-3" ng-repeat="lineName in lineNames track by $index">
+                <div class="form-group" >
+                    <input class="form-control" ng-model="lineNames[$index]">
+                </div>
+            </div>
+        </div>
+
     </div>
     <div class="col-lg-9 text-center">
         <div width="600" height="800" sprite-sheet-editor="sse" ></div>

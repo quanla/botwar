@@ -19,7 +19,10 @@
 
         .controller("bw.test.ani.Ctrl", function($scope) {
             //$scope.unitType = "footman";
-            $scope.unitType = "archer";
+            $scope.view = {
+                unitType : "footman"
+                //unitType : "peasant"
+            };
 
             var direction = 2* Math.PI / 4;
             var position = null;
@@ -32,7 +35,7 @@
                             color: "blue",
                             units: [
                                 {
-                                    type: $scope.unitType,
+                                    type: $scope.view.unitType,
                                     position: position || {x: 100, y: 200},
                                     direction: 0,
                                     bot: bot
@@ -42,9 +45,6 @@
                     ]
                 };
             }
-            $scope.setUnitType = function(ut) {
-                $scope.unitType = ut;
-            };
 
             $scope.testRotate = function() {
                 var rotateBot = {
