@@ -5,31 +5,52 @@
     angular.module('bw.sprite.editor', [
     ])
 
-        .directive("spriteSheetEditor", function($http, SSE) {
+        .factory("SpriteSheetEditors", function() {
+            return {
+                createSpriteSheetEditor: function() {
+                    var imageUrl;
+                    var renderer;
+                    return {
+                        grid: null,
+                        setImageUrl: function(imageUrl1) {
+                            imageUrl = imageUrl1;
+                            if (renderer) renderer.setImageUrl(imageUrl1);
+                        },
+                        setGrid: function(grid1) {
+                            this.grid = grid1;
+                            if (renderer) renderer.setGrid(grid1);
+                        },
+                        getSpriteSheetWidth: function() {
+                            return renderer.getSpriteSheetWidth();
+                        },
+                        getSpriteSheetHeight: function() {
+                            return renderer.getSpriteSheetHeight();
+                        },
+                        setRenderer: function(renderer1) {
+                            renderer = renderer1;
+                            renderer.setImageUrl(imageUrl);
+                            renderer.setGrid(this.grid);
+                        }
+                    };
+                }
+            };
+        })
+
+        .directive("spriteSheetEditor", function($http, SSERenderer) {
             return {
                 restrict: "A",
-                scope: {
-                    spriteSheet: "=spriteSheetEditor"
-                },
                 link: function($scope, elem, attrs) {
 
                     var width = attrs.width || 800;
                     var height = attrs.height || 600;
 
-                    var editor;
+                    var renderer = SSERenderer.createSSE(elem[0], width, height);
 
-                    editor = SSE.createSSE(elem[0], width, height);
-
-                    $scope.$watch("spriteSheet.imageUrl", function(imageUrl) {
-                        editor.setImageUrl(imageUrl);
-                    });
-                    $scope.$watch("spriteSheet.data", function(data) {
-                        editor.setData(data);
-                    });
+                    $scope.$eval(attrs.spriteSheetEditor).setRenderer(renderer);
 
                     $scope.$on("$destroy", function() {
-                        if (editor) {
-                            editor.destroy();
+                        if (renderer) {
+                            renderer.destroy();
                         }
                     });
                 }
@@ -114,13 +135,6 @@
         })
 
         .factory("SSEGridMode", function() {
-            function createVerLine(x, height) {
-                var g = new PIXI.Graphics();
-                g.lineStyle(1, 0x000000, 0.1);
-                g.moveTo(x, -20);
-                g.lineTo(x, height);
-                return g;
-            }
 
             function allowDrag(btn, onDragStart, onDragEnd, onDragging) {
                 var dragging = false;
@@ -131,14 +145,14 @@
 
                 var _dragEnd = function(event) {
 
-                    var newPosition = event.data.getLocalPosition(this.parent);
+                    var newPosition = event.data.getLocalPosition(this.parent.parent);
                     onDragEnd(newPosition);
                     dragging = false;
                 };
 
                 btn.on('mousemove', function(event) {
                     if (dragging) {
-                        var position = event.data.getLocalPosition(this.parent);
+                        var position = event.data.getLocalPosition(this.parent.parent);
                         onDragging(position);
                     }
                 });
@@ -148,108 +162,97 @@
             }
 
             function createHorLine(y, width, onChange) {
+                return createLine(1, y, width, onChange);
+            }
+            function createVerLine(x, height, onChange) {
+                return createLine(0, x, height, onChange);
+            }
+
+            function createLine(dir, pos, length, onChange) {
+                var createPoint = dir == 1 ? function(x, y) { return {x: x, y: y};} : function(x, y) { return {x: y, y: x};};
+
+                var container = new PIXI.Container();
+                function setPos(pos) {
+                    if (dir == 1) {
+                        container.position.y = Math.round(pos.y);
+                    } else {
+                        container.position.x = Math.round(pos.x);
+                    }
+                }
+
                 var g = new PIXI.Graphics();
 
                 var btn = new PIXI.Graphics();
                 btn.interactive = true;
                 btn.buttonMode = true;
-                btn.hitArea = new PIXI.Rectangle(-20 - 3, y - 3, 6, 6);
+                var p;
+                btn.hitArea = new PIXI.Rectangle((p = createPoint(-20 - 3, - 3)).x, p.y, 6, 6);
 
-                function paint() {
-                    g.clear();
-                    g.lineStyle(1, 0x000000, 0.1);
-                    g.moveTo(-20, y);
-                    g.lineTo(width, y);
+                g.clear();
+                g.lineStyle(1, 0x000000, 0.1);
+                g.moveTo((p = createPoint(-20, 0)).x, p.y);
+                g.lineTo((p = createPoint(length, 0)).x, p.y);
 
-                    btn.clear();
-                    btn.beginFill(0xAAAA44, 1);
-                    btn.alpha = 0.5;
-                    btn.drawRect(-20 - 3, y - 3, 6, 6);
-                    btn.endFill();
-                }
-                paint();
+                btn.clear();
+                btn.beginFill(0xAAAA44, 1);
+                btn.alpha = 0.5;
+                btn.drawRect((p = createPoint(-20 - 3, - 3)).x, p.y, 6, 6);
+                btn.endFill();
 
-                var oldY;
+                container.addChild(g);
+                container.addChild(btn);
+
                 allowDrag(btn,
                     function (event) {
                         btn.alpha = 1;
-                        oldY = y;
+                        //oldY;
                     },
                     function (newPos) {
                         btn.alpha = 0.5;
-                        onChange(Math.round(newPos.y), oldY);
+                        onChange(newPos);
                     },
-                    function(newPos) {
-                        y = newPos.y;
-                        btn.hitArea = new PIXI.Rectangle(-20 - 3, y - 3, 6, 6);
-                        paint();
-                    }
+                    setPos
                 );
 
-                var container = new PIXI.Container();
-                container.addChild(g);
-                container.addChild(btn);
+                setPos(createPoint(0, pos));
                 return container;
             }
 
-            function updateYAll(frames, onChange) {
-                return function(newY, oldY) {
-                    for (var name in frames) {
-                        var frame = frames[name];
-                        if (frame.frame.y == oldY) {
-                            frame.frame.y = newY;
-                        } else if (frame.frame.y + frame.frame.h == oldY) {
-                            frame.frame.h = newY - frame.frame.y;
-                        }
-                    }
-                    onChange();
-                };
-            }
+            //function updateYAll(frames, onChange) {
+            //    return function(newY, oldY) {
+            //        for (var name in frames) {
+            //            var frame = frames[name];
+            //            if (frame.frame.y == oldY) {
+            //                frame.frame.y = newY;
+            //            } else if (frame.frame.y + frame.frame.h == oldY) {
+            //                frame.frame.h = newY - frame.frame.y;
+            //            }
+            //        }
+            //        onChange();
+            //    };
+            //}
 
             return {
-                createGrid: function(frames, width, height, onChange) {
-                    var xs = [];
-                    var ys = [];
-
-                    function addX(x) {
-                        if (xs.indexOf(x) == -1) {
-                            xs.push(x);
-                        }
-                    }
-                    function addY(y) {
-                        if (ys.indexOf(y) == -1) {
-                            ys.push(y);
-                        }
-                    }
-
-                    for (var name in frames) {
-                        var frame = frames[name].frame;
-
-                        addX(frame.x);
-                        addX(frame.x + frame.w);
-                        addY(frame.y);
-                        addY(frame.y + frame.h);
-                    }
-
-                    xs.sort();
-                    ys.sort();
-
+                createGrid: function(grid, width, height) {
 
                     var container = new PIXI.Container();
-                    for (var i = 0; i < xs.length; i++) {
-                        var x = xs[i];
-                        container.addChild(createVerLine(x, height))
+                    for (var i = 0; i < grid.xs.length; i++) {
+                        var x = grid.xs[i];
+                        container.addChild(createVerLine(x, height, function(pos) {
+                            grid.xs[i] = Math.round(pos.x);
+                        }))
                     }
-                    for (var i = 0; i < ys.length; i++) {
-                        var y = ys[i];
-                        container.addChild(createHorLine(y, width, updateYAll(frames, onChange)))
-                    }
+                    Cols.eachEntry(grid.ys, function(i, y) {
+                        container.addChild(createHorLine(y, width, function(pos) {
+                            grid.ys[i] = Math.round(pos.y);
+                        }))
+                    });
                     return container;
                 }
             };
         })
 
-        .factory("SSE", function(SSESprites, SSEGridMode) {
+        .factory("SSERenderer", function(SSESprites, SSEGridMode) {
 
             function createBackground(color, width, height) {
                 var g = new PIXI.Graphics();
@@ -295,13 +298,13 @@
                     var onChangeData;
 
                     return {
-                        setData: function(data) {
+                        setGrid: function(grid) {
                             for (var i = editControlContainer.children.length - 1; i >= 0; i--) {
                                 editControlContainer.removeChild(editControlContainer.children[i]);
                             }
 
-                            if (data != null) {
-                                editControlContainer.addChild(SSEGridMode.createGrid(data.frames, width, height, function () {
+                            if (grid != null) {
+                                editControlContainer.addChild(SSEGridMode.createGrid(grid, width, height, function () {
                                     if (onChangeData) onChangeData();
                                 }));
                             }
@@ -311,6 +314,12 @@
                                 var texture = PIXI.Texture.fromImage(imageUrl);
                                 spriteSheet.texture = texture;
                             }
+                        },
+                        getSpriteSheetWidth: function() {
+                            return spriteSheet.width;
+                        },
+                        getSpriteSheetHeight: function() {
+                            return spriteSheet.height;
                         },
                         destroy: function() {
                             stopped = true;
