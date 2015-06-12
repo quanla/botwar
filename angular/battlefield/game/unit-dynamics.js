@@ -63,7 +63,7 @@
                                     return; // Immune to damage
                                 }
 
-                                if (types[unit.type].takeHit) {
+                                if (types[unit.type].takeHit && props.side != unit.side) {
 
                                     if (Distance.between(unit.position, props.position) < 15) {
                                         unit.hitpoint -= props.damage;

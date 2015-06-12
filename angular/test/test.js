@@ -20,6 +20,13 @@
             RenderersProvider.assetsLoc = "../../assets";
         })
 
-        .value("testTypes", ['footman','archer','peasant','grunt','zerling'])
+        .value("testTypes", [
+            'footman',
+            'archer',
+            'peasant',
+            'grunt',
+            //'zerling',
+            'knight'
+        ])
     ;
 })();

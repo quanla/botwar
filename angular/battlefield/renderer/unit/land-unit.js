@@ -107,7 +107,7 @@
 
                     };
 
-                    init();
+                    //init();
 
 
                     var aniSpeed = 10;

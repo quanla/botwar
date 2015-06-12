@@ -25,12 +25,17 @@
             $scope.view = {
                 //unitType: "archer"
                 //unitType: "peasant"
-                unitType: "grunt"
+                //unitType: "grunt"
+                unitType: "knight"
             };
             $scope.direction = 0;
             //$scope.direction = 2;
 
-            $scope.states = ["stand", "walk"];
+            $scope.states = [
+                "stand",
+                "fight"
+                //"walk"
+            ];
 
             $scope.postureEditor = {};
 
@@ -53,12 +58,12 @@
                         }
                     }
                     if (state == "fight") {
-                        for (var j = 0; j < ($scope.view.unitType=='grunt' ? 4 : $scope.view.unitType=='footman' ? 4 : $scope.view.unitType=='peasant' ? 5 : 2); j++) {
+                        for (var j = 0; j < ($scope.view.unitType=='peasant' ? 5 : $scope.view.unitType=='archer' ? 2 : 4); j++) {
                             frames.push($scope.view.unitType + "_fight" + j + "_" + $scope.direction + ".png");
                         }
                     }
                     if (state == "die") {
-                        for (var j = 0; j < 3; j++) {
+                        for (var j = 0; j < ($scope.view.unitType=='knight' ? 5 : 3); j++) {
                             var dir = Math.floor($scope.direction / 2) * 2 + 1;
                             frames.push($scope.view.unitType + "_die" + j + "_" + dir + ".png");
                         }

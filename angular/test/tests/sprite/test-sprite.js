@@ -23,11 +23,12 @@
             //$scope.unitType = "footman";
             $scope.spriteNames = [
                 ["footman", "footman"],
+                ["knight", "knight"],
                 ["zerling", "zerling_move"]
             ];
 
             $scope.view = {
-                spriteName: $scope.spriteNames[0]
+                spriteName: $scope.spriteNames[1]
                 //unitType: "peasant"
             };
 
