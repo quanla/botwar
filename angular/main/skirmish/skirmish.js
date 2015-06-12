@@ -73,11 +73,11 @@
                                     units: [
                                         {
                                             type: "footman",
-                                            count: 1
+                                            count: 2
                                         },
                                         {
                                             type: "archer",
-                                            count: 0
+                                            count: 1
                                         },
                                         {
                                             type: "knight",
@@ -91,11 +91,11 @@
                                     units: [
                                         {
                                             type: "footman",
-                                            count: 1
+                                            count: 2
                                         },
                                         {
                                             type: "archer",
-                                            count: 0
+                                            count: 1
                                         },
                                         {
                                             type: "knight",
