@@ -46,9 +46,6 @@
 
                             });
 
-                            $scope.$watch("options.skip", function(skip) {
-                                if (gameRunner) gameRunner.skip(skip);
-                            });
                             $scope.$watch("options.consume", function(consume) {
                                 if (gameRunner) gameRunner.consume(consume);
                             });

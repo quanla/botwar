@@ -60,22 +60,6 @@
 
             return {
                 newGameRunner: function(game, options, width, height) {
-                    var skip = options == null || options.skip == null ? 0 : options.skip;
-                    var consume = options == null || options.consume == null ? 1 : options.consume;
-                    var pause = options == null || options.pause == null ? 0 : options.pause;
-
-                    var skipped = 0;
-                    var skipper = function() {
-                        if (skip==0) return false;
-                        if (skipped < skip) {
-                            skipped++;
-                            return true;
-                        } else {
-                            skipped = 0;
-                        }
-                        return false;
-                    };
-
                     initGame(game, width, height);
 
                     function updateGameState(game, round) {
@@ -104,48 +88,43 @@
                         return winningSide;
                     }
 
-                    var round = 0;
+                    var sc = speedControl();
+                    if (options != null) {
+                        sc.consume(options.consume);
+                        sc.pause(options.pause);
+                    }
+
+                    sc.setAction(function(round) {
+                        // Decide to move, change state
+                        BotRunner.runBots(game, round);
+
+                        // Change velocity, position
+                        // action impacts
+                        UnitDynamics.applyDynamics(game, round);
+
+                        // Invoke listeners
+                        if (game.afterRoundDynamics) {
+                            game.afterRoundDynamics();
+                        }
+
+                        // Check battle finished
+                        updateGameState(game, round);
+                    });
+                    sc.eachRound(function(round) {
+                        gameRunner.updateUI(round);
+                    });
 
                     var gameRunner;
                     return gameRunner = {
                         updateUI: null,
                         onEachRound: function() {
-                            if (!skipper() && !pause) {
-                                for (var i = 0; i < consume; i++) {
-                                    // Decide to move, change state
-                                    BotRunner.runBots(game, round);
-
-                                    // Change velocity, position
-                                    // action impacts
-                                    UnitDynamics.applyDynamics(game, round);
-
-                                    // Invoke listeners
-                                    if (game.afterRoundDynamics) {
-                                        game.afterRoundDynamics();
-                                    }
-
-                                    // Check battle finished
-                                    updateGameState(game, round);
-
-                                    round++;
-                                }
-
-                                // Sprite update
-                                gameRunner.updateUI(round - 1);
-
-                            } else {
-                                // Sprite update
-                                gameRunner.updateUI(round);
-                            }
-                        },
-                        skip: function(skip1) {
-                            skip = skip1;
+                            sc.run();
                         },
                         consume: function(consume1) {
-                            consume = consume1 || 1;
+                            sc.consume(consume1);
                         },
                         pause: function(pause1) {
-                            pause = pause1;
+                            sc.pause(pause1);
                         }
                     };
                 }
@@ -179,4 +158,71 @@
 
     ;
 
+    function speedControl() {
+
+        var pause = false;
+        var consume = 1;
+
+        var round = -1;
+
+        var action;
+        var eachRound;
+
+        function speedCheck() {
+            var lastRound = null;
+            var lastRoundTime = null;
+
+            var frameDuration = 10;
+            return {
+                expectedRound: function() {
+                    if (lastRound == null) {
+                        return null;
+                    }
+
+                    var time = new Date().getTime();
+
+                    return lastRound + Math.floor((time - lastRoundTime) / frameDuration * consume);
+                },
+                remember: function(round) {
+                    lastRound = round;
+                    lastRoundTime = new Date().getTime();
+                }
+            };
+        }
+        var speedChecker = speedCheck();
+
+        return {
+            setAction: function(action1) {
+                action = action1;
+            },
+            eachRound: function(eachRound1) {
+                eachRound = eachRound1;
+            },
+            run: function() {
+                if (pause) {
+                    eachRound(round);
+                } else {
+
+                    var expectedRound = speedChecker.expectedRound() || round+1;
+                    for (; round < expectedRound;) {
+                        round++;
+                        action(round);
+
+                        if (round == expectedRound) {
+                            speedChecker.remember(round);
+                        }
+                    }
+
+                    eachRound(round);
+
+                }
+            },
+            consume: function(consume1) {
+                consume = consume1 || 1;
+            },
+            pause: function(pause1) {
+                pause = pause1;
+            }
+        };
+    }
 })();
