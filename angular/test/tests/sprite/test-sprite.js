@@ -137,10 +137,14 @@
                     var y = grid.ys[i];
                     var h = grid.ys[i + 1] - y;
 
+                    h = Math.floor(h / 2) * 2;
+
                     var lineName = $scope.lineNames[i];
                     for (var j = 0; j < grid.xs.length - 1; j++) {
                         var x = grid.xs[j];
                         var w = grid.xs[j + 1] - x;
+
+                        w = Math.floor(w / 2) * 2;
 
                         var frame = {x:x,y:y,w:w,h:h};
                         var name = unitType + "_" + lineName + "_" + j + ".png";

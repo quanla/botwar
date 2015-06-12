@@ -21,7 +21,7 @@
 
         <td>
             <div class="bot-row-hover">
-                <select class="text-capitalize" ng-options="ut for ut in ['footman', 'archer']" ng-model="unit.type"></select>
+                <div class="text-capitalize" ng-bind="::unit.type"></div>
             </div>
             <div class="bot-row-out text-capitalize" ng-bind="unit.type"></div>
         </td>

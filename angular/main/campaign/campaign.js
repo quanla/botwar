@@ -56,7 +56,7 @@
             };
 
             $scope.startGame = function() {
-                $scope.game = Campaign.setupGame($scope.mission, BotSource.createBot($scope.currentBot.code),
+                $scope.game = Campaign.setupGame($scope.mission, function(unitType) { return BotSource.createBot($scope.currentBot.code, unitType);},
                     function() {
                         $scope.$apply(function() {
                             $scope.failMessage = null;
@@ -76,8 +76,8 @@
                                         Mission1, Mission2, Mission3) {
 
             var bots = {};
-            var getBot = function(name) {
-                return BotSource.createBot(bots[name]);
+            var getBot = function(name, unitType) {
+                return BotSource.createBot(bots[name], unitType);
             };
 
             var missions = [
@@ -110,7 +110,7 @@
                                         type: "footman",
                                         position: {x: 100, y: 150},
                                         direction: (0) * Math.PI + Math.PI/2,
-                                        bot: userBot
+                                        bot: userBot ? userBot("footman") : null
                                     }
                                 ]
                             },
@@ -121,7 +121,7 @@
                                         type: "footman",
                                         position: {x: 100 + 300, y: 150},
                                         direction: (1) * Math.PI + Math.PI/2,
-                                        bot: userBot == null || battleSetup.redBot==null ? null : getBot(battleSetup.redBot),
+                                        bot: userBot == null || battleSetup.redBot==null ? null : getBot(battleSetup.redBot, "footman"),
                                         afterBotRun: battleSetup.afterRedBotRun
                                     }
                                 ]

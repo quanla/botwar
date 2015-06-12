@@ -36,6 +36,9 @@
                             var unit = side.units[j];
                             if (unit.bot && !isLocked(unit, round)) {
 
+                                if (unit.bot.run == null) {
+                                    throw "Wrong bot config: " + unit.bot + ", run function is missing";
+                                }
                                 var control = BotControl.createControl(unit, round, game);
 
                                 unit.bot.run(control);

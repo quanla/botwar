@@ -29,11 +29,11 @@
 
         .factory("BotSource", function() {
             return {
-                createBot: function(source) {
+                createBot: function(source, unitType) {
                     var allowLogging = true;
                     var botFunc = eval("(function() {" + (allowLogging ? "" : "var console=null;") + source + "\nreturn Bot;})()");
 
-                    var bot = new botFunc();
+                    var bot = new botFunc(unitType);
 
                     return bot;
                 }

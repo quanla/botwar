@@ -56,7 +56,7 @@
                 createCol(a++, $scope.view.unitType, "walk", 3);
                 createCol(a++, $scope.view.unitType, "fight", 0);
                 createCol(a++, $scope.view.unitType, "fight", 1);
-                if ($scope.view.unitType == "footman") {
+                if ($scope.view.unitType != "archer") {
                     createCol(a++, $scope.view.unitType, "fight", 2);
                     createCol(a++, $scope.view.unitType, "fight", 3);
                 }

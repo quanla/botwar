@@ -3,6 +3,7 @@
 (function () {
 
     angular.module('bw.main.create-challenge', [
+        'bw.unit-selector',
         'bw.main.challenge-api',
         'ui.router'
     ])
@@ -35,12 +36,28 @@
                 {
                     type: "footman",
                     count: 1
+                },
+                {
+                    type: "archer",
+                    count: 0
+                },
+                {
+                    type: "knight",
+                    count: 0
                 }
             ];
             $scope.oppoUnits = [
                 {
                     type: "footman",
                     count: 1
+                },
+                {
+                    type: "archer",
+                    count: 0
+                },
+                {
+                    type: "knight",
+                    count: 0
                 }
             ];
 
@@ -96,16 +113,16 @@
 
                     function addSide(sideNum, side, blueBot) {
                         var units = [];
-                        var positions = PositionGenerator.generatePositions(sideNum, side.units);
+                        var positions = PositionGenerator.generatePositions(sideNum, side.units, 500, 500);
                         for (var j = 0; j < side.units.length; j++) {
                             var unitConfig = side.units[j];
                             for (var k = 0; k < unitConfig.count; k++) {
                                 units.push({
                                     type: unitConfig.type,
-                                    position: positions(),
+                                    position: positions(unitConfig.type),
                                     direction: sideNum * Math.PI + Math.PI / 2,
-                                    bot: sideNum == 0 ? (!blueBot ? null : BotSource.createBot(blueBot.code)) :
-                                            side.bot == null || !blueBot ? null : BotSource.createBot(side.bot.code)
+                                    bot: sideNum == 0 ? (!blueBot ? null : BotSource.createBot(blueBot.code, unitConfig.type)) :
+                                            side.bot == null || !blueBot ? null : BotSource.createBot(side.bot.code, unitConfig.type)
                                 });
                             }
                         }
@@ -148,39 +165,6 @@
             $scope.cancel = $modalInstance.dismiss;
         })
 
-        .directive("unitsSelector", function() {
-            return {
-                restrict: "E",
-                scope: {
-                    "units": "="
-                },
-                templateUrl: "angular/main/challenge/create-challenge/units-selector.html",
-                link: function($scope, elem, attrs) {
-
-                    $scope.addUnit = function(unit) {
-                        if (unit.count >= 5) return;
-                        unit.count ++;
-                    };
-
-                    $scope.removeUnit = function(unit) {
-                        if (unit.count <= 1) return;
-                        unit.count --;
-                    };
-
-                }
-            };
-        })
-
-        .factory("PositionGenerator", function() {
-            return {
-                generatePositions: function(side, unitConfigs) {
-                    var i=0;
-                    return function() {
-                        return {x: side*300 + 100, y: 150 + (i++) * 50};
-                    }
-                }
-            };
-        })
     ;
 
 })();

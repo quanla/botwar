@@ -4,6 +4,7 @@
 
     angular.module('bw.main.skirmish', [
         'bw.main.ide',
+        'bw.unit-selector',
         'ui.router'
     ])
 
@@ -26,7 +27,7 @@
             $scope.showCodeEditor = false;
         })
 
-        .directive("bwSkirmishBattlefield", function(BotSource) {
+        .directive("bwSkirmishBattlefield", function(BotSource, PositionGenerator) {
             return {
                 restrict: "E",
                 templateUrl: "angular/main/skirmish/skirmish-battlefield.html",
@@ -38,15 +39,17 @@
                         for (var i = 0; i < $scope.sides.length; i++) {
                             var sideConfig = $scope.sides[i];
                             var units = [];
+                            var positions = PositionGenerator.generatePositions(i, sideConfig.units, 500, 500);
+
                             for (var j = 0; j < sideConfig.units.length; j++) {
                                 var unitConfig = sideConfig.units[j];
 
                                 for (var k = 0; k < unitConfig.count; k++) {
                                     units.push({
                                         type: unitConfig.type,
-                                        position: {x: (i) * 300 + 100, y: 150 + k * 50},
+                                        position: positions(unitConfig.type),
                                         direction: (i) * Math.PI + Math.PI/2,
-                                        bot: hasBot ? BotSource.createBot(unitConfig.bot.code) : null
+                                        bot: hasBot ? BotSource.createBot(sideConfig.bot.code, unitConfig.type) : null
                                     });
                                 }
                             }
@@ -60,7 +63,7 @@
                         };
                     }
 
-                    var awefwaef = $scope.$watch("bots[0].code", function(value) {
+                    var awefwaef = $scope.$watch("bots[0].code != null", function(value) {
                         if (value) {
                             awefwaef();
 
@@ -70,20 +73,36 @@
                                     units: [
                                         {
                                             type: "footman",
-                                            count: 1,
-                                            bot: $scope.bots[0]
+                                            count: 1
+                                        },
+                                        {
+                                            type: "archer",
+                                            count: 0
+                                        },
+                                        {
+                                            type: "knight",
+                                            count: 0
                                         }
-                                    ]
+                                    ],
+                                    bot: $scope.bots[0]
                                 },
                                 {
                                     color: "red",
                                     units: [
                                         {
                                             type: "footman",
-                                            count: 1,
-                                            bot: $scope.bots[0]
+                                            count: 1
+                                        },
+                                        {
+                                            type: "archer",
+                                            count: 0
+                                        },
+                                        {
+                                            type: "knight",
+                                            count: 0
                                         }
-                                    ]
+                                    ],
+                                    bot: $scope.bots[1]
                                 }
                             ];
 
