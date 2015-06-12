@@ -1,15 +1,12 @@
 function Bot() {
     this.run = function (control) {
-        var enemies = control.getEnemies();
-        if (Cols.isEmpty(enemies)) {
-            control.stand();  // Relax, no one around
-            return;
-        }
-
         // Find the nearest enemy
-        var nearestEnemy = Cols.findMin(enemies, function(enemy) {
-            return Distance.between(control.position, enemy.position);
-        });
+        var nearestEnemy = control.getNearestEnemy();
+
+        if (nearestEnemy == null) {
+            control.stand();
+            return; // Relax, no one is around
+        }
 
         // Check the distance
         if (Distance.between(control.position, nearestEnemy.position) < 50) {

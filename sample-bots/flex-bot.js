@@ -1,4 +1,6 @@
-function Bot() {
+function Bot(unitType) {
+    var startFightFrom = unitType == "archer" ? 200 : 40;
+
     this.run = function (control) {
         // Find the nearest enemy
         var nearestEnemy = control.getNearestEnemy();
@@ -9,15 +11,13 @@ function Bot() {
         }
 
         // Turn face toward enemy
-        var predictPosition = control.predictPosition(nearestEnemy, 40);
+        control.setDirection(nearestEnemy.position);
 
-        if (Distance.between(control.position, predictPosition) > 200) {
+        if (Distance.between(control.position, nearestEnemy.position) > startFightFrom) {
             // Check the distance, if too far then go forward
-            control.setDirection(nearestEnemy.position);
             control.goForward();
         } else {
             // Check the distance, if close enough then fight
-            control.setDirection(predictPosition);
             control.fight();
         }
     };

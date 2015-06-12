@@ -16,7 +16,7 @@
                 link: function($scope, elem, attrs) {
 
                     $scope.addUnit = function(unit) {
-                        if (unit.count >= 5) return;
+                        if (unit.count >= (unit.type == "knight" ? 4 : 5)) return;
                         unit.count ++;
                     };
 
