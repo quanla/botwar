@@ -13,11 +13,11 @@ function Bot() {
 
         if (Distance.between(control.position, predictPosition) > 200) {
             // Check the distance, if too far then go forward
-            control.setDirection(nearestEnemy.position);
+            control.turnToward(nearestEnemy.position);
             control.goForward();
         } else {
             // Check the distance, if close enough then fight
-            control.setDirection(predictPosition);
+            control.turnToward(predictPosition);
             control.fight();
         }
     };

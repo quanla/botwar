@@ -47,6 +47,11 @@
                                     unit.afterBotRun(unit);
                                 }
 
+                                if (Math.abs(control.direction - unit.direction) > Math.PI/30) {
+                                    console.log("Blocked");
+                                    unit.botBlockedUtil = unit.botBlockedUtil == null ? round + 10 : Math.max(unit.botBlockedUtil, round + 10);
+                                }
+                                //Math.PI/30
                                 unit.direction = control.direction;
                             }
                         }

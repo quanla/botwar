@@ -8,7 +8,7 @@ function Bot() {
         }
 
         // Turn face toward enemy
-        control.setDirection(nearestEnemy.position);
+        control.turnToward(nearestEnemy.position);
 
         if (Distance.between(control.position, nearestEnemy.position) > 40) {
             // Check the distance, if too far then go forward

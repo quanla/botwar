@@ -9,7 +9,7 @@ function Bot() {
         }
 
         // Turn face toward enemy
-        control.setDirection(nearestEnemy.position);
+        control.turnToward(nearestEnemy.position);
 
         // Check the distance
         if (Distance.between(control.position, nearestEnemy.position) < 70) {

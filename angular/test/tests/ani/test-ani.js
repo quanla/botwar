@@ -54,7 +54,7 @@
             $scope.testRotate = function() {
                 var rotateBot = {
                     run: function (control) {
-                        direction += 0.03;
+                        direction += Math.PI/2;
                         control.direction = direction;
                     }
                 };

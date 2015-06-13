@@ -61,7 +61,7 @@
                             color: "red",
                             units: [
                                 {
-                                    type: "footman",
+                                    type: "grunt",
                                     position: {x: 300, y: 150},
                                     direction: Math.PI,
                                     bot: fightBot
@@ -104,7 +104,7 @@
                             color: "red",
                             units: [
                                 {
-                                    type: "footman",
+                                    type: "grunt",
                                     position: {x: 300, y: 150},
                                     direction: Math.PI,
                                     bot: $scope.runBot
@@ -153,7 +153,7 @@
                             color: "red",
                             units: [
                                 {
-                                    type: "footman",
+                                    type: "grunt",
                                     position: {x: 300, y: 150},
                                     direction: Math.PI,
                                     bot: $scope.veteranBot

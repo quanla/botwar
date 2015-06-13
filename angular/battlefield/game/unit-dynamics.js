@@ -24,7 +24,7 @@
                                 }
 
                                 if (types[unit.type].takeHit) {
-                                    if (Distance.between(unit.position, props.position) < 15) {
+                                    if (Distance.between(unit.position, props.position) < 16) {
                                         unit.hitpoint -= props.damage;
                                         unit.isHit = {since: round};
 
@@ -130,7 +130,9 @@
                                 var positions = [
                                     Dynamics.applyVelocity(unit.velocity, unit.position),
                                     Dynamics.applyVelocity({value: unit.velocity.value, direction: unit.velocity.direction - 3*Math.PI/8}, unit.position),
-                                    Dynamics.applyVelocity({value: unit.velocity.value, direction: unit.velocity.direction + 3*Math.PI/8}, unit.position)
+                                    Dynamics.applyVelocity({value: unit.velocity.value, direction: unit.velocity.direction + 3*Math.PI/8}, unit.position),
+                                    Dynamics.applyVelocity({value: unit.velocity.value, direction: unit.velocity.direction -   Math.PI/2}, unit.position),
+                                    Dynamics.applyVelocity({value: unit.velocity.value, direction: unit.velocity.direction +   Math.PI/2}, unit.position)
                                 ];
                                 impact("makeWay", {
                                     positions: positions,
@@ -155,7 +157,7 @@
                                     impact("hit", {
                                         position: Vectors.addPos(unit.position, Vectors.vectorPos({
                                             direction: unit.direction,
-                                            value: 30
+                                            value: 45
                                         })),
                                         source: unit,
                                         damage: fightingStyle.damage

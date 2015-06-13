@@ -62,10 +62,6 @@
                             var vector = ObjectUtil.clone(unit.velocity);
                             vector.value *= roundCount;
 
-                            console.log("Vector=" + JSON.stringify(vector));
-                            console.log("unit.position=" + JSON.stringify(unit.position));
-                            console.log("addPos=" + JSON.stringify(Vectors.addPos(unit.position, Vectors.vectorPos(vector))));
-                            //Vectors.addPos(unit.position, Vectors.vectorPos(vector))
                             return Vectors.addPos(unit.position, Vectors.vectorPos(vector));
                         }
                     };
@@ -76,6 +72,12 @@
                         round: round,
                         position: ObjectUtil.clone(unit.position),
                         direction: unit.direction,
+                        turnToward: function(pos) {
+                            this.direction = Vectors.toVector( Vectors.subtractPos(pos, unit.position)).direction;
+                        },
+                        turnAway: function(pos) {
+                            this.direction = Vectors.toVector( Vectors.subtractPos(unit.position, pos)).direction;
+                        },
                         goForward: function() {
                             unit.botBlockedUtil = round + 10;
                             if (unit.state != null && unit.state.name == "walk") {
@@ -100,8 +102,9 @@
                             unit.botBlockedUtil = null;
                             unit.moveAccel = 0;
                         },
+                        // Deprecated
                         setDirection: function(pos) {
-                            this.direction = Vectors.toVector( Vectors.subtractPos(pos, unit.position)).direction;
+                            this.turnToward(pos);
                         },
 
                         getEnemies: traverse.getEnemies,

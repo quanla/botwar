@@ -161,7 +161,7 @@
     function speedControl() {
 
         var pause = false;
-        var consume = 1;
+        var multiply = 1;
 
         var round = -1;
 
@@ -172,7 +172,7 @@
             var lastRound = null;
             var lastRoundTime = null;
 
-            var frameDuration = 10;
+            var roundDuration = 10;
             return {
                 expectedRound: function() {
                     if (lastRound == null) {
@@ -181,7 +181,7 @@
 
                     var time = new Date().getTime();
 
-                    return lastRound + Math.floor((time - lastRoundTime) / frameDuration * consume);
+                    return lastRound + Math.floor((time - lastRoundTime) / roundDuration * multiply);
                 },
                 remember: function(round) {
                     lastRound = round;
@@ -218,7 +218,7 @@
                 }
             },
             consume: function(consume1) {
-                consume = consume1 || 1;
+                multiply = consume1 || 1;
             },
             pause: function(pause1) {
                 pause = pause1;

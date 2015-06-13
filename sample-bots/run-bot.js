@@ -13,7 +13,7 @@ function Bot() {
             // Too near, should run
 
             // Turn face away from enemy
-            control.direction = Vectors.toVector( Vectors.subtractPos(control.position, nearestEnemy.position)).direction;
+            control.turnAway(nearestEnemy.position);
 
             // Randomize the direction a little bit
             control.direction += (Math.PI/4 * Math.random() - Math.PI/8);
@@ -22,7 +22,7 @@ function Bot() {
             control.goForward();
         } else {
             // Still quite far, stand and see
-            control.setDirection(nearestEnemy.position);
+            control.turnToward(nearestEnemy.position);
             control.stand();
         }
     };
