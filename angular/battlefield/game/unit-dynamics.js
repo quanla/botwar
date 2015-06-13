@@ -39,21 +39,32 @@
                                 }
                             });
                         } else if (type == "makeWay") {
-                            var blocking = GameUtil.eachUnit(game, function(unit) {
-                                if (unit == props.source) {
-                                    return;
-                                }
-                                var unitPhysics = UnitPhysics.getUnitPhysics(unit);
-                                if (unitPhysics.needWay) {
-                                    if (Distance.between(unit.position, props.position) < 20) {
-                                        return true;
+                            var findPosition = function() {
+                                for (var i = 0; i < props.positions.length; i++) {
+                                    var position = props.positions[i];
+                                    var blocked = GameUtil.eachUnit(game, function(unit) {
+                                        if (unit == props.source) {
+                                            return;
+                                        }
+                                        var unitPhysics = UnitPhysics.getUnitPhysics(unit);
+                                        if (unitPhysics.needWay) {
+                                            if (Distance.between(unit.position, position) < 20) {
+                                                return true;
+                                            }
+                                        }
+                                    });
+                                    if (!blocked) {
+                                        return position;
                                     }
                                 }
-                            });
+                            };
+
+                            var newPosition = findPosition();
+
                             return {
                                 then: function(todo) {
-                                    if (!blocking) {
-                                        todo();
+                                    if (newPosition != null) {
+                                        todo(newPosition);
                                     }
                                 }
                             };
@@ -114,17 +125,21 @@
                         unit.velocity = Dynamics.applyAccel(unit.moveAccel, unit.direction, unit.velocity, unitPhysics);
 
                         if (unit.velocity != null && unit.velocity.value > 0) {
-                            var newPosition = Dynamics.applyVelocity(unit.velocity, unit.position);
 
                             if (unitPhysics.needWay) {
+                                var positions = [
+                                    Dynamics.applyVelocity(unit.velocity, unit.position),
+                                    Dynamics.applyVelocity({value: unit.velocity.value, direction: unit.velocity.direction - 3*Math.PI/8}, unit.position),
+                                    Dynamics.applyVelocity({value: unit.velocity.value, direction: unit.velocity.direction + 3*Math.PI/8}, unit.position)
+                                ];
                                 impact("makeWay", {
-                                    position: newPosition,
+                                    positions: positions,
                                     source: unit
-                                }).then(function() {
+                                }).then(function(newPosition) {
                                     unit.position = newPosition;
                                 });
                             } else {
-                                unit.position = newPosition;
+                                unit.position = Dynamics.applyVelocity(unit.velocity, unit.position);
                             }
                         }
 
