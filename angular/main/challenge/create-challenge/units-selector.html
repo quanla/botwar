@@ -6,7 +6,8 @@
     </colgroup>
     <tr class="bot-row" ng-repeat="unit in units">
 
-        <td class="text-right" ng-bind="unit.count">
+        <td>
+            <div class="text-capitalize" ng-bind="::unit.type"></div>
         </td>
 
         <td class="text-center">
@@ -19,11 +20,7 @@
             </div>
         </td>
 
-        <td>
-            <div class="bot-row-hover">
-                <div class="text-capitalize" ng-bind="::unit.type"></div>
-            </div>
-            <div class="bot-row-out text-capitalize" ng-bind="unit.type"></div>
+        <td class="text-right" ng-bind="unit.count">
         </td>
     </tr>
 </table>
