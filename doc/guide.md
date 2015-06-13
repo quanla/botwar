@@ -32,9 +32,11 @@ Here are functions and attributes of the control object:
  - `control.goForward()`: Command the unit to go forward in the current direction.
  - `control.fight()`: Command the unit to initiate a fight action.
  - `control.stand()`: Command the unit to stand, this will cancel the `goForward` action.
- - `control.getEnemies()`: Return the collection of all enemies in the battle field.
+ - `control.getEnemies()`: Return the list of all enemies in the battle field.
  - `control.getNearestEnemy()`: Return nearest enemy to the unit's current position.
- - 
+ - `control.getFriends()`: Return the list of all friends in the battle field.
+ - `control.predictPosition(unit, roundNum)`: Predict the position of unit after `roundNum` number of rounds. Prediction is based on unit's current position and current velocity.
+ 
 
 ### Robot blocking
 

@@ -55,12 +55,12 @@
                     };
 
                     var predict = {
-                        predictPosition: function(unit, roundCount) {
+                        predictPosition: function(unit, roundNum) {
                             if (unit.velocity==null) {
                                 return ObjectUtil.clone(unit.position);
                             }
                             var vector = ObjectUtil.clone(unit.velocity);
-                            vector.value *= roundCount;
+                            vector.value *= roundNum;
 
                             return Vectors.addPos(unit.position, Vectors.vectorPos(vector));
                         }
