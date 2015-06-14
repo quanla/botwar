@@ -24,7 +24,7 @@
                 },
                 battleSetup: function() {
                     var countHit = 0;
-
+                    var initPos = null;
                     var setup;
                     return setup = {
                         redBot: "fight",
@@ -32,7 +32,7 @@
 
                             var blue = game.sides[0].units[0];
 
-                            if (Distance.between(blue.position, {x: 100, y: 150}) > 100) {
+                            if (Distance.between(blue.position, initPos) > 100) {
                                 return {
                                     h2: "You moved too far",
                                     p: "Don't move too much, running away won't earn you any respect."
@@ -58,7 +58,9 @@
 
                             var blue = setup.game.sides[0].units[0];
 
-                            if (Distance.between(blue.position, {x: 100, y: 150}) > 100) {
+                            if (initPos == null) {
+                                initPos = ObjectUtil.clone(blue.position);
+                            } else if (Distance.between(blue.position, initPos) > 100) {
                                 setup.game.finish();
                             }
 

@@ -56,7 +56,7 @@
             };
 
             $scope.startGame = function() {
-                $scope.game = Campaign.setupGame($scope.mission, function(unitType) { return BotSource.createBot($scope.currentBot.code, unitType);},
+                $scope.game = Campaign.setupGame($scope.mission, $scope.currentBot,
                     function() {
                         $scope.$apply(function() {
                             $scope.failMessage = null;
@@ -72,13 +72,10 @@
             };
         })
 
-        .factory("Campaign", function(SampleBot, BotSource,
+        .factory("Campaign", function(SampleBot, BotSource, BattleSetup,
                                         Mission1, Mission2, Mission3) {
 
             var bots = {};
-            var getBot = function(name, unitType) {
-                return BotSource.createBot(bots[name], unitType);
-            };
 
             var missions = [
                 Mission1,
@@ -93,48 +90,48 @@
                 missions: missions,
                 setupGame: function(mission, userBot, onFinish, onFail) {
 
-                    var battleSetup = {};
+                    var missionSetup = {};
                     if (mission.battleSetup) {
-                        battleSetup = mission.battleSetup();
-                        SampleBot.loadBot(battleSetup.redBot, function(source) {
-                            bots[battleSetup.redBot] = source;
+                        missionSetup = mission.battleSetup();
+                        SampleBot.loadBot(missionSetup.redBot, function(source) {
+                            bots[missionSetup.redBot] = {code: source};
                         });
                     }
 
-                    var game = {
+                    var game = BattleSetup.createGame({
                         sides: [
                             {
                                 color: "blue",
                                 units: [
                                     {
                                         type: "footman",
-                                        position: {x: 100, y: 150},
-                                        direction: (0) * Math.PI + Math.PI/2,
-                                        bot: userBot ? userBot("footman") : null
+                                        count: 1
                                     }
-                                ]
+                                ],
+                                bot: userBot
                             },
                             {
                                 color: "red",
                                 units: [
                                     {
                                         type: "footman",
-                                        position: {x: 100 + 300, y: 150},
-                                        direction: (1) * Math.PI + Math.PI/2,
-                                        bot: userBot == null || battleSetup.redBot==null ? null : getBot(battleSetup.redBot, "footman"),
-                                        afterBotRun: battleSetup.afterRedBotRun
+                                        count: 1,
+                                        afterBotRun: missionSetup.afterRedBotRun
                                     }
-                                ]
+                                ],
+                                bot: userBot == null || missionSetup.redBot==null ? null : bots[missionSetup.redBot]
                             }
                         ],
-                        afterRoundDynamics: battleSetup.afterRoundDynamics,
+                        width: 500,
+                        height: 500,
+                        afterRoundDynamics: missionSetup.afterRoundDynamics,
                         onFinish: function() {
 
                             //onFail
-                            if (battleSetup.checkFinish == null) {
+                            if (missionSetup.checkFinish == null) {
                                 onFinish();
                             } else {
-                                var checkFinish = battleSetup.checkFinish(game);
+                                var checkFinish = missionSetup.checkFinish(game);
                                 if (checkFinish) {
                                     onFail(checkFinish);
                                 } else {
@@ -142,9 +139,9 @@
                                 }
                             }
                         }
-                    };
+                    });
 
-                    battleSetup.game = game;
+                    missionSetup.game = game;
 
                     return game;
                 }

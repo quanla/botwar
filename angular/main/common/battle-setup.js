@@ -23,7 +23,8 @@
                                     type: unitConfig.type,
                                     position: positions(unitConfig.type),
                                     direction: sideNum * Math.PI + Math.PI / 2,
-                                    bot: bot
+                                    bot: bot,
+                                    afterBotRun: unitConfig.afterBotRun
                                 });
                             }
                         }
@@ -37,14 +38,20 @@
                     addSide(1, battleSetup.sides[1]);
 
                     var game = {
-                        sides: sides
+                        sides: sides,
+                        battlefield: {
+                            width: battleSetup.width, height: battleSetup.height
+                        }
                     };
 
-                    if (battleSetup.continuous) {
+                    if (battleSetup.afterRoundDynamics) {
+                        game.afterRoundDynamics = battleSetup.afterRoundDynamics;
+                    } else if (battleSetup.continuous) {
                         game.afterRoundDynamics = function(round) {
                             ContinuousSupport.checkEachRound(game, battleSetup, defaultBot, round, BotSource);
                         };
                     }
+                    game.onFinish = battleSetup.onFinish;
 
                     return game;
                 }

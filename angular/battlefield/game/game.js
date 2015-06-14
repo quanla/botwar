@@ -27,8 +27,8 @@
         .factory("GameRunner", function(BotRunner, UnitDynamics, GameUtil, UnitUtil, GameSetup) {
 
             return {
-                newGameRunner: function(game, options, width, height) {
-                    initGame(game, width, height, GameSetup);
+                newGameRunner: function(game, options) {
+                    initGame(game, GameSetup);
 
                     function updateGameState(game, round) {
                         if (game.isFinished) return;
@@ -134,16 +134,10 @@
 
     ;
 
-    function initGame(game, width, height, GameSetup) {
+    function initGame(game, GameSetup) {
         // Fill missing values
         if (game.nature == null) {
             game.nature = [];
-        }
-
-        if (game.battlefield == null) {
-            game.battlefield = {
-                width: width, height: height
-            };
         }
 
         game.finish = function() {

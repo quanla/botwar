@@ -142,10 +142,9 @@
                     getAssetsLoc: function() {
                         return renderers.assetsLoc;
                     },
-                    createRenderer: function(holder, width, height) {
+                    createRenderer: function(width, height) {
 
                         var renderer = PIXI.autoDetectRenderer(width || 800, height || 600, { antialias: false });
-                        holder.appendChild(renderer.view);
 
                         // create the root of the scene graph
                         var stage = new PIXI.Container();
@@ -180,9 +179,6 @@
                         requestAnimationFrame( animate );
 
                         return {
-                            load: function(onLoad1) {
-                                onLoad1();
-                            },
                             unitStage: unitStage,
                             dirtStage: dirtStage,
                             onEachRound: function(onEachRound1) {
@@ -190,7 +186,14 @@
                             },
                             destroy: function() {
                                 stopped = true;
-                            }
+                            },
+                            setWidth: function(width) {
+                                renderer.view.style.width = width + 'px';
+                            },
+                            setHeight: function(height) {
+                                renderer.view.style.height = height + 'px';
+                            },
+                            view: renderer.view
                         };
                     }
                 };

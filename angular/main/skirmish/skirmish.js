@@ -75,7 +75,9 @@
                                             ],
                                             bot: $scope.bots[1]
                                         }
-                                    ]
+                                    ],
+                                    width: 500,
+                                    height: 500
                                 };
 
                                 $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
@@ -85,9 +87,6 @@
 
 
                     $scope.startGame = function() {
-                        //console.log($scope.battleSetup.continuous);
-                        $scope.battleSetup.width = 500;
-                        $scope.battleSetup.height = 500;
                         $scope.game = BattleSetup.createGame($scope.battleSetup, null, true);
                     };
 
