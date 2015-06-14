@@ -25,42 +25,10 @@
         })
 
         .factory("GameRunner", function(BotRunner, UnitDynamics, GameUtil, UnitUtil, GameSetup) {
-            function initGame(game, width, height) {
-                // Fill missing values
-                if (game.nature == null) {
-                    game.nature = [];
-                }
-
-                if (game.battlefield == null) {
-                    game.battlefield = {
-                        width: width, height: height
-                    };
-                }
-
-                game.finish = function() {
-                    if (game.isFinished) return;
-
-                    game.isFinished = true;
-                    if (game.onFinish) {
-                        game.onFinish();
-                    }
-                };
-
-                for (var i = 0; i < game.sides.length; i++) {
-                    var side = game.sides[i];
-                    for (var j = 0; j < side.units.length; j++) {
-                        var unit = side.units[j];
-                        if (unit.hitpoint == null) {
-                            unit.hitpoint = GameSetup.getDefaultHitpoint(unit.type);
-                        }
-                        unit.side = side;
-                    }
-                }
-            }
 
             return {
                 newGameRunner: function(game, options, width, height) {
-                    initGame(game, width, height);
+                    initGame(game, width, height, GameSetup);
 
                     function updateGameState(game, round) {
                         if (game.isFinished) return;
@@ -152,11 +120,67 @@
                         }
                     }
                     return false;
+                },
+                getEnemies: function(unit) {
+                    var total = [];
+                    for (var i = 0; i < unit.side.enemies.length; i++) {
+                        var enemySide = unit.side.enemies[i];
+                        Cols.addAll(enemySide.units, total);
+                    }
+                    return total;
                 }
             };
         })
 
     ;
+
+    function initGame(game, width, height, GameSetup) {
+        // Fill missing values
+        if (game.nature == null) {
+            game.nature = [];
+        }
+
+        if (game.battlefield == null) {
+            game.battlefield = {
+                width: width, height: height
+            };
+        }
+
+        game.finish = function() {
+            if (game.isFinished) return;
+
+            game.isFinished = true;
+            if (game.onFinish) {
+                game.onFinish();
+            }
+        };
+
+        // Init sides
+        for (var i = 0; i < game.sides.length; i++) {
+            var side = game.sides[i];
+
+            var enemies = [];
+            for (var j = 0; j < game.sides.length; j++) {
+                if (i == j) continue;
+                var otherSide = game.sides[j];
+                enemies.push(otherSide);
+            }
+            side.enemies = enemies;
+        }
+
+
+        // Init units
+        for (var i = 0; i < game.sides.length; i++) {
+            var side = game.sides[i];
+            for (var j = 0; j < side.units.length; j++) {
+                var unit = side.units[j];
+                if (unit.hitpoint == null) {
+                    unit.hitpoint = GameSetup.getDefaultHitpoint(unit.type);
+                }
+                unit.side = side;
+            }
+        }
+    }
 
     function speedControl() {
 

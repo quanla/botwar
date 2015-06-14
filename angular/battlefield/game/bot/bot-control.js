@@ -5,7 +5,7 @@
     angular.module('bw.battlefield.game.bot.bot-control', [
     ])
 
-        .factory("BotControl", function(UnitUtil) {
+        .factory("BotControl", function(UnitUtil, GameUtil) {
             function info(unit) {
                 return unit== null ? null : {
                     type: unit.type,
@@ -23,16 +23,7 @@
 
                     var traverse = {
                         getEnemies: function() {
-                            var total = [];
-                            for (var i = 0; i < game.sides.length; i++) {
-                                var side1 = game.sides[i];
-                                if (side1 !== unit.side) {
-                                    // Enemy side
-                                    var alives = Cols.yield(side1.units, Fs.chain(UnitUtil.alive, info));
-                                    Cols.addAll(alives, total);
-                                }
-                            }
-                            return total;
+                            return Cols.yield(GameUtil.getEnemies(unit), Fs.chain(UnitUtil.alive, info));
                         },
                         getFriends: function() {
                             var notSelf = function (unit1) {

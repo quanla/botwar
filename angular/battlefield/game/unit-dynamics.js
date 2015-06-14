@@ -47,17 +47,17 @@
                                     }
                                 }
 
-                                var adjustingEnemies = [];
-                                GameUtil.eachUnit(game, function(unit) {
-                                    if (unit.state != null && unit.state.name == "die" ) {
-                                        return; // Immune to damage
+                                var adjustantEnemies = Cols.filter(GameUtil.getEnemies(props.source), function(enemy) {
+                                    if (enemy.state != null && enemy.state.name == "die" ) {
+                                        return false; // Immune to damage
                                     }
 
-                                    if (types[unit.type].takeHit && unit.side != props.source.side && Distance.between(props.start, unit.position) < props.vector.value + 20) {
-                                        adjustingEnemies.push(unit);
+                                    if (types[enemy.type].takeHit && enemy.side != props.source.side && Distance.between(props.start, enemy.position) < props.vector.value + 20) {
+                                        return true;
                                     }
                                 });
-                                var canHit = Cols.filter(adjustingEnemies, function(enemy) { return Cal.isHit(props.start, props.vector, enemy.position, 20);});
+
+                                var canHit = Cols.filter(adjustantEnemies, function(enemy) { return Cal.isHit(props.start, props.vector, enemy.position, 20);});
                                 var enemy = Cols.findMin(canHit, function(enemy) { return Distance.between(props.start, enemy.position); });
 
                                 if (enemy != null) {
