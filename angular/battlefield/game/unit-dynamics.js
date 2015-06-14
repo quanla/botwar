@@ -203,7 +203,7 @@
                                     unit.state = null;
                                 }
                             } else if (unit.state.name == "die") {
-                                if (round - unit.state.since > 2000) {
+                                if (round - unit.state.since > 500) {
                                     Cols.remove(unit, unit.side.units);
                                 }
                             }

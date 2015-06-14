@@ -7,12 +7,6 @@
 
         .factory("UnitSprites", function(UnitRender) {
             function isAbove(u1, u2) {
-                if (u1.state != null && u1.state.name == "die") {
-                    return false;
-                } if (u2.state != null && u2.state.name == "die") {
-                    return true;
-                }
-
                 return u1.position.y > u2.position.y;
             }
 
@@ -23,7 +17,7 @@
                         inited = true;
                     }
                 },
-                createUnitSprites: function(game, stage) {
+                createUnitSprites: function(game, unitStage, dirtStage) {
                     var orderCache = [];
 
                     function checkOrder() {
@@ -36,7 +30,7 @@
                                 orderCache[i] = unitSprites2;
                                 orderCache[i + 1] = unitSprites1;
 
-                                stage.swapChildren(unitSprites1.container, unitSprites2.container);
+                                unitStage.swapChildren(unitSprites1.container, unitSprites2.container);
                             }
 
                         }
@@ -47,13 +41,17 @@
                             function (unit) {
                                 var unitSprites = UnitRender.createUnitSprites(unit);
 
-                                stage.addChild(unitSprites.container);
+                                unitStage.addChild(unitSprites.container);
                                 orderCache.push(unitSprites);
                                 return unitSprites;
                             },
                             function (unitSprites) {
-                                Cols.remove(unitSprites,orderCache);
-                                stage.removeChild(unitSprites.container);
+                                if (unitSprites.inDirtLayer) {
+                                    dirtStage.removeChild(unitSprites.container);
+                                } else {
+                                    Cols.remove(unitSprites,orderCache);
+                                    unitStage.removeChild(unitSprites.container);
+                                }
                             }
                         )
                     }
@@ -103,6 +101,19 @@
                             eachSprite(function (unit, unitSprites) {
                                 // Change appearance, location
                                 unitSprites.sync(round);
+
+                                if (unitSprites.inDirtLayer == null && unitSprites.isDirt()) {
+                                    unitSprites.inDirtLayer = true;
+
+                                    unitStage.removeChild(unitSprites.container);
+                                    dirtStage.addChild(unitSprites.container);
+
+                                    Cols.remove(unitSprites, orderCache);
+                                    //if (dirtStage.children.length > 20) {
+                                    //    dirtStage.removeChildAt(0);
+                                    //}
+                                    //console.log(unitStage.children.length);
+                                }
                             });
 
                             // Change display order
@@ -142,10 +153,13 @@
 
                         addBackground(stage, renderer);
 
+                        var dirtStage = new PIXI.Container();
+                        dirtStage.position.set(30, 30);
+                        //dirtStage.tint = 0x111AA1;
+                        stage.addChild(dirtStage);
+
                         var unitStage = new PIXI.Container();
                         unitStage.position.set(30, 30);
-                        //unitStage.position.x = 30;
-                        //unitStage.position.y = 30;
                         stage.addChild(unitStage);
 
                         var stopped = false;
@@ -170,6 +184,7 @@
                                 onLoad1();
                             },
                             unitStage: unitStage,
+                            dirtStage: dirtStage,
                             onEachRound: function(onEachRound1) {
                                 onEachRound = onEachRound1;
                             },

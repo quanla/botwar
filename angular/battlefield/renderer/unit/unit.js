@@ -20,6 +20,9 @@
                     createUnitSprites: function(unit) {
                         var unitSprites = types[unit.type].createUnitSprites(unit);
                         unitSprites.unit = unit;
+                        unitSprites.isDirt = function() {
+                            return unit.state != null && unit.state.name == "die";
+                        };
                         return unitSprites;
                     }
                 };

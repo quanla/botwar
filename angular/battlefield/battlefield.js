@@ -36,7 +36,7 @@
                                 if (game != null) {
                                     gameRunner = GameRunner.newGameRunner(game, $scope.options, attrs.width - 60, attrs.height - 60);
 
-                                    unitSprites = UnitSprites.createUnitSprites(game, renderer.unitStage);
+                                    unitSprites = UnitSprites.createUnitSprites(game, renderer.unitStage, renderer.dirtStage);
 
                                     gameRunner.updateUI = unitSprites.updateSprites;
                                     renderer.onEachRound(gameRunner.onEachRound);

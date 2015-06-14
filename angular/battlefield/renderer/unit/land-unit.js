@@ -181,10 +181,12 @@
                                             stateNum = getFightStateNum(stateAge, fightConfig);
                                         } else if (state.name == "die") {
                                             stateNum = Math.min(stateAge, 2);
-                                            if (stateAge > 100) {
-                                                eachBody(function(body) {
-                                                    body.alpha = 1 - Math.min((stateAge - 100) / 100, 1)
-                                                });
+                                            if (stateAge > 20) {
+                                                container.alpha = 1 - Math.min((stateAge - 20) / 30, 1);
+                                                //eachBody(function(body) {
+                                                //    body.alpha = 1 - Math.min((stateAge - 20) / 30, 1)
+                                                //});
+                                                //return;
                                             }
                                         }
                                     }
