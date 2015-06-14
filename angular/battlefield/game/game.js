@@ -72,7 +72,7 @@
 
                         // Invoke listeners
                         if (game.afterRoundDynamics) {
-                            game.afterRoundDynamics();
+                            game.afterRoundDynamics(round);
                         }
 
                         // Check battle finished
@@ -210,6 +210,10 @@
                 remember: function(round) {
                     lastRound = round;
                     lastRoundTime = new Date().getTime();
+                },
+                clear: function() {
+                    lastRound = null;
+                    lastRoundTime = null;
                 }
             };
         }
@@ -225,6 +229,7 @@
             run: function() {
                 if (pause) {
                     eachRound(round);
+                    speedChecker.clear();
                 } else {
 
                     var expectedRound = speedChecker.expectedRound() || round+1;

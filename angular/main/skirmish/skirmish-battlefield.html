@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-lg-3">
 
-        <div class="panel" ng-repeat="side in sides" ng-class="side.color == 'blue' ? 'panel-primary' : 'panel-danger'">
+        <div class="panel" ng-repeat="side in battleSetup.sides" ng-class="side.color == 'blue' ? 'panel-primary' : 'panel-danger'">
             <div class="panel-heading text-capitalize" ng-bind="::side.color + ' side'">
             </div>
 
@@ -15,6 +15,9 @@
             </div>
         </div>
 
+        <label>
+            <input type="checkbox" ng-model="battleSetup.continuous"> Fight continuously
+        </label>
     </div>
     <div class="col-lg-9 text-center">
         <div width="560" height="560" battlefield="game" options="options"></div>

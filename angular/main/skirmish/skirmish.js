@@ -27,104 +27,78 @@
             $scope.showCodeEditor = false;
         })
 
-        .directive("bwSkirmishBattlefield", function(BotSource, PositionGenerator, SkirmishStorage) {
+        .directive("bwSkirmishBattlefield", function(BotSource, PositionGenerator, SkirmishStorage, BattleSetup) {
             return {
                 restrict: "E",
                 templateUrl: "angular/main/skirmish/skirmish-battlefield.html",
                 link: function($scope, elem, attrs) {
-
-                    function createGame(hasBot) {
-                        var sides = [];
-
-                        for (var i = 0; i < $scope.sides.length; i++) {
-                            var sideConfig = $scope.sides[i];
-                            var units = [];
-                            var positions = PositionGenerator.generatePositions(i, sideConfig.units, 500, 500);
-
-                            for (var j = 0; j < sideConfig.units.length; j++) {
-                                var unitConfig = sideConfig.units[j];
-
-                                for (var k = 0; k < unitConfig.count; k++) {
-                                    units.push({
-                                        type: unitConfig.type,
-                                        position: positions(unitConfig.type),
-                                        direction: (i) * Math.PI + Math.PI/2,
-                                        bot: hasBot ? BotSource.createBot(sideConfig.bot.code, unitConfig.type) : null
-                                    });
-                                }
-                            }
-                            sides.push({
-                                color: sideConfig.color,
-                                units: units
-                            })
-                        }
-                        return {
-                            sides: sides
-                        };
-                    }
-
                     function loadDefaultBattleSetup() {
                         var watchBots = $scope.$watch("bots != null", function(value) {
                             if (value) {
                                 watchBots();
 
-                                $scope.sides = [
-                                    {
-                                        color: "blue",
-                                        units: [
-                                            {
-                                                type: "footman",
-                                                count: 2
-                                            },
-                                            {
-                                                type: "archer",
-                                                count: 1
-                                            },
-                                            {
-                                                type: "knight",
-                                                count: 0
-                                            }
-                                        ],
-                                        bot: $scope.bots[0]
-                                    },
-                                    {
-                                        color: "red",
-                                        units: [
-                                            {
-                                                type: "footman",
-                                                count: 2
-                                            },
-                                            {
-                                                type: "archer",
-                                                count: 1
-                                            },
-                                            {
-                                                type: "knight",
-                                                count: 0
-                                            }
-                                        ],
-                                        bot: $scope.bots[1]
-                                    }
-                                ];
+                                $scope.battleSetup = {
+                                    sides: [
+                                        {
+                                            color: "blue",
+                                            units: [
+                                                {
+                                                    type: "footman",
+                                                    count: 2
+                                                },
+                                                {
+                                                    type: "archer",
+                                                    count: 1
+                                                },
+                                                {
+                                                    type: "knight",
+                                                    count: 0
+                                                }
+                                            ],
+                                            bot: $scope.bots[0]
+                                        },
+                                        {
+                                            color: "red",
+                                            units: [
+                                                {
+                                                    type: "footman",
+                                                    count: 2
+                                                },
+                                                {
+                                                    type: "archer",
+                                                    count: 1
+                                                },
+                                                {
+                                                    type: "knight",
+                                                    count: 0
+                                                }
+                                            ],
+                                            bot: $scope.bots[1]
+                                        }
+                                    ]
+                                };
 
-                                $scope.game = createGame(false);
+                                $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
                             }
                         });
                     }
 
 
                     $scope.startGame = function() {
-                        $scope.game = createGame(true);
+                        //console.log($scope.battleSetup.continuous);
+                        $scope.battleSetup.width = 500;
+                        $scope.battleSetup.height = 500;
+                        $scope.game = BattleSetup.createGame($scope.battleSetup, null, true);
                     };
 
-                    $scope.$watch("sides", function(value, old) {
+                    $scope.$watch("battleSetup", function(value, old) {
                         if (value != null && old != null) {
-                            $scope.game = createGame(false);
-                            SkirmishStorage.saveGameSetup($scope.sides);
+                            $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
+                            SkirmishStorage.saveBattleSetup($scope.battleSetup);
                         } else if (value == null) {
-                            $scope.sides = SkirmishStorage.loadGameSetup($scope.bots);
-                            if ($scope.sides != null) {
-                                $scope.game = createGame(false);
+                            $scope.battleSetup = SkirmishStorage.loadBattleSetup($scope.bots);
+                            if ($scope.battleSetup != null) {
+                                $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
                             } else {
                                 loadDefaultBattleSetup();
                             }
@@ -137,32 +111,32 @@
 
         .factory("SkirmishStorage", function() {
             return {
-                saveGameSetup: function(sides) {
-                    var toSave = ObjectUtil.clone(sides);
-                    for (var i = 0; i < toSave.length; i++) {
-                        var side = toSave[i];
+                saveBattleSetup: function(battleSetup) {
+                    var toSave = ObjectUtil.clone(battleSetup);
+                    for (var i = 0; i < toSave.sides.length; i++) {
+                        var side = toSave.sides[i];
                         if (side.bot != null) {
                             delete side.bot.code;
                         }
                     }
-                    localStorage["skirmish.sides"] = JSON.stringify(toSave);
+                    localStorage["skirmish.battleSetup"] = JSON.stringify(toSave);
                 },
-                loadGameSetup: function(bots) {
-                    var loadStr = localStorage["skirmish.sides"];
+                loadBattleSetup: function(bots) {
+                    var loadStr = localStorage["skirmish.battleSetup"];
                     //loadStr = null;
                     if (loadStr == null) {
                         return null;
                     }
-                    var sides = JSON.parse(loadStr);
-                    for (var i = 0; i < sides.length; i++) {
-                        var side = sides[i];
+                    var battleSetup = JSON.parse(loadStr);
+                    for (var i = 0; i < battleSetup.sides.length; i++) {
+                        var side = battleSetup.sides[i];
 
                         var find = Cols.find(bots, function (bot) {
                             return bot.name == side.bot.name;
                         });
                         side.bot = find;
                     }
-                    return sides
+                    return battleSetup
                 }
             };
         })

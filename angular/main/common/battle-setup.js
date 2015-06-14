@@ -41,8 +41,8 @@
                     };
 
                     if (battleSetup.continuous) {
-                        game.afterRoundDynamics = function() {
-                            ContinuousSupport.checkEachRound(game, battleSetup, defaultBot, BotSource);
+                        game.afterRoundDynamics = function(round) {
+                            ContinuousSupport.checkEachRound(game, battleSetup, defaultBot, round, BotSource);
                         };
                     }
 
@@ -53,7 +53,7 @@
     ;
 
     var ContinuousSupport = {
-        checkEachRound : function(game, battleSetup, defaultBot, BotSource) {
+        checkEachRound : function(game, battleSetup, defaultBot, round, BotSource) {
 
             function getSideSetup(color) {
                 return Cols.find(battleSetup.sides, function(side) { return side.color == color; });
@@ -108,7 +108,8 @@
                 for (var j = 0; j < sideSetup.units.length; j++) {
                     var unitSetup = sideSetup.units[j];
 
-                    var count = Cols.sum(side.units, function(unit) { return (unit.state == null || unit.state.name != "die") && unit.type == unitSetup.type ? 1 : 0;});
+                    // (unit.state == null || unit.state.name != "die") &&
+                    var count = Cols.sum(side.units, function(unit) { return unit.type == unitSetup.type ? 1 : 0;});
                     if (count < unitSetup.count) {
                         //console.log(side.units.length);
                         for (var k = 0; k < unitSetup.count - count; k++) {

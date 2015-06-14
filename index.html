@@ -29,13 +29,13 @@
             </div>
             <nav class="collapse navbar-collapse bs-navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li>
+                    <li ng-class="{active: $state.current.name == 'skirmish'}">
                         <a ui-sref="skirmish">Skimish</a>
                     </li>
-                    <li>
+                    <li ng-class="{active: $state.current.name == 'campaign'}">
                         <a ui-sref="campaign">Campaign</a>
                     </li>
-                    <li>
+                    <li ng-class="{active: $state.current.name == 'challenge'}">
                         <a ui-sref="challenge">Challenges</a>
                     </li>
                 </ul>
