@@ -139,7 +139,14 @@
                         // create the root of the scene graph
                         var stage = new PIXI.Container();
 
+
                         addBackground(stage, renderer);
+
+                        var unitStage = new PIXI.Container();
+                        unitStage.position.set(30, 30);
+                        //unitStage.position.x = 30;
+                        //unitStage.position.y = 30;
+                        stage.addChild(unitStage);
 
                         var stopped = false;
                         function animate() {
@@ -162,7 +169,7 @@
                             load: function(onLoad1) {
                                 onLoad1();
                             },
-                            unitStage: stage,
+                            unitStage: unitStage,
                             onEachRound: function(onEachRound1) {
                                 onEachRound = onEachRound1;
                             },

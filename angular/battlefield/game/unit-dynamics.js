@@ -127,17 +127,17 @@
 
         .factory("UnitDynamics", function(Dynamics, UnitImpact, GameUtil, UnitPhysics, UnitFightingStyle) {
             function limitPosition(pos, battlefield) {
-                if (pos.x < 0 + 30) {
-                    pos.x = 0 + 30;
+                if (pos.x < 0) {
+                    pos.x = 0;
                 }
-                if (pos.y < 0 + 30) {
-                    pos.y = 0 + 30;
+                if (pos.y < 0) {
+                    pos.y = 0;
                 }
-                if (pos.x >= battlefield.width - 30) {
-                    pos.x = battlefield.width - 1 - 30;
+                if (pos.x >= battlefield.width) {
+                    pos.x = battlefield.width - 1;
                 }
-                if (pos.y >= battlefield.height - 30) {
-                    pos.y = battlefield.height - 1 - 30;
+                if (pos.y >= battlefield.height) {
+                    pos.y = battlefield.height - 1;
                 }
             }
 

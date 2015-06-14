@@ -64,6 +64,8 @@
 
 
                     return function(unitType) {
+                        //console.log(bfheight);
+
                         var pos = Cols.find(positions, function(p) { return p.type == posType[unitType];});
                         Cols.remove(pos, positions);
                         return {x: Math.round(pos.x)*(side==0 ? 1 : -1) + 100 + side*300, y: Math.round(pos.y + bfheight/2)};
