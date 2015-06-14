@@ -24,6 +24,7 @@ Explanation:
 
 Here are functions and attributes of the control object:
 
+ - `control.hitpoint`: Give the current hitpoint of the unit (soldier).
  - `control.round`: Give the current round of the game.
  - `control.position`: Give the current position of this unit (soldier).
  - `control.direction`: Get and set the current direction of this unit (soldier).

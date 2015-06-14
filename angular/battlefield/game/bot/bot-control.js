@@ -70,6 +70,7 @@
                     var botControl;
                     return botControl = {
                         round: round,
+                        hitpoint: unit.hitpoint,
                         position: ObjectUtil.clone(unit.position),
                         direction: unit.direction,
                         turnToward: function(pos) {

@@ -8,6 +8,23 @@
         .provider("UnitImpact", function() {
             var types = {};
 
+            var Cal = {};
+            Cal.isHit = function(sourcePoint, hitVector, enemyPos, radius) {
+
+                var endPoint = Vectors.addPos(sourcePoint, Vectors.vectorPos(hitVector));
+                var endSide = Distance.between(sourcePoint, enemyPos);
+                var sourceSide = Distance.between(endPoint, enemyPos);
+
+
+                var endAngle = Math.acos((sourceSide*sourceSide + hitVector.value*hitVector.value - endSide*endSide) / 2 / sourceSide / hitVector.value);
+                if (endAngle <= Math.PI / 2) {
+                    var distance = Math.sin(endAngle) * sourceSide;
+                    return distance <= radius;
+                } else {
+                    return sourceSide <= radius;
+                }
+            };
+
             this.addUnitType = function(unitType, impactConfig) {
                 types[unitType] = impactConfig;
             };
@@ -17,26 +34,35 @@
                     prepare: function(game, round) {
                         return {
                             hit: function(props) {
+                                function applyHit(unit) {
+                                    unit.hitpoint -= props.damage;
+                                    unit.isHit = {since: round};
+
+                                    if (unit.hitpoint <= 0) {
+                                        unit.state = {
+                                            name: "die",
+                                            since: round
+                                        };
+                                        unit.moveAccel = 0;
+                                    }
+                                }
+
+                                var adjustingEnemies = [];
                                 GameUtil.eachUnit(game, function(unit) {
                                     if (unit.state != null && unit.state.name == "die" ) {
                                         return; // Immune to damage
                                     }
 
-                                    if (types[unit.type].takeHit) {
-                                        if (Distance.between(unit.position, props.position) < 16) {
-                                            unit.hitpoint -= props.damage;
-                                            unit.isHit = {since: round};
-
-                                            if (unit.hitpoint <= 0) {
-                                                unit.state = {
-                                                    name: "die",
-                                                    since: round
-                                                };
-                                                unit.moveAccel = 0;
-                                            }
-                                        }
+                                    if (types[unit.type].takeHit && unit.side != props.source.side && Distance.between(props.start, unit.position) < props.vector.value + 20) {
+                                        adjustingEnemies.push(unit);
                                     }
                                 });
+                                var canHit = Cols.filter(adjustingEnemies, function(enemy) { return Cal.isHit(props.start, props.vector, enemy.position, 20);});
+                                var enemy = Cols.findMin(canHit, function(enemy) { return Distance.between(props.start, enemy.position); });
+
+                                if (enemy != null) {
+                                    applyHit(enemy);
+                                }
                             },
                             makeWay: function(props) {
                                 var findPosition = function() {
@@ -155,10 +181,11 @@
                                 var fightingStyle = UnitFightingStyle.getUnitFightingStyle(unit);
                                 if (fightingStyle.createHitImpact && (round - unit.state.since) == fightingStyle.createHitImpact) {
                                     impact.hit({
-                                        position: Vectors.addPos(unit.position, Vectors.vectorPos({
+                                        vector: {
                                             direction: unit.direction,
                                             value: 45
-                                        })),
+                                        },
+                                        start: unit.position,
                                         source: unit,
                                         damage: fightingStyle.damage
                                     });
