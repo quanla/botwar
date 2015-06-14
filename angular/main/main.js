@@ -3,6 +3,7 @@
 (function () {
     /* App Module */
     angular.module("bw.main", [
+        'bw.main.battle-setup',
         'bw.common.unit-position',
         'bw.main.header',
         'bw.main.security',

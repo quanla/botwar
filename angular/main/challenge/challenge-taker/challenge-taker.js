@@ -21,7 +21,7 @@
 
             ChallengeServer.getChallenge($stateParams.challengeId).success(function(challenge) {
                 $scope.challenge = challenge;
-                $scope.game = BattleSetup.createGame(challenge.battleSetup);
+                $scope.game = BattleSetup.createGame(challenge.battleSetup, null, false);
             });
 
             User.loadUserBots().then(function(bots) {

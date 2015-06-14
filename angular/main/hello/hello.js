@@ -4,6 +4,7 @@
     /* App Module */
     angular.module("bw.main.hello", [
         'bw.sample',
+        'bw.fancybox',
         'ui.router'
     ])
 
@@ -18,8 +19,51 @@
             ;
         }])
 
-        .controller("bw.main.hello.Ctrl", function($scope, SampleFightBot, SampleRunBot, SampleVeteranBot) {
+        .controller("bw.main.hello.large-battle.Ctrl", function($scope, BattleSetup, SampleBot) {
 
+            SampleBot.loadBot("flex", function(botCode) {
+                $scope.fightBot = {name: "Fighter", code: botCode};
+
+                $scope.game = BattleSetup.createGame({
+                    sides: [
+                        {
+                            color: "blue",
+                            units: [
+                                { type: "footman", count: 10},
+                                { type: "archer", count: 10},
+                                { type: "knight", count: 4}
+                            ]
+                        },
+                        {
+                            color: "red",
+                            units: [
+                                { type: "footman", count: 10},
+                                { type: "archer", count: 10},
+                                { type: "knight", count: 4}
+                            ]
+                        }
+                    ],
+                    width: 940,
+                    height: 740,
+                    continuous: true
+                }, $scope.fightBot, true);
+            });
+
+
+            $scope.options = {};
+        })
+
+        .controller("bw.main.hello.Ctrl", function($scope, SampleFightBot, SampleRunBot, SampleVeteranBot, Fancybox) {
+            $scope.showLargeBattle = function() {
+                Fancybox.open($scope, {
+                    templateUrl: "angular/main/hello/large-battle.html",
+                    width: 1000,
+                    controller: "bw.main.hello.large-battle.Ctrl"
+                });
+            };
+            //$scope.showLargeBattle();
+
+            //$scope.step1 = true;
             //$scope.step2 = true;
             //$scope.step3 = true;
 
@@ -51,7 +95,7 @@
                             units: [
                                 {
                                     type: "footman",
-                                    position: {x: 100, y: 150},
+                                    position: {x: 70, y: 150},
                                     direction: Math.PI,
                                     bot: fightBot
                                 }
@@ -62,7 +106,7 @@
                             units: [
                                 {
                                     type: "grunt",
-                                    position: {x: 300, y: 150},
+                                    position: {x: 270, y: 150},
                                     direction: Math.PI,
                                     bot: fightBot
                                 }
@@ -94,7 +138,7 @@
                             units: [
                                 {
                                     type: "footman",
-                                    position: {x: 100, y: 150},
+                                    position: {x: 70, y: 150},
                                     direction: Math.PI,
                                     bot: $scope.fightBot
                                 }
@@ -105,7 +149,7 @@
                             units: [
                                 {
                                     type: "grunt",
-                                    position: {x: 300, y: 150},
+                                    position: {x: 270, y: 150},
                                     direction: Math.PI,
                                     bot: $scope.runBot
                                 }
@@ -143,7 +187,7 @@
                             units: [
                                 {
                                     type: "footman",
-                                    position: {x: 100, y: 150},
+                                    position: {x: 70, y: 150},
                                     direction: Math.PI,
                                     bot: $scope.fightBot
                                 }
@@ -154,7 +198,7 @@
                             units: [
                                 {
                                     type: "grunt",
-                                    position: {x: 300, y: 150},
+                                    position: {x: 270, y: 150},
                                     direction: Math.PI,
                                     bot: $scope.veteranBot
                                 }

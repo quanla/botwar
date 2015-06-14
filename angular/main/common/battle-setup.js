@@ -1,0 +1,100 @@
+"use strict";
+
+(function () {
+
+    angular.module('bw.main.battle-setup', [
+    ])
+
+        .factory("BattleSetup", function(PositionGenerator, BotSource) {
+            return {
+                createGame: function(battleSetup, defaultBot, hasBot) {
+
+                    var sides = [];
+
+                    function addSide(sideNum, side) {
+                        var units = [];
+                        var positions = PositionGenerator.generatePositions(sideNum, side.units, battleSetup.width || 500, battleSetup.height || 500);
+                        for (var j = 0; j < side.units.length; j++) {
+                            var unitConfig = side.units[j];
+                            for (var k = 0; k < unitConfig.count; k++) {
+                                var botCode = hasBot == false ? null : side.bot != null ? side.bot.code : defaultBot != null ? defaultBot.code : null;
+                                var bot = botCode ? BotSource.createBot(botCode, unitConfig.type) : null;
+                                units.push({
+                                    type: unitConfig.type,
+                                    position: positions(unitConfig.type),
+                                    direction: sideNum * Math.PI + Math.PI / 2,
+                                    bot: bot
+                                });
+                            }
+                        }
+                        sides.push({
+                            color: sideNum == 0 ? "blue" : "red",
+                            units: units
+                        });
+                    }
+
+                    addSide(0, battleSetup.sides[0]);
+                    addSide(1, battleSetup.sides[1]);
+
+                    var game = {
+                        sides: sides
+                    };
+
+                    if (battleSetup.continuous) {
+                        game.afterRoundDynamics = function() {
+                            ContinuousSupport.checkEachRound(game, battleSetup, defaultBot, BotSource);
+                        };
+                    }
+
+                    return game;
+                }
+            };
+        })
+    ;
+
+    var ContinuousSupport = {
+        checkEachRound : function(game, battleSetup, defaultBot, BotSource) {
+
+            function getSideSetup(color) {
+                return Cols.find(battleSetup.sides, function(side) { return side.color == color; });
+            }
+
+            function addUnit(side, type, bot) {
+                var x = Math.round(Math.random() * 100) + (side.color == "blue" ? 0 : battleSetup.width - 100);
+                var y = Math.round(Math.random() * battleSetup.height);
+
+
+                var unit = {
+                    position: {x: x, y: y},
+                    type: type,
+                    hitpoint: 100,
+                    bot: BotSource.createBot(bot.code),
+                    side: side
+                };
+                side.units.push(unit);
+            }
+
+            for (var i = 0; i < game.sides.length; i++) {
+                var side = game.sides[i];
+
+                var sideSetup = getSideSetup(side.color);
+                //console.log(sideSetup.bot);
+                for (var j = 0; j < sideSetup.units.length; j++) {
+                    var unitSetup = sideSetup.units[j];
+
+                    var count = Cols.sum(side.units, function(unit) { return (unit.state == null || unit.state.name != "die") && unit.type == unitSetup.type ? 1 : 0;});
+                    if (count < unitSetup.count) {
+                        console.log(side.units.length);
+                        for (var k = 0; k < unitSetup.count - count; k++) {
+                            addUnit(side, unitSetup.type, sideSetup.bot || defaultBot);
+                        }
+                    }
+                }
+                //Cols.sel
+                //side.units
+            }
+        }
+    };
+
+
+})();

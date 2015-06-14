@@ -62,7 +62,7 @@
             ];
 
             function createGame(oppoBot) {
-                $scope.game = BattleSetup.createGame(createBattleSetup(), oppoBot);
+                $scope.game = BattleSetup.createGame(createBattleSetup(), oppoBot, oppoBot!=null);
             }
 
             createGame();
@@ -102,43 +102,6 @@
                     controller: "create-challenge.confirm-modal.Ctrl",
                     resolve: { getBattleSetup: function() {return createBattleSetup; } }
                 });
-            };
-        })
-
-        .factory("BattleSetup", function(PositionGenerator, BotSource) {
-            return {
-                createGame: function(battleSetup, blueBot) {
-
-                    var sides = [];
-
-                    function addSide(sideNum, side, blueBot) {
-                        var units = [];
-                        var positions = PositionGenerator.generatePositions(sideNum, side.units, 500, 500);
-                        for (var j = 0; j < side.units.length; j++) {
-                            var unitConfig = side.units[j];
-                            for (var k = 0; k < unitConfig.count; k++) {
-                                units.push({
-                                    type: unitConfig.type,
-                                    position: positions(unitConfig.type),
-                                    direction: sideNum * Math.PI + Math.PI / 2,
-                                    bot: sideNum == 0 ? (!blueBot ? null : BotSource.createBot(blueBot.code, unitConfig.type)) :
-                                            side.bot == null || !blueBot ? null : BotSource.createBot(side.bot.code, unitConfig.type)
-                                });
-                            }
-                        }
-                        sides.push({
-                            color: sideNum == 0 ? "blue" : "red",
-                            units: units
-                        });
-                    }
-
-                    addSide(0, battleSetup.sides[0], blueBot);
-                    addSide(1, battleSetup.sides[1], blueBot);
-
-                    return {
-                        sides: sides
-                    };
-                }
             };
         })
 
