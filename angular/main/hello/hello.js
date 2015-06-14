@@ -53,7 +53,7 @@
             $scope.options = {};
         })
 
-        .controller("bw.main.hello.Ctrl", function($scope, SampleFightBot, SampleRunBot, SampleVeteranBot, Fancybox) {
+        .controller("bw.main.hello.Ctrl", function($scope, SampleBot, Fancybox) {
             $scope.showLargeBattle = function() {
                 Fancybox.open($scope, {
                     templateUrl: "angular/main/hello/large-battle.html",
@@ -63,7 +63,7 @@
             };
             //$scope.showLargeBattle();
 
-            //$scope.step1 = true;
+            $scope.step1 = true;
             //$scope.step2 = true;
             //$scope.step3 = true;
 
@@ -71,18 +71,18 @@
                 $scope["step" + i] = true;
             };
 
-            SampleFightBot.createSampleBot(function(bot) {
+            SampleBot.loadBot("fight", function(bot) {
                 $scope.fightBot = bot;
             });
-            SampleRunBot.createSampleBot(function(bot) {
+            SampleBot.loadBot("run", function(bot) {
                 $scope.runBot = bot;
             });
-            SampleVeteranBot.createSampleBot(function(bot) {
+            SampleBot.loadBot("veteran", function(bot) {
                 $scope.veteranBot = bot;
             });
         })
 
-        .controller("bw.main.hello.step1.Ctrl", function($scope) {
+        .controller("bw.main.hello.step1.Ctrl", function($scope, BotSource) {
             $scope.options = {pause: true};
 
             $scope.$watch("::fightBot", function(fightBot) {
@@ -97,7 +97,7 @@
                                     type: "footman",
                                     position: {x: 70, y: 150},
                                     direction: Math.PI,
-                                    bot: fightBot
+                                    bot: BotSource.createBot($scope.fightBot, "footman")
                                 }
                             ]
                         },
@@ -108,7 +108,7 @@
                                     type: "grunt",
                                     position: {x: 270, y: 150},
                                     direction: Math.PI,
-                                    bot: fightBot
+                                    bot: BotSource.createBot($scope.fightBot, "footman")
                                 }
                             ]
                         }
@@ -125,7 +125,7 @@
 
         })
 
-        .controller("bw.main.hello.step2.Ctrl", function($scope) {
+        .controller("bw.main.hello.step2.Ctrl", function($scope, BotSource) {
             $scope.options = {pause: true};
 
             $scope.$watch("fightBot && runBot", function(v) {
@@ -140,7 +140,7 @@
                                     type: "footman",
                                     position: {x: 70, y: 150},
                                     direction: Math.PI,
-                                    bot: $scope.fightBot
+                                    bot: BotSource.createBot($scope.fightBot, "footman")
                                 }
                             ]
                         },
@@ -151,7 +151,7 @@
                                     type: "grunt",
                                     position: {x: 270, y: 150},
                                     direction: Math.PI,
-                                    bot: $scope.runBot
+                                    bot: BotSource.createBot($scope.runBot, "grunt")
                                 }
                             ]
                         }
@@ -168,11 +168,11 @@
 
         })
 
-        .controller("bw.main.hello.step3.Ctrl", function($scope) {
+        .controller("bw.main.hello.step3.Ctrl", function($scope, BotSource) {
             $scope.options = {pause: true};
 
 
-            $scope.$watch("veteranBot && runBot", function(v) {
+            $scope.$watch("veteranBot && fightBot", function(v) {
                 if (!v) return;
                 newGame();
             });
@@ -189,7 +189,7 @@
                                     type: "footman",
                                     position: {x: 70, y: 150},
                                     direction: Math.PI,
-                                    bot: $scope.fightBot
+                                    bot: BotSource.createBot($scope.fightBot, "footman")
                                 }
                             ]
                         },
@@ -200,7 +200,7 @@
                                     type: "grunt",
                                     position: {x: 270, y: 150},
                                     direction: Math.PI,
-                                    bot: $scope.veteranBot
+                                    bot: BotSource.createBot($scope.veteranBot, "grunt")
                                 }
                             ]
                         }
@@ -212,8 +212,6 @@
 
             }
 
-            newGame();
-
             $scope.startGame = function() {
                 if ($scope.options.pause) {
                     $scope.options.pause = false;
@@ -221,6 +219,7 @@
                     newGame();
                 }
             };
+
 
         })
 

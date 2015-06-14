@@ -59,16 +59,42 @@
                 return Cols.find(battleSetup.sides, function(side) { return side.color == color; });
             }
 
-            function addUnit(side, type, bot) {
-                var x = Math.round(Math.random() * 100) + (side.color == "blue" ? 0 : battleSetup.width - 100);
-                var y = Math.round(Math.random() * battleSetup.height);
+            function getFreePoint(side) {
 
+                var p;
+
+                LOOP:
+                for (;;) {
+                    var x = Math.round(Math.random() * 100) + (side.color == "blue" ? 0 : battleSetup.width - 100);
+                    var y = Math.round(Math.random() * battleSetup.height);
+                    p = {x: x, y: y};
+
+                    for (var i = 0; i < game.sides.length; i++) {
+                        var side = game.sides[i];
+                        for (var j = 0; j < side.units.length; j++) {
+                            var unit = side.units[j];
+                            if (unit.state == null || unit.state.name != "die" ) {
+                                if (Distance.between(unit.position, p) <= 40) {
+                                    continue LOOP;
+                                }
+                            }
+                        }
+
+                    }
+                    break;
+                }
+
+                return p;
+            }
+
+            function addUnit(side, type, bot) {
+                var p = getFreePoint(side);
 
                 var unit = {
-                    position: {x: x, y: y},
+                    position: {x: p.x, y: p.y},
                     type: type,
                     hitpoint: 100,
-                    bot: BotSource.createBot(bot.code),
+                    bot: BotSource.createBot(bot.code, type),
                     side: side
                 };
                 side.units.push(unit);
@@ -84,14 +110,12 @@
 
                     var count = Cols.sum(side.units, function(unit) { return (unit.state == null || unit.state.name != "die") && unit.type == unitSetup.type ? 1 : 0;});
                     if (count < unitSetup.count) {
-                        console.log(side.units.length);
+                        //console.log(side.units.length);
                         for (var k = 0; k < unitSetup.count - count; k++) {
                             addUnit(side, unitSetup.type, sideSetup.bot || defaultBot);
                         }
                     }
                 }
-                //Cols.sel
-                //side.units
             }
         }
     };
