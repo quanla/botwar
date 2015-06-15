@@ -19,9 +19,9 @@
             ;
         }])
 
-        .controller("skirmish.ctrl", function(SampleBot, $scope, User) {
+        .controller("skirmish.ctrl", function(SampleBot, $scope, UserStorage) {
 
-            User.loadUserBots().then(function(bots) {
+            UserStorage.loadUserBots().then(function(bots) {
                 $scope.bots = bots;
             });
             $scope.showCodeEditor = false;

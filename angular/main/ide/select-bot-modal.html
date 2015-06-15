@@ -1,0 +1,32 @@
+<div class="modal-header "><h4 class="modal-title">Select a bot</h4></div>
+<div class="modal-body">
+    <div class="list-group">
+        <a href="" class="list-group-item" ng-click="accept('empty')">
+            <h4 class="list-group-item-heading">Empty</h4>
+            <p class="list-group-item-text">This bot does nothing. Feel free to write your own code.</p>
+        </a>
+        <a href="" class="list-group-item" ng-click="accept('fight')">
+            <h4 class="list-group-item-heading">Fighter</h4>
+            <p class="list-group-item-text">Simplest bot: go toward enemy and attack. Works with Footman and Knight.</p>
+        </a>
+        <a href="" class="list-group-item" ng-click="accept('archer')">
+            <h4 class="list-group-item-heading">Archer</h4>
+            <p class="list-group-item-text">Predict enemy's move and aim so no arrow is wasted</p>
+        </a>
+        <a href="" class="list-group-item" ng-click="accept('run')">
+            <h4 class="list-group-item-heading">Run</h4>
+            <p class="list-group-item-text">Turn away and run before enemy comes near.</p>
+        </a>
+        <a href="" class="list-group-item" ng-click="accept('veteran')">
+            <h4 class="list-group-item-heading">Veteran</h4>
+            <p class="list-group-item-text">Fighter, but at a higher level. Wait and swing his sword before enemy is near enough</p>
+        </a>
+        <a href="" class="list-group-item" ng-click="accept('flex')">
+            <h4 class="list-group-item-heading">Flex</h4>
+            <p class="list-group-item-text">Flexible bot, can control Footman, Knight or Archer. This bot will check for unit type and apply suitable strategy</p>
+        </a>
+    </div>
+</div>
+<div class="modal-footer ">
+    <a class="btn btn-default" ng-click="cancel()">Close</a>
+</div>

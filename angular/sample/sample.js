@@ -6,7 +6,7 @@
     ])
         .factory("SampleBot", function($http) {
             function loadBot(name, onDone) {
-                $http.get("/botwar/sample-bots/" + name + "-bot.js").success(function(source) {
+                return $http.get("/botwar/sample-bots/" + name + "-bot.js").success(function(source) {
                     if (onDone) onDone(source);
                 });
             }

@@ -19,12 +19,12 @@
             ;
         }])
 
-        .controller("challenge.ctrl", function($scope, $state, ChallengeServer, User) {
+        .controller("challenge.ctrl", function($scope, $state, ChallengeServer, UserStorage) {
             $scope.view = {
 
             };
 
-            User.loadUserBots().then(function (bots) {
+            UserStorage.loadUserBots().then(function (bots) {
                 $scope.bots = bots;
             });
 

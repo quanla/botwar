@@ -19,8 +19,8 @@
             ;
         }])
         
-        .controller("create-challenge.ctrl", function($scope, User, BattleSetup, PositionGenerator, BotSource, $modal) {
-            User.loadUserBots().then(function (bots) {
+        .controller("create-challenge.ctrl", function($scope, UserStorage, BattleSetup, PositionGenerator, BotSource, $modal) {
+            UserStorage.loadUserBots().then(function (bots) {
                 $scope.bots = bots;
                 $scope.myChampion = bots[0];
                 $scope.oppoBot = bots[0];

@@ -4,7 +4,7 @@
 
     angular.module('bw.main.user', [
     ])
-        .factory("User", function(SampleBot, $q) {
+        .factory("UserStorage", function(SampleBot, $q) {
             function deleteAll() {
                 for (var i = 0; i < localStorage.bots_count; i++) {
                     delete localStorage["bot" + i + "_name"];
@@ -81,17 +81,10 @@
                     localStorage["bot" + index + "_name"] = bot.name;
                     localStorage["bot" + index + "_code"] = bot.code;
                 },
-                newBot: function() {
-                    var defer = $q.defer();
-                    SampleBot.loadEmpty(function(source) {
-                        shiftBotsDown(0);
-                        localStorage["bot0_name"] = "New Bot";
-                        localStorage["bot0_code"] = source;
-
-                        defer.resolve(loadBot(0));
-
-                    });
-                    return defer.promise;
+                newBot: function(bot) {
+                    shiftBotsDown(0);
+                    localStorage["bot0_name"] = bot.name;
+                    localStorage["bot0_code"] = bot.code;
                 },
                 deleteBot: function(index) {
                     shiftBotsUp(index + 1);

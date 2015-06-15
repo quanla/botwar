@@ -21,8 +21,8 @@
             ;
         }])
 
-        .controller("campaign.ctrl", function(User, $scope, BotSource, Campaign) {
-            User.loadUserBots().then(function(bots) {
+        .controller("campaign.ctrl", function(UserStorage, $scope, BotSource, Campaign) {
+            UserStorage.loadUserBots().then(function(bots) {
                 $scope.bots = bots;
                 $scope.currentBot = bots[0];
             });

@@ -6,7 +6,12 @@
         'bw.main.plugin.code-mirror'
     ])
 
-        .directive("bwEditor", function(SampleBot, User) {
+        .controller("select-bot-modal.Ctrl", function($scope, $modalInstance) {
+            $scope.cancel = $modalInstance.dismiss;
+            $scope.accept = $modalInstance.close;
+        })
+
+        .directive("bwEditor", function(SampleBot, UserStorage, $modal) {
             return {
                 restrict: "E",
                 scope: {
@@ -29,21 +34,32 @@
                     });
 
                     $scope.createNewBot = function() {
-                        User.newBot().then(function(newBot) {
-                            $scope.bots.splice(0,0, newBot);
-                            $scope.bot = newBot;
-                        });
+                        $modal.open({
+                            templateUrl: "angular/main/ide/select-bot-modal.html",
+                            controller: "select-bot-modal.Ctrl"
+                        })
+                            .result.then(function(name) {
+                                SampleBot.loadBot(name).success(function(code) {
+                                    var botName = StringUtil.uppercaseFirstChar(name).replace("Fight", "Fighter");
+                                    var newBot = {name: botName, code: code};
+                                    UserStorage.newBot(newBot);
+
+                                    $scope.bots.splice(0,0, newBot);
+                                    $scope.bot = newBot;
+                                });
+                            });
                     };
 
                     $scope.deleteBot = function() {
-                        User.deleteBot($scope.bots.indexOf($scope.bot));
+                        if (!confirm("Really delete robot " + $scope.bot.name + "?")) return;
+                        UserStorage.deleteBot($scope.bots.indexOf($scope.bot));
                         Cols.remove($scope.bot, $scope.bots);
                         $scope.bot = $scope.bots[0];
                     };
 
                     var saveCurrentBot = function () {
                         if ($scope.bot != null) {
-                            User.saveBot($scope.bot, $scope.bots.indexOf($scope.bot));
+                            UserStorage.saveBot($scope.bot, $scope.bots.indexOf($scope.bot));
                         }
                     };
                     $scope.$watch("bot.code", saveCurrentBot);

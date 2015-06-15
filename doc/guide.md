@@ -46,3 +46,9 @@ Most actions will block your robot from being run for some rounds, only stand an
  - **Walk**: After calling to `control.goForward`, robot will be blocked for 10 rounds, note that after 10 rounds the soldier will keep walking in the same direction if no other order is issued
  - **Direction**: After changing direction, if the change is larger than PI/30 then robot will be blocked for 10 rounds. This will help prevent the soldier from spinning like crazy until his brain is flushed out of his head.
  - **Die**: A dead soldier will have a dead robot, and a dead robot can't run.
+
+## Advanced Guide
+
+### Keeping and reusing references
+ - It's ok to keep the reference to an enemy unit or friendly unit in memory and reuse it for the next rounds. These reference will not be invalidated, instead, new unit state values will be updated into the very same object that you are referencing to. This will help a lot in simplifying coding logic, and robot communication.
+ - All these unit references are shared among robots of same side, so if you try to update values (like position, or state of an unit), then other robots of your side will be affected, but the real unit or robots of other sides will not be. In short, if you want to screw things up, you are only hurting yourself.  

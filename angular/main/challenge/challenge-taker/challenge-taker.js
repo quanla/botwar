@@ -17,14 +17,14 @@
             ;
         }])
 
-        .controller("challenge-taker.ctrl", function(User, $scope, $stateParams, BotSource, BattleSetup, ChallengeServer) {
+        .controller("challenge-taker.ctrl", function(UserStorage, $scope, $stateParams, BotSource, BattleSetup, ChallengeServer) {
 
             ChallengeServer.getChallenge($stateParams.challengeId).success(function(challenge) {
                 $scope.challenge = challenge;
                 $scope.game = BattleSetup.createGame(challenge.battleSetup, null, false);
             });
 
-            User.loadUserBots().then(function(bots) {
+            UserStorage.loadUserBots().then(function(bots) {
                 $scope.bots = bots;
                 $scope.currentBot = bots[0];
             });
