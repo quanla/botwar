@@ -28,6 +28,7 @@ Here are functions and attributes of the control object:
  - `control.round`: Give the current round of the game.
  - `control.position`: Give the current position of this unit (soldier).
  - `control.direction`: Get and set the current direction of this unit (soldier).
+ - `control.messages`: Get all messages that friendly units sent to this unit (soldier).
  - `control.turnToward(position)`: Command the unit to turn its head toward that position.
  - `control.turnAway(position)`: Command the unit to turn its head the opposite way to that position.
  - `control.goForward()`: Command the unit to go forward in the current direction.

@@ -17,7 +17,10 @@
         .factory("BotRunner", function(BotControl, UnitUtil) {
             function isLocked(unit, round) {
                 if (unit.state != null) {
-                    if (["fight", "die"].indexOf(unit.state.name) > -1) {
+                    if (unit.state.name == "fight") {
+                        return true;
+                    }
+                    if (unit.state.name == "die" && round > unit.state.since + 1) {
                         return true;
                     }
                 }
@@ -53,8 +56,26 @@
                 var friendsLink = new ColLink(side.units,
                     function (unit) {
                         var truth = {
-                            type: unit.type
+                            type: unit.type,
+                            sendMessage: function(message) {
+                                if (unit.messages == null) {
+                                    unit.messages = [];
+                                }
+                                unit.messages.push(message);
+                            },
+                            birth: unit.birth
                         };
+
+                        for (var i = 0; i < side.units.length; i++) {
+                            var friend = side.units[i];
+                            if (friend.birth >= unit.birth) {
+                                continue;
+                            }
+                            if (friend.newFriends == null) {
+                                friend.newFriends = [];
+                            }
+                            friend.newFriends.push(truth);
+                        }
                         return {
                             truth: truth,
                             sync: function() {
@@ -99,20 +120,28 @@
                     },
                     getFriends: function(unit) {
                         var friends = [];
+                        this.eachFriend(unit, function(friend) {
+                            friends.push(friend);
+                        });
+                        return friends;
+                    },
+                    eachFriendHandle: function(p) {
+                        friendsLink.link.forEach(p);
+                    },
+                    eachFriend: function(unit, p) {
                         for (var j = 0; j < friendsLink.link.length; j++) {
                             var h = friendsLink.link[j];
-                            if (h.o != unit) {
-                                friends.push(h.l.truth);
+                            if (h.o != unit && UnitUtil.alive(h.o)) {
+                                p(h.l.truth);
                             }
                         }
-                        return friends;
                     }
                 };
             }
 
             return {
                 createBotRunner: function(game) {
-
+                    var botControl = BotControl.createBotControl(game);
 
                     var sideTruths = [];
                     for (var i = 0; i < game.sides.length; i++) {
@@ -128,16 +157,21 @@
                                 var sideTruth = sideTruths[i];
                                 sideTruth.sync();
 
-                                for (var j = 0; j < sideTruth.side.units.length; j++) {
-                                    var unit = sideTruth.side.units[j];
+                                sideTruth.eachFriendHandle(function(h) {
+                                    var unit = h.o;
                                     if (unit.bot && !isLocked(unit, round)) {
 
                                         if (unit.bot.run == null) {
                                             throw "Wrong bot config: " + unit.bot + ", run function is missing";
                                         }
-                                        var control = BotControl.createControl(unit, round, sideTruth);
+                                        var control = botControl.createControl(h, round, sideTruth);
 
                                         unit.bot.run(control);
+
+                                        if (unit.state != null && unit.state.name == "die") return; // This is the last run
+
+                                        unit.messages = null;
+                                        unit.newFriends = null;
 
                                         if (unit.afterBotRun) {
                                             unit.afterBotRun(unit);
@@ -152,43 +186,8 @@
                                             unit.direction = control.direction;
                                         }
                                     }
-                                }
-
+                                });
                             }
-
-
-
-
-
-                            //for (var i = 0; i < game.sides.length; i++) {
-                            //    var side = game.sides[i];
-                            //
-                            //    for (var j = 0; j < side.units.length; j++) {
-                            //        var unit = side.units[j];
-                            //        if (unit.bot && !isLocked(unit, round)) {
-                            //
-                            //            if (unit.bot.run == null) {
-                            //                throw "Wrong bot config: " + unit.bot + ", run function is missing";
-                            //            }
-                            //            var control = BotControl.createControl(unit, round, game);
-                            //
-                            //            unit.bot.run(control);
-                            //
-                            //            if (unit.afterBotRun) {
-                            //                unit.afterBotRun(unit);
-                            //            }
-                            //
-                            //            if (Math.abs(control.direction - unit.direction) > Math.PI/30) {
-                            //                //console.log("Blocked");
-                            //                unit.botBlockedUtil = unit.botBlockedUtil == null ? round + 10 : Math.max(unit.botBlockedUtil, round + 10);
-                            //            }
-                            //            //Math.PI/30
-                            //            if (!isNaN(control.direction)) {
-                            //                unit.direction = control.direction;
-                            //            }
-                            //        }
-                            //    }
-                            //}
                         }
                     };
                 }

@@ -40,6 +40,9 @@
                     }
 
                     function isGameFinished(game) {
+                        if (game.continuous == true) {
+                            return false;
+                        }
                         var count = 0;
                         var winningSide;
                         for (var i = 0; i < game.sides.length; i++) {
@@ -173,6 +176,7 @@
                     unit.hitpoint = GameSetup.getDefaultHitpoint(unit.type);
                 }
                 unit.side = side;
+                unit.birth = 0;
             }
         }
     }

@@ -48,6 +48,7 @@
                                     since: round
                                 };
                                 unit.moveAccel = 0;
+                                unit.botBlockedUtil = null;
                             }
 
                             if (props.source.side.onDamage) {

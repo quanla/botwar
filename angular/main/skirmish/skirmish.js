@@ -32,6 +32,7 @@
                 restrict: "E",
                 templateUrl: "angular/main/skirmish/skirmish-battlefield.html",
                 link: function($scope, elem, attrs) {
+                    $scope.options = {pause: true};
                     function loadDefaultBattleSetup() {
                         var watchBots = $scope.$watch("bots != null", function(value) {
                             if (value) {
@@ -83,6 +84,7 @@
                                 SkirmishStorage.saveBattleSetup($scope.battleSetup);
 
                                 $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
+                                $scope.options.pause = true;
                             }
                         });
                     }
@@ -90,16 +92,19 @@
 
                     $scope.startGame = function() {
                         $scope.game = BattleSetup.createGame($scope.battleSetup, null, true);
+                        $scope.options.pause = false;
                     };
 
                     $scope.$watch("battleSetup", function(value, old) {
                         if (value != null && old != null) {
                             $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
+                            $scope.options.pause = true;
                             SkirmishStorage.saveBattleSetup($scope.battleSetup);
                         } else if (value == null) {
                             $scope.battleSetup = SkirmishStorage.loadBattleSetup($scope.bots);
                             if ($scope.battleSetup != null) {
                                 $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
+                                $scope.options.pause = true;
                             } else {
                                 loadDefaultBattleSetup();
                             }

@@ -56,8 +56,13 @@
     <div class="col-lg-12 text-center">
         <br/>
         <div class="btn-group btn-group-lg">
-            <button class="btn btn-primary" ng-click="startGame()" style="width: 200px" ng-class="{ disabled: game==null }">
-                <span class="glyphicon glyphicon-play"></span>
+
+            <button class="btn btn-default" ng-click="startGame()"
+                    ><span class="glyphicon glyphicon-repeat"></span></button>
+
+            <button class="btn btn-default" style="width: 200px"
+                    ng-click="game.isFinished ? startGame() : (options.pause = !options.pause)">
+                <span class="glyphicon" ng-class="game.isFinished || options.pause ? 'glyphicon-play' : 'glyphicon-pause'"></span>
             </button>
             <button class="btn"
                     ng-class="options.consume == 3 ? 'btn-primary' : 'btn-default'"

@@ -47,6 +47,7 @@
                     if (battleSetup.afterRoundDynamics) {
                         game.afterRoundDynamics = battleSetup.afterRoundDynamics;
                     } else if (battleSetup.continuous) {
+                        game.continuous = battleSetup.continuous;
                         game.afterRoundDynamics = function(round) {
                             ContinuousSupport.checkEachRound(game, battleSetup, defaultBot, round, BotSource);
                         };
@@ -102,7 +103,8 @@
                     type: type,
                     hitpoint: 100,
                     bot: BotSource.createBot(bot.code, type),
-                    side: side
+                    side: side,
+                    birth: round
                 };
                 side.units.push(unit);
             }
