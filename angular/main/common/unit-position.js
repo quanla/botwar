@@ -11,12 +11,13 @@
                     var posType = {
                         "archer": "rear",
                         "footman": "front",
+                        "grunt": "front",
                         "knight": "flank"
                     };
 
-                    var front = Cols.sum(unitConfigs, function(u) { return u.type == 'footman' ? u.count : 0; });
-                    var rear = Cols.sum(unitConfigs, function(u) { return u.type == 'archer' ? u.count : 0; });
-                    var flank = Cols.sum(unitConfigs, function(u) { return u.type == 'knight' ? u.count : 0; });
+                    var front = Cols.sum(unitConfigs, function(u) { return posType[u.type] == 'front' ? u.count : 0; });
+                    var rear = Cols.sum(unitConfigs, function(u) { return posType[u.type] == 'rear' ? u.count : 0; });
+                    var flank = Cols.sum(unitConfigs, function(u) { return posType[u.type] == 'flank' ? u.count : 0; });
 
 
 

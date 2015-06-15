@@ -82,41 +82,41 @@
             });
         })
 
-        .controller("bw.main.hello.step1.Ctrl", function($scope, BotSource) {
+        .controller("bw.main.hello.step1.Ctrl", function($scope, BattleSetup) {
             $scope.options = {pause: true};
 
             $scope.$watch("::fightBot", function(fightBot) {
                 if (!fightBot) return;
 
-                $scope.game = {
+                $scope.game = BattleSetup.createGame({
                     sides: [
                         {
                             color: "blue",
                             units: [
                                 {
                                     type: "footman",
-                                    position: {x: 70, y: 150},
-                                    direction: Math.PI,
-                                    bot: BotSource.createBot($scope.fightBot, "footman")
+                                    count: 1
                                 }
-                            ]
+                            ],
+                            bot: {code: $scope.fightBot}
                         },
                         {
                             color: "red",
                             units: [
                                 {
                                     type: "grunt",
-                                    position: {x: 270, y: 150},
-                                    direction: Math.PI,
-                                    bot: BotSource.createBot($scope.fightBot, "footman")
+                                    count: 1
                                 }
-                            ]
+                            ],
+                            bot: {code: $scope.fightBot}
                         }
                     ],
+                    width: 440,
+                    height: 440,
                     onFinish: function() {
                         $scope.$apply();
                     }
-                };
+                });
             });
 
             $scope.startGame = function() {
@@ -125,41 +125,43 @@
 
         })
 
-        .controller("bw.main.hello.step2.Ctrl", function($scope, BotSource) {
+        .controller("bw.main.hello.step2.Ctrl", function($scope, BattleSetup) {
             $scope.options = {pause: true};
 
             $scope.$watch("fightBot && runBot", function(v) {
                 if (!v) return;
 
-                $scope.game = {
+
+                $scope.game = BattleSetup.createGame({
                     sides: [
                         {
                             color: "blue",
                             units: [
                                 {
                                     type: "footman",
-                                    position: {x: 70, y: 150},
-                                    direction: Math.PI,
-                                    bot: BotSource.createBot($scope.fightBot, "footman")
+                                    count: 1
                                 }
-                            ]
+                            ],
+                            bot: {code: $scope.fightBot}
                         },
                         {
                             color: "red",
                             units: [
                                 {
                                     type: "grunt",
-                                    position: {x: 270, y: 150},
-                                    direction: Math.PI,
-                                    bot: BotSource.createBot($scope.runBot, "grunt")
+                                    count: 1
                                 }
-                            ]
+                            ],
+                            bot: {code: $scope.runBot}
                         }
                     ],
+                    width: 440,
+                    height: 440,
                     onFinish: function() {
                         $scope.$apply();
                     }
-                };
+                });
+
             });
 
             $scope.startGame = function() {
@@ -168,7 +170,7 @@
 
         })
 
-        .controller("bw.main.hello.step3.Ctrl", function($scope, BotSource) {
+        .controller("bw.main.hello.step3.Ctrl", function($scope, BattleSetup) {
             $scope.options = {pause: true};
 
 
@@ -180,35 +182,35 @@
 
             function newGame() {
 
-                $scope.game = {
+                $scope.game = BattleSetup.createGame({
                     sides: [
                         {
                             color: "blue",
                             units: [
                                 {
                                     type: "footman",
-                                    position: {x: 70, y: 150},
-                                    direction: Math.PI,
-                                    bot: BotSource.createBot($scope.fightBot, "footman")
+                                    count: 1
                                 }
-                            ]
+                            ],
+                            bot: {code: $scope.fightBot}
                         },
                         {
                             color: "red",
                             units: [
                                 {
                                     type: "grunt",
-                                    position: {x: 270, y: 150},
-                                    direction: Math.PI,
-                                    bot: BotSource.createBot($scope.veteranBot, "grunt")
+                                    count: 1
                                 }
-                            ]
+                            ],
+                            bot: {code: $scope.veteranBot}
                         }
                     ],
+                    width: 440,
+                    height: 440,
                     onFinish: function() {
                         $scope.$apply();
                     }
-                };
+                });
 
             }
 
