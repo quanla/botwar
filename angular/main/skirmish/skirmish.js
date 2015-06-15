@@ -76,9 +76,11 @@
                                             bot: $scope.bots[1]
                                         }
                                     ],
-                                    width: 500,
-                                    height: 500
+                                    width: 750,
+                                    height: 750
                                 };
+
+                                SkirmishStorage.saveBattleSetup($scope.battleSetup);
 
                                 $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
                             }
@@ -104,6 +106,8 @@
                         }
 
                     }, true);
+
+                    $scope.resetBattleSetup = loadDefaultBattleSetup;
                 }
             };
         })
@@ -121,6 +125,7 @@
                     localStorage["skirmish.battleSetup"] = JSON.stringify(toSave);
                 },
                 loadBattleSetup: function(bots) {
+                    //delete localStorage["skirmish.battleSetup"];
                     var loadStr = localStorage["skirmish.battleSetup"];
                     //loadStr = null;
                     if (loadStr == null) {

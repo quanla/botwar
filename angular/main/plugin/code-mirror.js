@@ -11,12 +11,15 @@
                 link: function($scope, elem, attrs) {
 
                     var editor = CodeMirror(elem[0], {
+                        height: 500,
                         mode:  "javascript",
                         lineNumbers: true
                     });
 
                     $scope.$watch(attrs.codeMirror, function(value) {
-                        editor.setValue(value || "");
+                        if (editor.getValue() != (value || "")) {
+                            editor.setValue(value || "");
+                        }
                     });
 
                     var model = $parse(attrs.codeMirror);

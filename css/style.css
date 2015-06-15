@@ -56,3 +56,8 @@ select.text-capitalize option {
 .list-group.challenge-list > .list-group-item .on-hover {
     display: none;
 }
+
+.CodeMirror {
+    border: 1px solid #eee;
+    height: 100% !important;
+}

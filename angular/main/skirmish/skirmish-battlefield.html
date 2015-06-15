@@ -15,9 +15,25 @@
             </div>
         </div>
 
-        <label>
-            <input type="checkbox" ng-model="battleSetup.continuous"> Fight continuously
-        </label>
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-capitalize">Battle Setup
+            </div>
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label">Winning Condition</label>
+                    <select class="form-control">
+                        <option option-cond="battleSetup.continuous: false">Last man stand</option>
+                        <option option-cond="battleSetup.continuous: true">Continuous</option>
+                    </select>
+
+                </div>
+
+                <button class="btn btn-default" ng-click="resetBattleSetup()">Reset Battle Setup</button>
+            </div>
+        </div>
+
     </div>
     <div class="col-lg-9 text-center">
         <div battlefield="game" options="options"></div>
