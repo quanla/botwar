@@ -187,12 +187,8 @@
                             destroy: function() {
                                 stopped = true;
                             },
-                            setWidth: function(width) {
-                                renderer.view.style.width = width + 'px';
-                            },
-                            setHeight: function(height) {
-                                renderer.view.style.height = height + 'px';
-                            },
+                            width: width,
+                            height: height,
                             view: renderer.view
                         };
                     }

@@ -70,7 +70,7 @@ ColLink.prototype = {
     findO: function(o, start) {
         for (var i = start; i < this.link.length; i++) {
             var h = this.link[i];
-            if (h === o) {
+            if (h.o === o) {
                 return i;
             }
         }
@@ -110,11 +110,11 @@ ColLink.prototype = {
                     this.removeFunc(h.l);
                 }
             }
-            this.link.splice(i, this.link.length);
+            this.link.splice(i, this.link.length - i);
         } else if (i < this.oriCol.length) {
             // OriCol has more elems
             // Add new elems to link col
-            for (var j = 0; j < this.oriCol.length; j++) {
+            for (var j = i; j < this.oriCol.length; j++) {
                 var o = this.oriCol[j];
                 var l = this.createFunc(o);
                 this.link.push({o: o, l: l});

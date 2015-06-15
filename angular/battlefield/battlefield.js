@@ -26,23 +26,21 @@
                     var renderer;
                     $scope.$watch("game", function(game) {
 
-                        if (renderer) {
-                            renderer.destroy();
-                            elem[0].removeChild(renderer.view);
-                            renderer = null;
-                        }
-
                         if (unitSprites != null) {
                             unitSprites.release();
                             unitSprites = null;
                         }
 
                         if (game != null) {
+                            if (renderer == null || renderer.width != game.battlefield.width + 60 || renderer.height != game.battlefield.height + 60) {
+                                if (renderer) {
+                                    renderer.destroy();
+                                    elem[0].removeChild(renderer.view);
+                                }
 
-
-                            renderer = Renderers.createRenderer(game.battlefield.width + 60, game.battlefield.height + 60);
-
-                            elem[0].appendChild(renderer.view);
+                                renderer = Renderers.createRenderer(game.battlefield.width + 60, game.battlefield.height + 60);
+                                elem[0].appendChild(renderer.view);
+                            }
 
                             gameRunner = GameRunner.newGameRunner(game, $scope.options);
 

@@ -58,9 +58,6 @@
                         return {
                             truth: truth,
                             sync: function() {
-                                if (!UnitUtil.alive(unit)) {
-                                    return;
-                                }
                                 truth.direction = unit.direction;
                                 truth.velocity = unit.velocity;
                                 truth.position = ObjectUtil.clone(unit.position);
@@ -138,8 +135,7 @@
                                         if (unit.bot.run == null) {
                                             throw "Wrong bot config: " + unit.bot + ", run function is missing";
                                         }
-                                        var traverse = sideTruth;
-                                        var control = BotControl.createControl(unit, round, traverse);
+                                        var control = BotControl.createControl(unit, round, sideTruth);
 
                                         unit.bot.run(control);
 
