@@ -9,20 +9,18 @@
         .factory("UnitUtil", function() {
             return {
                 alive: function(unit) {
-                    return unit.state == null || unit.state.name != "die" ? unit : null;
+                    return unit.state.name != "die" ? unit : null;
                 }
             };
         })
 
         .factory("BotRunner", function(BotControl, UnitUtil) {
             function isLocked(unit, round) {
-                if (unit.state != null) {
-                    if (unit.state.name == "fight") {
-                        return true;
-                    }
-                    if (unit.state.name == "die" && round > unit.state.since + 1) {
-                        return true;
-                    }
+                if (unit.state.name == "fight") {
+                    return true;
+                }
+                if (unit.state.name == "die" && round > unit.state.since + 1) {
+                    return true;
                 }
 
                 if (round < unit.botBlockedUtil) {
@@ -157,7 +155,7 @@
 
                                         unit.bot.run(control);
 
-                                        if (unit.state != null && unit.state.name == "die") return; // This is the last run
+                                        if (unit.state.name == "die") return; // This is the last run
 
                                         unit.messages = null;
 

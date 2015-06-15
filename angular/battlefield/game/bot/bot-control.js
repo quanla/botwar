@@ -71,20 +71,20 @@
                                 battlefield: {width: game.battlefield.width, height: game.battlefield.height},
 
                                 turnToward: function(pos) {
-                                    if (unit.state != null && unit.state.name == "die") return; // This is the last run
+                                    if (unit.state.name == "die") return; // This is the last run
 
                                     this.direction = Vectors.toVector( Vectors.subtractPos(pos, unit.position)).direction;
                                 },
                                 turnAway: function(pos) {
-                                    if (unit.state != null && unit.state.name == "die") return; // This is the last run
+                                    if (unit.state.name == "die") return; // This is the last run
 
                                     this.direction = Vectors.toVector( Vectors.subtractPos(unit.position, pos)).direction;
                                 },
                                 goForward: function() {
-                                    if (unit.state != null && unit.state.name == "die") return; // This is the last run
+                                    if (unit.state.name == "die") return; // This is the last run
 
                                     unit.botBlockedUtil = round + 10;
-                                    if (unit.state != null && unit.state.name == "walk") {
+                                    if (unit.state.name == "walk") {
                                         return;
                                     }
                                     unit.state = {
@@ -94,7 +94,7 @@
                                     unit.moveAccel = 1;
                                 },
                                 fight: function() {
-                                    if (unit.state != null && unit.state.name == "die") return; // This is the last run
+                                    if (unit.state.name == "die") return; // This is the last run
 
                                     unit.state = {
                                         name: "fight",
@@ -104,9 +104,9 @@
                                     unit.moveAccel = 0;
                                 },
                                 stand: function() {
-                                    if (unit.state != null && unit.state.name == "die") return; // This is the last run
+                                    if (unit.state.name == "die") return; // This is the last run
 
-                                    unit.state = null;
+                                    unit.state = {name: "stand"};
                                     unit.botBlockedUtil = null;
                                     unit.moveAccel = 0;
                                 },

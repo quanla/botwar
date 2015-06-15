@@ -60,7 +60,7 @@
                             hit: function(props) {
 
                                 var adjustantEnemies = Cols.filter(GameUtil.getEnemies(props.source), function(enemy) {
-                                    if (enemy.state != null && enemy.state.name == "die" ) {
+                                    if (enemy.state.name == "die" ) {
                                         return false; // Immune to damage
                                     }
 
@@ -109,7 +109,7 @@
                             },
                             arrow: function(props) {
                                 return GameUtil.eachUnit(game, function(unit) {
-                                    if (unit.state != null && unit.state.name == "die" ) {
+                                    if (unit.state.name == "die" ) {
                                         return; // Immune to damage
                                     }
 
@@ -179,36 +179,35 @@
                             limitPosition(unit.position, game.battlefield);
                         }
 
-                        if (unit.state != null) {
-                            if (unit.state.name == "fight") {
-                                var fightingStyle = UnitFightingStyle.getUnitFightingStyle(unit);
-                                if (fightingStyle.createHitImpact && (round - unit.state.since) == fightingStyle.createHitImpact) {
-                                    impact.hit({
-                                        vector: {
-                                            direction: unit.direction,
-                                            value: 45
-                                        },
-                                        start: unit.position,
-                                        source: unit,
-                                        damage: fightingStyle.damage
-                                    });
-                                } else if (fightingStyle.launchCreateArrow && (round - unit.state.since) == fightingStyle.launchCreateArrow) {
-                                    game.nature.push({
-                                        type: "arrow",
-                                        position: ObjectUtil.clone(unit.position),
-                                        start: ObjectUtil.clone(unit.position),
+                        if (unit.state.name == "fight") {
+                            var fightingStyle = UnitFightingStyle.getUnitFightingStyle(unit);
+                            if (fightingStyle.createHitImpact && (round - unit.state.since) == fightingStyle.createHitImpact) {
+                                impact.hit({
+                                    vector: {
                                         direction: unit.direction,
-                                        side: unit.side,
-                                        damage: fightingStyle.damage,
-                                        moveAccel: 100
-                                    });
-                                } else if ((round - unit.state.since) == fightingStyle.fightFinish) {
-                                    unit.state = null;
-                                }
-                            } else if (unit.state.name == "die") {
-                                if (round - unit.state.since > 500) {
-                                    Cols.remove(unit, unit.side.units);
-                                }
+                                        value: 45
+                                    },
+                                    start: unit.position,
+                                    source: unit,
+                                    damage: fightingStyle.damage
+                                });
+                            } else if (fightingStyle.launchCreateArrow && (round - unit.state.since) == fightingStyle.launchCreateArrow) {
+                                game.nature.push({
+                                    type: "arrow",
+                                    state: {name: "fly"},
+                                    position: ObjectUtil.clone(unit.position),
+                                    start: ObjectUtil.clone(unit.position),
+                                    direction: unit.direction,
+                                    side: unit.side,
+                                    damage: fightingStyle.damage,
+                                    moveAccel: 100
+                                });
+                            } else if ((round - unit.state.since) == fightingStyle.fightFinish) {
+                                unit.state = {name: "stand"};
+                            }
+                        } else if (unit.state.name == "die") {
+                            if (round - unit.state.since > 500) {
+                                Cols.remove(unit, unit.side.units);
                             }
                         }
 

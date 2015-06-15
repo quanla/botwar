@@ -19,7 +19,7 @@
             this.$get = function() {
                 return {
                     getUnitPhysics: function(unit) {
-                        if (unit.state == null || unit.state.name != "die") {
+                        if (unit.state.name != "die") {
                             return types[unit.type];
                         } else {
                             return dirt;

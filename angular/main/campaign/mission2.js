@@ -30,7 +30,7 @@
                         checkFinish: function(game) {
 
                             var blue = game.sides[0].units[0];
-                            if (blue.state != null && blue.state.name == "die") {
+                            if (blue.state.name == "die") {
                                 return {
                                     h2: "Oh no, he killed you!",
                                     p: "Run faster next time will you..."
@@ -38,7 +38,7 @@
                             }
 
                             var red = game.sides[1].units[0];
-                            if (red.state != null && red.state.name == "die") {
+                            if (red.state.name == "die") {
                                 return {
                                     h2: "Oh no, don't kill him!",
                                     p: "I know you are strong, but this time, run..."
@@ -46,7 +46,7 @@
                             }
                         },
                         afterRedBotRun: function(unit) {
-                            if (unit.state != null && unit.state.name == "fight") {
+                            if (unit.state.name == "fight") {
                                 countHit++;
                                 if (countHit == 3) {
                                     //unit.state = null;

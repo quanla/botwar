@@ -175,6 +175,9 @@
                 if (unit.hitpoint == null) {
                     unit.hitpoint = GameSetup.getDefaultHitpoint(unit.type);
                 }
+                if (unit.state == null) {
+                    unit.state = {name: "stand"};
+                }
                 unit.side = side;
                 unit.birth = 0;
             }

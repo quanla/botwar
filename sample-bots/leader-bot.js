@@ -36,7 +36,7 @@ function Bot() {
         }
 
         // If I'm dying, somebody else should take the lead
-        if (leader == control.self && (control.state != null && control.state.name == "die")) {
+        if (leader == control.self && control.state.name == "die") {
             var nextLeader = control.getNearestFriend();
 
             // All bow to the next leader

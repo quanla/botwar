@@ -83,7 +83,7 @@
                                 container: container,
                                 sync: function(round) {
 
-                                    var state = unit.state || {name: "stand"};
+                                    var state = unit.state;
 
                                     var direction = unit.direction || 0;
 

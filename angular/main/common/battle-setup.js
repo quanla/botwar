@@ -24,6 +24,7 @@
                                     position: positions(unitConfig.type),
                                     direction: sideNum * Math.PI + Math.PI / 2,
                                     bot: bot,
+                                    state: {name: "stand"},
                                     afterBotRun: unitConfig.afterBotRun
                                 });
                             }
@@ -81,7 +82,7 @@
                         var side = game.sides[i];
                         for (var j = 0; j < side.units.length; j++) {
                             var unit = side.units[j];
-                            if (unit.state == null || unit.state.name != "die" ) {
+                            if (unit.state.name != "die" ) {
                                 if (Distance.between(unit.position, p) <= 40) {
                                     continue LOOP;
                                 }
@@ -104,6 +105,7 @@
                     hitpoint: 100,
                     bot: BotSource.createBot(bot.code, type),
                     side: side,
+                    state: {name: "stand"},
                     birth: round
                 };
                 side.units.push(unit);
