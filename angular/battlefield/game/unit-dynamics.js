@@ -30,22 +30,33 @@
             };
 
             this.$get = function(GameUtil, UnitPhysics) {
+
                 return {
                     prepare: function(game, round) {
+
+                        function applyHit(unit, props) {
+                            unit.hitpoint -= props.damage;
+                            var damaged = props.damage;
+                            if (unit.hitpoint < 0) {
+                                damaged += unit.hitpoint;
+                            }
+                            unit.isHit = {since: round};
+
+                            if (unit.hitpoint <= 0) {
+                                unit.state = {
+                                    name: "die",
+                                    since: round
+                                };
+                                unit.moveAccel = 0;
+                            }
+
+                            if (props.source.side.onDamage) {
+                                props.source.side.onDamage(damaged);
+                            }
+                        }
+
                         return {
                             hit: function(props) {
-                                function applyHit(unit) {
-                                    unit.hitpoint -= props.damage;
-                                    unit.isHit = {since: round};
-
-                                    if (unit.hitpoint <= 0) {
-                                        unit.state = {
-                                            name: "die",
-                                            since: round
-                                        };
-                                        unit.moveAccel = 0;
-                                    }
-                                }
 
                                 var adjustantEnemies = Cols.filter(GameUtil.getEnemies(props.source), function(enemy) {
                                     if (enemy.state != null && enemy.state.name == "die" ) {
@@ -61,7 +72,7 @@
                                 var enemy = Cols.findMin(canHit, function(enemy) { return Distance.between(props.start, enemy.position); });
 
                                 if (enemy != null) {
-                                    applyHit(enemy);
+                                    applyHit(enemy, props);
                                 }
                             },
                             makeWay: function(props) {
@@ -101,19 +112,10 @@
                                         return; // Immune to damage
                                     }
 
-                                    if (types[unit.type].takeHit && props.side != unit.side) {
+                                    if (types[unit.type].takeHit && props.source.side != unit.side) {
 
-                                        if (Distance.between(unit.position, props.position) < 15) {
-                                            unit.hitpoint -= props.damage;
-                                            unit.isHit = {since: round};
-
-                                            if (unit.hitpoint <= 0) {
-                                                unit.state = {
-                                                    name: "die",
-                                                    since: round
-                                                };
-                                                unit.moveAccel = 0;
-                                            }
+                                        if (Distance.between(unit.position, props.position) < 20) {
+                                            applyHit(unit, props);
                                             return true;
                                         }
                                     }
@@ -213,7 +215,7 @@
                             if (
                                 impact.arrow({
                                     position: unit.position,
-                                    side: unit.side,
+                                    source: unit,
                                     damage: unit.damage
                                 })
                                 || Distance.between(unit.position, unit.start) > 200

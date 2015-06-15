@@ -22,9 +22,16 @@
     <div class="col-lg-9 text-center">
         <div battlefield="game" options="options"></div>
 
-        <button class="btn btn-sm"
-                ng-class="options.consume == 3 ? 'btn-primary' : 'btn-default'"
-                ng-click="options.consume = options.consume == 3 ? null : 3"><span class="glyphicon glyphicon-forward"></span></button>
+        <span class="text-primary well well-sm">
+            Blue:
+            <span battle-point="game:blue"></span>
+        </span>
+        &nbsp;
+        <span class="text-danger well well-sm">
+            Red:
+            <span battle-point="game:red"></span>
+        </span>
+        &nbsp;
     </div>
 </div>
 
@@ -32,6 +39,13 @@
 <div class="row">
     <div class="col-lg-12 text-center">
         <br/>
-        <button class="btn btn-lg btn-primary" ng-click="startGame()" ng-class="{ disabled: game==null }">Start The Game!</button>
+        <div class="btn-group btn-group-lg">
+            <button class="btn btn-primary" ng-click="startGame()" style="width: 200px" ng-class="{ disabled: game==null }">
+                <span class="glyphicon glyphicon-play"></span>
+            </button>
+            <button class="btn"
+                    ng-class="options.consume == 3 ? 'btn-primary' : 'btn-default'"
+                    ng-click="options.consume = options.consume == 3 ? null : 3"><span class="glyphicon glyphicon-forward"></span></button>
+        </div>
     </div>
 </div>

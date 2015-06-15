@@ -1,12 +1,27 @@
 <div class="text-center">
-    <div width="1000" height="800" battlefield="game" options="options"></div>
-    <button class="btn btn-default" style="width: 200px"
-            ng-click="options.pause = !options.pause">
-        <span class="glyphicon"
-              ng-class="options.pause ? 'glyphicon-play' : 'glyphicon-pause'"></span>
-    </button>
+    <div battlefield="game" options="options"></div>
 
-    <button class="btn"
-            ng-class="options.consume == 3 ? 'btn-primary' : 'btn-default'"
-            ng-click="options.consume = options.consume == 3 ? null : 3"><span class="glyphicon glyphicon-forward"></span></button>
+    <div>
+
+        <span class="text-primary well well-sm">
+            Blue:
+            <span battle-point="game:blue"></span>
+        </span>
+        &nbsp;
+        <span class="text-danger well well-sm">
+            Red:
+            <span battle-point="game:red"></span>
+        </span>
+        &nbsp;
+
+        <button class="btn btn-default" style="width: 200px"
+                ng-click="options.pause = !options.pause">
+            <span class="glyphicon"
+                  ng-class="options.pause ? 'glyphicon-play' : 'glyphicon-pause'"></span>
+        </button>
+
+        <button class="btn"
+                ng-class="options.consume == 3 ? 'btn-primary' : 'btn-default'"
+                ng-click="options.consume = options.consume == 3 ? null : 3"><span class="glyphicon glyphicon-forward"></span></button>
+    </div>
 </div>
