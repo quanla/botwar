@@ -5,33 +5,9 @@
     angular.module('bw.battlefield.game.bot.bot-control', [
     ])
 
-        .factory("BotControl", function(UnitUtil, GameUtil) {
-            function info(unit) {
-                return unit== null ? null : {
-                    type: unit.type,
-                    direction: unit.direction,
-                    velocity: unit.velocity,
-                    position: ObjectUtil.clone(unit.position),
-                    state: ObjectUtil.clone(unit.state)
-                };
-            }
-            function friendInfo(unit) {
-                return unit== null ? null : info(unit);
-            }
+        .factory("BotControl", function() {
             return {
-                createControl: function(unit, round, game) {
-
-                    var traverse = {
-                        getEnemies: function() {
-                            return Cols.yield(GameUtil.getEnemies(unit), Fs.chain(UnitUtil.alive, info));
-                        },
-                        getFriends: function() {
-                            var notSelf = function (unit1) {
-                                return unit1 == unit ? null : unit1;
-                            };
-                            return Cols.yield(unit.side.units, Fs.chain(notSelf, UnitUtil.alive, friendInfo));
-                        }
-                    };
+                createControl: function(unit, round, traverse) {
 
                     var selector = {
                         getNearestEnemy: function() {
@@ -101,7 +77,9 @@
 
                         getEnemies: traverse.getEnemies,
                         getNearestEnemy: selector.getNearestEnemy,
-                        getFriends: traverse.getFriends,
+                        getFriends: function() {
+                            return traverse.getFriends(unit);
+                        },
                         predictPosition: predict.predictPosition
                     }
                 }

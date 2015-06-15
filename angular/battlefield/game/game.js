@@ -62,9 +62,10 @@
                         sc.pause(options.pause);
                     }
 
+                    var botRunner = BotRunner.createBotRunner(game);
                     sc.setAction(function(round) {
                         // Decide to move, change state
-                        BotRunner.runBots(game, round);
+                        botRunner.runBots(round);
 
                         // Change velocity, position
                         // action impacts
