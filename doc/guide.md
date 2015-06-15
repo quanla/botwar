@@ -37,7 +37,6 @@ Here are functions and attributes of the control object:
  - `control.getNearestEnemy()`: Return nearest enemy to the unit's current position.
  - `control.getFriends()`: Return the list of all friends in the battle field.
  - `control.predictPosition(unit, roundNum)`: Predict the position of unit after `roundNum` number of rounds. Prediction is based on unit's current position and current velocity.
- 
 
 ### Robot blocking
 
