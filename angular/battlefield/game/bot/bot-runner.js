@@ -65,17 +65,6 @@
                             },
                             birth: unit.birth
                         };
-
-                        for (var i = 0; i < side.units.length; i++) {
-                            var friend = side.units[i];
-                            if (friend.birth >= unit.birth) {
-                                continue;
-                            }
-                            if (friend.newFriends == null) {
-                                friend.newFriends = [];
-                            }
-                            friend.newFriends.push(truth);
-                        }
                         return {
                             truth: truth,
                             sync: function() {
@@ -171,7 +160,6 @@
                                         if (unit.state != null && unit.state.name == "die") return; // This is the last run
 
                                         unit.messages = null;
-                                        unit.newFriends = null;
 
                                         if (unit.afterBotRun) {
                                             unit.afterBotRun(unit);

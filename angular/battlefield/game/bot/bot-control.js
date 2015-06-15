@@ -68,9 +68,6 @@
                                 direction: unit.direction,
                                 state: unitPresHandle.l.truth.state,
 
-                                messages: unit.messages,
-                                newFriends: unit.newFriends,
-
                                 battlefield: {width: game.battlefield.width, height: game.battlefield.height},
 
                                 turnToward: function(pos) {
@@ -135,7 +132,21 @@
                                 getFriends: function() {
                                     return traverse.getFriends(unit);
                                 },
-                                predictPosition: predict.predictPosition
+                                predictPosition: predict.predictPosition,
+
+                                messages: unit.messages,
+                                setFact: function(name, value) {
+                                    if (unit.side.facts == null) {
+                                        unit.side.facts = {};
+                                    }
+                                    unit.side.facts[name] = value;
+                                },
+                                getFact: function(name) {
+                                    if (unit.side.facts == null) {
+                                        return null;
+                                    }
+                                    return unit.side.facts[name];
+                                }
                             }
                         }
                     };
