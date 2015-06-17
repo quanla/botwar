@@ -17,9 +17,6 @@
                 },
                 link: function($scope, elem, attrs) {
 
-                    UnitSprites.init();
-
-
                     var unitSprites;
                     var gameRunner;
 

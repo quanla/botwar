@@ -10,13 +10,7 @@
                 return u1.position.y > u2.position.y;
             }
 
-            var inited = false;
             return {
-                init: function() {
-                    if (!inited) {
-                        inited = true;
-                    }
-                },
                 createUnitSprites: function(game, unitStage, dirtStage) {
                     var orderCache = [];
 
