@@ -7,7 +7,7 @@ function Bot() {
         var leader = control.getFact("leader");
 
         if (leader == null) {
-            // Claim to be leader, send message to all friends
+            // Claim to be leader
             control.setFact("leader", control.self);
             leader = control.self;
         }
@@ -35,7 +35,7 @@ function Bot() {
             }
         }
 
-        // If I'm dying, somebody else should take the lead
+        // If I'm dying, somebody else should be the leader
         if (leader == control.self && control.state.name == "die") {
             var nextLeader = control.getNearestFriend();
 

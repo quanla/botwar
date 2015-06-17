@@ -113,7 +113,7 @@
                         return friends;
                     },
                     eachFriendHandle: function(p) {
-                        friendsLink.link.forEach(p);
+                        return Cols.find(friendsLink.link, p) != null;
                     },
                     eachFriend: function(unit, p) {
                         for (var j = 0; j < friendsLink.link.length; j++) {
@@ -144,7 +144,7 @@
                                 var sideTruth = sideTruths[i];
                                 sideTruth.sync();
 
-                                sideTruth.eachFriendHandle(function(h) {
+                                var hasError = sideTruth.eachFriendHandle(function (h) {
                                     var unit = h.o;
                                     if (unit.bot && !isLocked(unit, round)) {
 
@@ -153,9 +153,18 @@
                                         }
                                         var control = botControl.createControl(h, round, sideTruth);
 
-                                        unit.bot.run(control);
-
-                                        if (unit.state.name == "die") return; // This is the last run
+                                        try {
+                                            unit.bot.run(control);
+                                        } catch (e) {
+                                            if (unit.bot.errorHandler) {
+                                                unit.bot.errorHandler(e);
+                                            } else {
+                                                console.log("Error while running \"" + unit.side.color + "\" bot:");
+                                                console.log(e);
+                                            }
+                                            return true;
+                                            //throw e;
+                                        }
 
                                         unit.messages = null;
 
@@ -163,17 +172,25 @@
                                             unit.afterBotRun(unit);
                                         }
 
-                                        if (Math.abs(control.direction - unit.direction) > Math.PI/30) {
-                                            //console.log("Blocked");
+                                        if (Math.abs(control.direction - unit.direction) > Math.PI / 30) {
                                             unit.botBlockedUtil = unit.botBlockedUtil == null ? round + 10 : Math.max(unit.botBlockedUtil, round + 10);
                                         }
-                                        //Math.PI/30
+
+
+                                        if (unit.state.name == "die") return; // This is the last run
+
                                         if (!isNaN(control.direction)) {
                                             unit.direction = control.direction;
                                         }
                                     }
                                 });
+
+                                if (hasError) {
+                                    return true;
+                                }
                             }
+
+                            return false;
                         }
                     };
                 }

@@ -25,9 +25,10 @@
         })
 
         .factory("GameRunner", function(BotRunner, UnitDynamics, GameUtil, UnitUtil, GameSetup) {
-
             return {
                 newGameRunner: function(game, options) {
+                    var isErrored = false;
+
                     initGame(game, GameSetup);
 
                     function updateGameState(game, round) {
@@ -67,8 +68,12 @@
 
                     var botRunner = BotRunner.createBotRunner(game);
                     sc.setAction(function(round) {
+                        if (isErrored) return;
+
                         // Decide to move, change state
-                        botRunner.runBots(round);
+                        if (botRunner.runBots(round)) {
+                            isErrored = true;
+                        }
 
                         // Change velocity, position
                         // action impacts
