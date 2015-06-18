@@ -5,7 +5,7 @@
     angular.module('bw.main.battle-setup', [
     ])
 
-        .factory("BattleSetup", function(PositionGenerator, BotSource) {
+        .factory("BattleSetup", function(PositionGenerator, UnitUtil, BotSource) {
             return {
                 createGame: function(battleSetup, prepareBot) {
 
@@ -31,7 +31,10 @@
                         }
                         sides.push({
                             color: sideNum == 0 ? "blue" : "red",
-                            units: units
+                            units: units,
+                            checkLose: function() {
+                                return battleSetup.continuous ? false : Cols.find(units, UnitUtil.alive) == null;
+                            }
                         });
                     }
 

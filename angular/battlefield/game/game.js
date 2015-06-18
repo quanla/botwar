@@ -34,30 +34,32 @@
                     function updateGameState(game) {
                         if (game.finished) return;
 
-                        var result = isGameFinished(game);
+                        var result = checkGameFinished(game);
                         if (result) {
                             game.finish();
                         }
                     }
 
-                    function isGameFinished(game) {
-                        if (game.continuous == true) {
-                            return false;
-                        }
+                    function checkGameFinished(game) {
                         var count = 0;
-                        var winningSide;
+                        //var winningSide;
                         for (var i = 0; i < game.sides.length; i++) {
                             var side = game.sides[i];
-                            var hasAlive = Cols.find(side.units, UnitUtil.alive) != null;
-                            if (hasAlive) {
-                                winningSide = side;
+
+                            if (!side.lost && side.checkLose) {
+                                if (side.checkLose()) {
+                                    side.lost = true;
+                                }
+                            }
+                            if (!side.lost) {
+                                //winningSide = side;
                                 count++;
                                 if (count > 1) {
                                     return false;
                                 }
                             }
                         }
-                        return winningSide;
+                        return true;
                     }
 
                     var sc = speedControl();

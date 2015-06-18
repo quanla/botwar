@@ -78,7 +78,10 @@
                                         }
                                     ],
                                     width: 750,
-                                    height: 750
+                                    height: 750,
+                                    onFinish: function() {
+                                        $scope.$applyAsync();
+                                    }
                                 };
 
                                 SkirmishStorage.saveBattleSetup($scope.battleSetup);
@@ -102,6 +105,11 @@
                             SkirmishStorage.saveBattleSetup($scope.battleSetup);
                         } else if (value == null) {
                             $scope.battleSetup = SkirmishStorage.loadBattleSetup($scope.bots);
+
+                            $scope.battleSetup.onFinish = function() {
+                                $scope.$applyAsync();
+                            };
+
                             if ($scope.battleSetup != null) {
                                 $scope.game = BattleSetup.createGame($scope.battleSetup, false);
                                 $scope.options.pause = true;
@@ -121,6 +129,7 @@
             return {
                 saveBattleSetup: function(battleSetup) {
                     var toSave = ObjectUtil.clone(battleSetup);
+                    delete toSave.onFinish;
                     for (var i = 0; i < toSave.sides.length; i++) {
                         var side = toSave.sides[i];
                         if (side.bot != null) {

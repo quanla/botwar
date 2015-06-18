@@ -9,6 +9,7 @@
         .factory("UnitUtil", function() {
             return {
                 alive: function(unit) {
+                    //console.log(unit);
                     return unit.state.name != "die" ? unit : null;
                 }
             };
