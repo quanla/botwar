@@ -63,25 +63,26 @@ select.text-capitalize option {
 }
 
 .winning-conditions {
-    padding-left: 20px;
 }
 
-.winning-conditions li {
-    padding: 4px 4px 4px 2px;
+.winning-conditions .winning-condition:hover {
+    cursor: pointer;
+    background-color: #EEEEEE;
 }
-.winning-conditions li .btn {
+
+.winning-conditions .winning-condition {
+    margin: 2px 0px 2px 0px;
+    padding: 4px 4px 4px 10px;
+}
+.winning-conditions .winning-condition .btn {
     padding: 2px 0 2px 0px;
     width: 23px;
     display: none;
 }
-.winning-conditions li:hover .btn {
+.winning-conditions .winning-condition:hover .btn {
     display: block;
 }
 
-.winning-conditions li:hover {
-    cursor: pointer;
-    background-color: #EEEEEE;
-}
 
 .add-condition-btn {
     border: 1px dashed gray;
@@ -93,4 +94,8 @@ select.text-capitalize option {
 .add-condition-btn:hover {
     cursor: pointer;
     background-color: #EEEEEE;
+}
+
+.del {
+    text-decoration: line-through;
 }

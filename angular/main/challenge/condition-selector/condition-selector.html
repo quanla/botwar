@@ -7,12 +7,12 @@
     <div class="panel-body">
 
         <div>
-            <ul class="winning-conditions">
-                <li ng-repeat="cond in setup.winningConditions">
-                    {{getName(cond.name)}}
+            <div class="winning-conditions">
+                <div class="winning-condition" ng-repeat="cond in setup.winningConditions">
+                    - <span ng-class="{del: !wouldApply(cond)}">{{getName(cond)}}</span>
                     <button class="btn btn-sm btn-default pull-right" ng-click="remove(cond)">-</button>
-                </li>
-            </ul>
+                </div>
+            </div>
             <div class="add-condition-btn">+</div>
         </div>
     </div>

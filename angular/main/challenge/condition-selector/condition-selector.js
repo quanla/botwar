@@ -14,6 +14,9 @@
                 },
                 link: function($scope, elem, attrs) {
                     $scope.getName = WinConditions.getName;
+                    $scope.wouldApply = function(cond) {
+                        return WinConditions.wouldApply(cond, $scope.setup);
+                    };
 
                     $scope.remove = function(cond) {
                         Cols.remove(cond, $scope.setup.winningConditions);

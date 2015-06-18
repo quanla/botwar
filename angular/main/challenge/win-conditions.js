@@ -24,8 +24,8 @@
             };
 
             return {
-                getName: function(name) {
-                    return types[name].display;
+                getName: function(cond) {
+                    return types[cond.name].display;
                 },
                 wouldApply: function(cond, battleSetup) {
                     return types[cond.name].wouldApply(battleSetup);
