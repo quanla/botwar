@@ -3,6 +3,7 @@
 (function () {
 
     angular.module('bw.main.create-challenge', [
+        'bw.main.challenge.challenge-setup',
         'bw.main.create-challenge.condition-selector',
         'bw.unit-selector',
         'bw.main.challenge-api',
@@ -20,50 +21,64 @@
             ;
         }])
         
-        .controller("create-challenge.ctrl", function($scope, UserStorage, BattleSetup, PositionGenerator, BotSource, $modal) {
+        .controller("create-challenge.ctrl", function($scope, UserStorage, BattleSetup, PositionGenerator, BotSource, $modal, ChallengeSetup) {
+
+            $scope.options = {
+
+            };
+
+            $scope.challengeSetup = {
+                width: 500,
+                height: 500,
+                sides: [
+                    {
+                        color: "blue",
+                        units: [
+                            {
+                                type: "footman",
+                                count: 1
+                            },
+                            {
+                                type: "archer",
+                                count: 0
+                            },
+                            {
+                                type: "knight",
+                                count: 0
+                            }
+                        ]
+                    },
+                    {
+                        color: "red",
+                        units: [
+                            {
+                                type: "footman",
+                                count: 1
+                            },
+                            {
+                                type: "archer",
+                                count: 0
+                            },
+                            {
+                                type: "knight",
+                                count: 0
+                            }
+                        ]
+                    }
+                ]
+            };
+
             UserStorage.loadUserBots().then(function (bots) {
                 $scope.bots = bots;
-                $scope.myChampion = bots[0];
-                $scope.oppoBot = bots[0];
+                $scope.challengeSetup.sides[0].bot = bots[0];
+                $scope.challengeSetup.sides[1].bot = bots[0];
             });
 
             $scope.showCodeEditor = false;
 
-            $scope.changeBot = function (bot) {
-                $scope.myChampion = bot;
-            };
-
-            $scope.myUnits = [
-                {
-                    type: "footman",
-                    count: 1
-                },
-                {
-                    type: "archer",
-                    count: 0
-                },
-                {
-                    type: "knight",
-                    count: 0
-                }
-            ];
-            $scope.oppoUnits = [
-                {
-                    type: "footman",
-                    count: 1
-                },
-                {
-                    type: "archer",
-                    count: 0
-                },
-                {
-                    type: "knight",
-                    count: 0
-                }
-            ];
-
-            function createGame(oppoBot) {
-                $scope.game = BattleSetup.createGame(createBattleSetup(), oppoBot, oppoBot!=null);
+            function createGame() {
+                $scope.game = ChallengeSetup.createGame($scope.challengeSetup);
+                $scope.options.pause = true;
             }
 
             createGame();
@@ -76,34 +91,15 @@
             }, true);
 
             $scope.testFight = function () {
-                createGame($scope.oppoBot);
+                createGame();
+                $scope.options.pause = false;
             };
-
-
-            function createBattleSetup() {
-                return {
-                    width: 500,
-                    height: 500,
-                    sides: [
-                        {
-                            color: "blue",
-                            units: $scope.oppoUnits
-                        },
-                        {
-                            color: "red",
-                            units: $scope.myUnits,
-                            bot: $scope.myChampion
-                        }
-                    ]
-                };
-            }
-
 
             $scope.showPublishConfirm = function () {
                 $modal.open({
                     templateUrl: "angular/main/challenge/create-challenge/confirm-publish-modal.html",
                     controller: "create-challenge.confirm-modal.Ctrl",
-                    resolve: { getBattleSetup: function() {return createBattleSetup; } }
+                    resolve: { getBattleSetup: function() {return $scope.challengeSetup; } }
                 });
             };
         })
@@ -130,6 +126,7 @@
 
             $scope.cancel = $modalInstance.dismiss;
         })
+
 
     ;
 

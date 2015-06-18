@@ -8,11 +8,11 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading text-capitalize">
-                <h4><a href="" ng-click="showCodeEditor = !showCodeEditor">Your Champion - {{myChampion.name}}</a></h4>
+                <h4><a href="" ng-click="showCodeEditor = !showCodeEditor">Your Champion - {{challengeSetup.sides[1].bot.name}}</a></h4>
             </div>
 
             <div class="panel-body" ng-if="showCodeEditor">
-                <bw-editor bots="bots" current-bot="myChampion" change-bot="changeBot(bot)"></bw-editor>
+                <bw-editor bots="bots" current-bot="challengeSetup.sides[1].bot" change-bot="challengeSetup.sides[1].bot = bot"></bw-editor>
             </div>
         </div>
     </div>
@@ -30,10 +30,10 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label>Test Bot for opponent</label>
-                    <select class="form-control" ng-model="oppoBot" ng-options="b as b.name for b in bots"></select>
+                    <select class="form-control" ng-model="challengeSetup.sides[0].bot" ng-options="b as b.name for b in bots"></select>
                 </div>
                 <label>Opponent's Units</label>
-                <units-selector units="oppoUnits"></units-selector>
+                <units-selector units="challengeSetup.sides[0].units"></units-selector>
             </div>
         </div>
 
@@ -53,10 +53,10 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label>Your Champion Bot</label>
-                    <select class="form-control" ng-model="myChampion" ng-options="b as b.name for b in bots"></select>
+                    <select class="form-control" ng-model="challengeSetup.sides[1].bot" ng-options="b as b.name for b in bots"></select>
                 </div>
                 <label>Your Units</label>
-                <units-selector units="myUnits"></units-selector>
+                <units-selector units="challengeSetup.sides[1].units"></units-selector>
             </div>
         </div>
 

@@ -20,7 +20,7 @@
             <br/>
             <button class="btn btn-primary btn-lg" ng-click="startGame()">Fight!</button>
 
-            <div ng-if="game.isFinished">
+            <div ng-if="game.finished">
                 <br/>
                 Ah, he died, but what a dull battle huh?
                 <br/>
@@ -42,7 +42,7 @@
             <br/>
             <button class="btn btn-primary btn-lg" ng-click="startGame()">Fight!</button>
 
-            <div ng-if="game.isFinished">
+            <div ng-if="game.finished">
                 <br/>
                 Quite fun huh?
                 <br/>
@@ -62,9 +62,9 @@
             Red... the veteran.
             <br/>
             <br/>
-            <button class="btn btn-primary btn-lg" ng-click="startGame()" ng-bind="game.isFinished ? 'Try Again!' : 'Fight!'"></button>
+            <button class="btn btn-primary btn-lg" ng-click="startGame()" ng-bind="game.finished ? 'Try Again!' : 'Fight!'"></button>
 
-            <div ng-if="::game.isFinished">
+            <div ng-if="::game.finished">
                 <br/>
                 Ah ha, he attacks even before the Blue guy is near enough, and the stupid Blue guy can never win.
 

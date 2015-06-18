@@ -31,8 +31,8 @@
 
                     initGame(game, GameSetup);
 
-                    function updateGameState(game, round) {
-                        if (game.isFinished) return;
+                    function updateGameState(game) {
+                        if (game.finished) return;
 
                         var result = isGameFinished(game);
                         if (result) {
@@ -68,6 +68,10 @@
 
                     var botRunner = BotRunner.createBotRunner(game);
                     sc.setAction(function(round) {
+                        if (round > -1 && !game.started) {
+                            game.started = true;
+                        }
+
                         if (isErrored) return;
 
                         // Decide to move, change state
@@ -144,15 +148,17 @@
     ;
 
     function initGame(game, GameSetup) {
+        game.started = false;
+
         // Fill missing values
         if (game.nature == null) {
             game.nature = [];
         }
 
         game.finish = function() {
-            if (game.isFinished) return;
+            if (game.finished) return;
 
-            game.isFinished = true;
+            game.finished = true;
             if (game.onFinish) {
                 game.onFinish();
             }
