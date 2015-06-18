@@ -7,7 +7,7 @@
 
         .factory("BattleSetup", function(PositionGenerator, BotSource) {
             return {
-                createGame: function(battleSetup, defaultBot, hasBot) {
+                createGame: function(battleSetup, prepareBot) {
 
                     var sides = [];
 
@@ -17,7 +17,7 @@
                         for (var j = 0; j < side.units.length; j++) {
                             var unitConfig = side.units[j];
                             for (var k = 0; k < unitConfig.count; k++) {
-                                var botCode = hasBot == false ? null : side.bot != null ? side.bot.code : defaultBot != null ? defaultBot.code : null;
+                                var botCode = !prepareBot ? null : side.bot != null ? side.bot.code : null;
                                 var bot = botCode ? BotSource.createBot(botCode, unitConfig.type) : null;
                                 units.push({
                                     type: unitConfig.type,
@@ -50,7 +50,7 @@
                     } else if (battleSetup.continuous) {
                         game.continuous = battleSetup.continuous;
                         game.afterRoundDynamics = function(round) {
-                            ContinuousSupport.checkEachRound(game, battleSetup, defaultBot, round, BotSource);
+                            ContinuousSupport.checkEachRound(game, battleSetup, round, BotSource);
                         };
                     }
                     game.onFinish = battleSetup.onFinish;
@@ -62,7 +62,7 @@
     ;
 
     var ContinuousSupport = {
-        checkEachRound : function(game, battleSetup, defaultBot, round, BotSource) {
+        checkEachRound : function(game, battleSetup, round, BotSource) {
 
             function getSideSetup(color) {
                 return Cols.find(battleSetup.sides, function(side) { return side.color == color; });
@@ -124,7 +124,7 @@
                     if (count < unitSetup.count) {
                         //console.log(side.units.length);
                         for (var k = 0; k < unitSetup.count - count; k++) {
-                            addUnit(side, unitSetup.type, sideSetup.bot || defaultBot);
+                            addUnit(side, unitSetup.type, sideSetup.bot);
                         }
                     }
                 }

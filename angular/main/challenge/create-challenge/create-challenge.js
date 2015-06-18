@@ -83,15 +83,15 @@
 
             createGame();
 
-            $scope.$watch("myUnits", function () {
+            $scope.$watch("challengeSetup.sides[0].units", function () {
                 createGame();
             }, true);
-            $scope.$watch("oppoUnits", function () {
+            $scope.$watch("challengeSetup.sides[1].units", function () {
                 createGame();
             }, true);
 
             $scope.testFight = function () {
-                createGame();
+                $scope.game = ChallengeSetup.createGame($scope.challengeSetup, true);
                 $scope.options.pause = false;
             };
 
