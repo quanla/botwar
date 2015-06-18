@@ -4,7 +4,7 @@
 
     angular.module('bw.main.create-challenge', [
         'bw.main.challenge.challenge-setup',
-        'bw.main.create-challenge.condition-selector',
+        'bw.main.challenge.condition-selector',
         'bw.unit-selector',
         'bw.main.challenge-api',
         'ui.router'
@@ -65,7 +65,13 @@
                             }
                         ]
                     }
-                ]
+                ],
+                winningConditions: [
+                    { name: "lastManStand" }
+                ],
+                onFinish: function() {
+                    $scope.$applyAsync();
+                }
             };
 
             UserStorage.loadUserBots().then(function (bots) {

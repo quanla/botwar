@@ -41,25 +41,17 @@
                     }
 
                     function checkGameFinished(game) {
-                        var count = 0;
-                        //var winningSide;
                         for (var i = 0; i < game.sides.length; i++) {
                             var side = game.sides[i];
 
-                            if (!side.lost && side.checkLose) {
-                                if (side.checkLose()) {
-                                    side.lost = true;
-                                }
-                            }
-                            if (!side.lost) {
-                                //winningSide = side;
-                                count++;
-                                if (count > 1) {
-                                    return false;
+                            if (!side.won && side.checkWin) {
+                                if (side.checkWin()) {
+                                    side.won = true;
+                                    return true;
                                 }
                             }
                         }
-                        return true;
+                        return false;
                     }
 
                     var sc = speedControl();

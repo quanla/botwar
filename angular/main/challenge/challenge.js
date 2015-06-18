@@ -21,7 +21,6 @@
 
         .controller("challenge.ctrl", function($scope, $state, ChallengeServer, UserStorage) {
             $scope.view = {
-
             };
 
             UserStorage.loadUserBots().then(function (bots) {

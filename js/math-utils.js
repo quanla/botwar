@@ -132,3 +132,15 @@ ColLink.prototype = {
         this.link.splice(0, this.link.length);
     }
 };
+
+
+var Fs = Fs || {};
+Fs.and = function(conds) {
+    for (var i = 0; i < conds.length; i++) {
+        var cond = conds[i];
+        if (!cond()) {
+            return false;
+        }
+    }
+    return true;
+}

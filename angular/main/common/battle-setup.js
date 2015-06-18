@@ -5,19 +5,19 @@
     angular.module('bw.main.battle-setup', [
     ])
 
-        .factory("BattleSetup", function(PositionGenerator, UnitUtil, BotSource) {
+        .factory("BattleSetup", function(PositionGenerator, UnitUtil, BotSource, WinConditions) {
             return {
                 createGame: function(battleSetup, prepareBot) {
 
                     var sides = [];
 
-                    function addSide(sideNum, side) {
+                    function addSide(sideNum, sideSetup) {
                         var units = [];
-                        var positions = PositionGenerator.generatePositions(sideNum, side.units, battleSetup.width || 500, battleSetup.height || 500);
-                        for (var j = 0; j < side.units.length; j++) {
-                            var unitConfig = side.units[j];
+                        var positions = PositionGenerator.generatePositions(sideNum, sideSetup.units, battleSetup.width || 500, battleSetup.height || 500);
+                        for (var j = 0; j < sideSetup.units.length; j++) {
+                            var unitConfig = sideSetup.units[j];
                             for (var k = 0; k < unitConfig.count; k++) {
-                                var botCode = !prepareBot ? null : side.bot != null ? side.bot.code : null;
+                                var botCode = !prepareBot ? null : sideSetup.bot != null ? sideSetup.bot.code : null;
                                 var bot = botCode ? BotSource.createBot(botCode, unitConfig.type) : null;
                                 units.push({
                                     type: unitConfig.type,
@@ -29,13 +29,24 @@
                                 });
                             }
                         }
-                        sides.push({
+
+                        var side = {
                             color: sideNum == 0 ? "blue" : "red",
-                            units: units,
-                            checkLose: function() {
-                                return battleSetup.continuous ? false : Cols.find(units, UnitUtil.alive) == null;
-                            }
-                        });
+                            units: units
+                        };
+
+                        var winningConditions = [];
+                        for (var i = 0; i < battleSetup.winningConditions.length; i++) {
+                            var cond = battleSetup.winningConditions[i];
+                            var wcond = WinConditions.compileWinningCondition(cond, side, battleSetup);
+                            if (wcond != null) winningConditions.push(wcond);
+                        }
+
+                        side.checkWin = function() {
+                            return Fs.and(winningConditions);
+                        };
+
+                        sides.push(side);
                     }
 
                     addSide(0, battleSetup.sides[0]);

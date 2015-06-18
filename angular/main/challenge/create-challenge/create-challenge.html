@@ -37,11 +37,25 @@
             </div>
         </div>
 
-        <condition-selector></condition-selector>
+        <condition-selector setup="challengeSetup"></condition-selector>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="challengeSetup.continuous">
+                    Continuous battle
+                </label>
+            </div>
+        </div>
 
     </div>
     <div class="col-lg-6 text-center">
         <div battlefield="game" options="options"></div>
+
+        <span ng-if="game.finished">
+            Game Finished!
+        </span>
+        &nbsp;
     </div>
     <div class="col-lg-3">
 

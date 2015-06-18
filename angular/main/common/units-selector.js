@@ -12,7 +12,7 @@
                 scope: {
                     "units": "="
                 },
-                templateUrl: "angular/main/challenge/create-challenge/units-selector.html",
+                templateUrl: "angular/main/common/units-selector.html",
                 link: function($scope, elem, attrs) {
 
                     $scope.addUnit = function(unit) {

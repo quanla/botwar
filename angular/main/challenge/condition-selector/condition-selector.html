@@ -1,0 +1,19 @@
+
+<div class="panel panel-default">
+    <div class="panel-heading text-capitalize">
+        Winning Conditions
+    </div>
+
+    <div class="panel-body">
+
+        <div>
+            <ul class="winning-conditions">
+                <li ng-repeat="cond in setup.winningConditions">
+                    {{getName(cond.name)}}
+                    <button class="btn btn-sm btn-default pull-right" ng-click="remove(cond)">-</button>
+                </li>
+            </ul>
+            <div class="add-condition-btn">+</div>
+        </div>
+    </div>
+</div>
