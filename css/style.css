@@ -61,3 +61,36 @@ select.text-capitalize option {
     border: 1px solid #eee;
     height: 100% !important;
 }
+
+.winning-conditions {
+    padding-left: 20px;
+}
+
+.winning-conditions li {
+    padding: 4px 4px 4px 2px;
+}
+.winning-conditions li .btn {
+    padding: 2px 0 2px 0px;
+    width: 23px;
+    display: none;
+}
+.winning-conditions li:hover .btn {
+    display: block;
+}
+
+.winning-conditions li:hover {
+    cursor: pointer;
+    background-color: #EEEEEE;
+}
+
+.add-condition-btn {
+    border: 1px dashed gray;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    padding: 1px 0 1px 0;
+}
+.add-condition-btn:hover {
+    cursor: pointer;
+    background-color: #EEEEEE;
+}
