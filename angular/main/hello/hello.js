@@ -22,7 +22,7 @@
         .controller("bw.main.hello.large-battle.Ctrl", function($scope, BattleSetup, SampleBot) {
 
             SampleBot.loadBot("flex", function(botCode) {
-                $scope.fightBot = {name: "Fighter", code: botCode};
+                var fightBot = {name: "Fighter", code: botCode};
 
                 $scope.game = BattleSetup.createGame({
                     sides: [
@@ -32,7 +32,8 @@
                                 { type: "footman", count: 10},
                                 { type: "archer", count: 10},
                                 { type: "knight", count: 4}
-                            ]
+                            ],
+                            bot: fightBot
                         },
                         {
                             color: "red",
@@ -40,13 +41,14 @@
                                 { type: "footman", count: 10},
                                 { type: "archer", count: 10},
                                 { type: "knight", count: 4}
-                            ]
+                            ],
+                            bot: fightBot
                         }
                     ],
                     width: 940,
                     height: 740,
                     continuous: true
-                }, $scope.fightBot, true);
+                }, true);
             });
 
 
@@ -116,7 +118,7 @@
                     onFinish: function() {
                         $scope.$apply();
                     }
-                });
+                }, true);
             });
 
             $scope.startGame = function() {
@@ -160,7 +162,7 @@
                     onFinish: function() {
                         $scope.$apply();
                     }
-                });
+                }, true);
 
             });
 
@@ -210,7 +212,7 @@
                     onFinish: function() {
                         $scope.$apply();
                     }
-                });
+                }, true);
 
             }
 

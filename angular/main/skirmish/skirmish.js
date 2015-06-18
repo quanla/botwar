@@ -91,19 +91,19 @@
 
 
                     $scope.startGame = function() {
-                        $scope.game = BattleSetup.createGame($scope.battleSetup, null, true);
+                        $scope.game = BattleSetup.createGame($scope.battleSetup, true);
                         $scope.options.pause = false;
                     };
 
                     $scope.$watch("battleSetup", function(value, old) {
                         if (value != null && old != null) {
-                            $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
+                            $scope.game = BattleSetup.createGame($scope.battleSetup, false);
                             $scope.options.pause = true;
                             SkirmishStorage.saveBattleSetup($scope.battleSetup);
                         } else if (value == null) {
                             $scope.battleSetup = SkirmishStorage.loadBattleSetup($scope.bots);
                             if ($scope.battleSetup != null) {
-                                $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
+                                $scope.game = BattleSetup.createGame($scope.battleSetup, false);
                                 $scope.options.pause = true;
                             } else {
                                 loadDefaultBattleSetup();

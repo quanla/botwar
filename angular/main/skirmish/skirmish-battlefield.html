@@ -48,25 +48,24 @@
             <span battle-point="game:red"></span>
         </span>
         &nbsp;
-    </div>
-</div>
 
 
-<div class="row">
-    <div class="col-lg-12 text-center">
-        <br/>
-        <div class="btn-group btn-group-lg">
+        <div>
+            <br/>
+            <div class="btn-group btn-group-lg">
 
-            <button class="btn btn-default" ng-click="startGame()"
-                    ><span class="glyphicon glyphicon-repeat"></span></button>
+                <button class="btn btn-default" ng-click="startGame()"
+                        ><span class="glyphicon glyphicon-repeat"></span></button>
 
-            <button class="btn btn-default" style="width: 200px"
-                    ng-click="game.finished ? startGame() : (options.pause = !options.pause)">
-                <span class="glyphicon" ng-class="game.finished || options.pause ? 'glyphicon-play' : 'glyphicon-pause'"></span>
-            </button>
-            <button class="btn"
-                    ng-class="options.consume == 3 ? 'btn-primary' : 'btn-default'"
-                    ng-click="options.consume = options.consume == 3 ? null : 3"><span class="glyphicon glyphicon-forward"></span></button>
+                <button class="btn btn-default" style="width: 200px"
+                        ng-click="game.finished || !game.started ? startGame() : (options.pause = !options.pause)">
+                    <span class="glyphicon" ng-class="game.finished || options.pause ? 'glyphicon-play' : 'glyphicon-pause'"></span>
+                </button>
+                <button class="btn"
+                        ng-class="options.consume == 3 ? 'btn-primary' : 'btn-default'"
+                        ng-click="options.consume = options.consume == 3 ? null : 3"><span class="glyphicon glyphicon-forward"></span></button>
+            </div>
         </div>
     </div>
 </div>
+
