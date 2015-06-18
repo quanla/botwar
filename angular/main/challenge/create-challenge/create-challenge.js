@@ -3,6 +3,7 @@
 (function () {
 
     angular.module('bw.main.create-challenge', [
+        'bw.main.create-challenge.condition-selector',
         'bw.unit-selector',
         'bw.main.challenge-api',
         'ui.router'
