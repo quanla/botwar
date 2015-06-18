@@ -8,6 +8,9 @@
         .factory("BattleSetup", function(PositionGenerator, UnitUtil, BotSource, WinConditions) {
             return {
                 createGame: function(battleSetup, prepareBot) {
+                    if (battleSetup.winningConditions == null) {
+                        battleSetup.winningConditions = [{name: "lastManStand"}];
+                    }
 
                     var sides = [];
 
@@ -43,7 +46,7 @@
                         }
 
                         side.checkWin = function() {
-                            return Fs.and(winningConditions);
+                            return Cols.isEmpty(winningConditions) ? false : Fs.and(winningConditions);
                         };
 
                         sides.push(side);
@@ -133,10 +136,8 @@
                 for (var j = 0; j < sideSetup.units.length; j++) {
                     var unitSetup = sideSetup.units[j];
 
-                    // (unit.state == null || unit.state.name != "die") &&
-                    var count = Cols.sum(side.units, function(unit) { return unit.type == unitSetup.type ? 1 : 0;});
+                    var count = Cols.sum(side.units, function(unit) { return unit.type == unitSetup.type && (unit.state.name != "die" || round - unit.state.since < 200 ) ? 1 : 0;});
                     if (count < unitSetup.count) {
-                        //console.log(side.units.length);
                         for (var k = 0; k < unitSetup.count - count; k++) {
                             addUnit(side, unitSetup.type, sideSetup.bot);
                         }

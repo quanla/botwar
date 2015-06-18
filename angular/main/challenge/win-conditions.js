@@ -6,16 +6,13 @@
     ])
         .factory("WinConditions", function(UnitUtil) {
 
-            var names = {
-                "lastManStand": "Last man stand"
-            };
-
-            return {
-                getName: function(name) {
-                    return names[name];
-                },
-                compileWinningCondition: function(cond, side, battleSetup) {
-                    if (cond.name == "lastManStand") {
+            var types = {
+                "lastManStand": {
+                    display: "Last man stand",
+                    wouldApply: function(battleSetup) {
+                        return !battleSetup.continuous;
+                    },
+                    compile: function(cond, side, battleSetup) {
                         if (battleSetup.continuous) {
                             return null;
                         }
@@ -23,6 +20,18 @@
                             return Cols.find(side.units, UnitUtil.alive) != null && Cols.find(side.enemies, function(enemySide) { return Cols.find(enemySide.units, UnitUtil.alive) != null; }) == null;
                         };
                     }
+                }
+            };
+
+            return {
+                getName: function(name) {
+                    return types[name].display;
+                },
+                wouldApply: function(cond, battleSetup) {
+                    return types[cond.name].wouldApply(battleSetup);
+                },
+                compileWinningCondition: function(cond, side, battleSetup) {
+                    return types[cond.name].compile(cond, side, battleSetup);
                 }
             };
         })

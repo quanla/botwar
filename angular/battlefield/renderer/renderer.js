@@ -103,10 +103,6 @@
                                     dirtStage.addChild(unitSprites.container);
 
                                     Cols.remove(unitSprites, orderCache);
-                                    //if (dirtStage.children.length > 20) {
-                                    //    dirtStage.removeChildAt(0);
-                                    //}
-                                    //console.log(unitStage.children.length);
                                 }
                             });
 
