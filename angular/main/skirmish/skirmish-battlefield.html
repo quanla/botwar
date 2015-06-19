@@ -38,39 +38,13 @@
     <div class="col-lg-9 text-center">
         <div battlefield="game" options="options"></div>
 
-        <span class="text-primary well well-sm">
-            Blue:
-            <span battle-point="game:blue"></span>
-        </span>
-        &nbsp;
-        <span class="text-danger well well-sm">
-            Red:
-            <span battle-point="game:red"></span>
-        </span>
-        &nbsp;
-
-        <span ng-if="game.finished">
-            Game Finished!
-        </span>
-        &nbsp;
+        <battle-status game="game"></battle-status>
 
 
 
         <div>
             <br/>
-            <div class="btn-group btn-group-lg">
-
-                <button class="btn btn-default" ng-click="startGame()"
-                        ><span class="glyphicon glyphicon-repeat"></span></button>
-
-                <button class="btn btn-default" style="width: 200px"
-                        ng-click="game.finished || !game.started ? startGame() : (options.pause = !options.pause)">
-                    <span class="glyphicon" ng-class="game.finished || options.pause ? 'glyphicon-play' : 'glyphicon-pause'"></span>
-                </button>
-                <button class="btn"
-                        ng-class="options.consume == 3 ? 'btn-primary' : 'btn-default'"
-                        ng-click="options.consume = options.consume == 3 ? null : 3"><span class="glyphicon glyphicon-forward"></span></button>
-            </div>
+            <battle-control game="game" start="startGame()" options="options"></battle-control>
         </div>
     </div>
 </div>

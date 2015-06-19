@@ -63,29 +63,6 @@
             };
         })
 
-        .directive("battlePoint", function() {
-            return {
-                restrict: "A",
-                link: function($scope, elem, attrs) {
-                    var split = attrs.battlePoint.split(":");
-                    var sideColor = split[1];
-
-                    $scope.$watch(split[0], function(game) {
-                        if (game != null) {
-                            elem.text(0);
-                            for (var i = 0; i < game.sides.length; i++) {
-                                var side = game.sides[i];
-                                if (side.color == sideColor) {
-                                    side.onScoreChange = function(score) {
-                                        elem.text(score);
-                                    };
-                                }
-                            }
-                        }
-                    });
-                }
-            };
-        })
 
     ;
 

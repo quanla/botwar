@@ -131,10 +131,10 @@
             };
         })
 
-        .controller("create-challenge.confirm-modal.Ctrl", function($scope, ChallengeServer, SecurityService, $modalInstance, getChallengeSetup) {
+        .controller("create-challenge.confirm-modal.Ctrl", function($scope, ChallengeServer, SecurityService, $modalInstance, challengeSetup) {
 
             $scope.challenge = {
-                battleSetup: getChallengeSetup()
+                challengeSetup: challengeSetup
             };
 
             $scope.publish = function() {

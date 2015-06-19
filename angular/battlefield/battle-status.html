@@ -1,0 +1,9 @@
+<span class="well well-sm" ng-repeat="side in game.sides">
+    <span ng-bind="::side.color" class="text-capitalize"></span>:
+    <span side="{{side.color}}"></span>
+</span>
+&nbsp;
+
+<span ng-if="game.finished" class="text-capitalize" ng-bind="::getWonSide() + ' Won!'">
+</span>
+&nbsp;

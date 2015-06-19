@@ -52,10 +52,7 @@
     <div class="col-lg-6 text-center">
         <div battlefield="game" options="options"></div>
 
-        <span ng-if="game.finished">
-            Game Finished! Red won: {{game.sides[1].won}}
-        </span>
-        &nbsp;
+        <battle-status game="game"></battle-status>
     </div>
     <div class="col-lg-3">
 
@@ -83,19 +80,11 @@
     </div>
 </div>
 
-
 <div class="row">
     <div class="col-lg-12 text-center">
-        <div style="width: 400px; display: inline-block">
+        <br/>
 
-            <div class="btn-group btn-group-lg" >
-                <button class="btn btn-primary" ng-click="testFight()">Start Test Fight</button>
-                <button class="btn"
-                        ng-class="options.consume == 3 ? 'btn-primary' : 'btn-default'"
-                        ng-click="options.consume = options.consume == 3 ? null : 3"
-                        ><span class="glyphicon glyphicon-forward"></span></button>
-            </div>
-        </div>
+        <battle-control game="game" start="testFight()" options="options"></battle-control>
 
     </div>
 </div>

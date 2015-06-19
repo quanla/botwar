@@ -4,6 +4,8 @@
 
     angular.module('bw.main.skirmish', [
         'bw.main.ide',
+        'bw.battlefield.status',
+        'bw.battlefield.control',
         'bw.unit-selector',
         'ui.router'
     ])
