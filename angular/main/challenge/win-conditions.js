@@ -12,12 +12,9 @@
                     wouldApply: function(battleSetup) {
                         return !battleSetup.continuous;
                     },
-                    compile: function(cond, side, battleSetup) {
-                        if (battleSetup.continuous) {
-                            return null;
-                        }
+                    compileLosingCondition: function(cond, side) {
                         return function() {
-                            return Cols.find(side.units, UnitUtil.alive) != null && Cols.find(side.enemies, function(enemySide) { return Cols.find(enemySide.units, UnitUtil.alive) != null; }) == null;
+                            return Cols.find(side.units, UnitUtil.alive) == null;
                         };
                     }
                 }
@@ -31,7 +28,23 @@
                     return types[cond.name].wouldApply(battleSetup);
                 },
                 compileWinningCondition: function(cond, side, battleSetup) {
-                    return types[cond.name].compile(cond, side, battleSetup);
+                    var type = types[cond.name];
+                    if (!type.wouldApply(battleSetup) || type.compileWinningCondition == null) {
+                        return null;
+                    }
+                    return type.compileWinningCondition(cond, side, battleSetup);
+                },
+                compileLosingCondition: function(cond, side, battleSetup) {
+                    var type = types[cond.name];
+                    if (!type.wouldApply(battleSetup) || type.compileLosingCondition == null) {
+                        return null;
+                    }
+                    var checkLose = type.compileLosingCondition(cond, side, battleSetup);
+                    return function() {
+                        if (checkLose()) {
+                            return cond;
+                        }
+                    };
                 }
             };
         })

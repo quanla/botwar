@@ -38,15 +38,25 @@
                             units: units
                         };
 
-                        var winningConditions = [];
-                        for (var i = 0; i < battleSetup.winningConditions.length; i++) {
-                            var cond = battleSetup.winningConditions[i];
-                            var wcond = WinConditions.compileWinningCondition(cond, side, battleSetup);
-                            if (wcond != null) winningConditions.push(wcond);
+                        function compileConditions(side, battleSetup, compile) {
+                            var conditions = [];
+                            for (var i = 0; i < battleSetup.winningConditions.length; i++) {
+                                var cond = battleSetup.winningConditions[i];
+                                var wcond = compile(cond, side, battleSetup);
+                                if (wcond != null) conditions.push(wcond);
+                            }
+
+                            return conditions;
                         }
+                        
+                        var winningConditions = compileConditions(side, battleSetup, WinConditions.compileWinningCondition);
+                        var losingConditions = compileConditions(side, battleSetup, WinConditions.compileLosingCondition);
 
                         side.checkWin = function() {
                             return Cols.isEmpty(winningConditions) ? false : Fs.and(winningConditions);
+                        };
+                        side.checkLose = function() {
+                            return Cols.isEmpty(losingConditions) ? false : Fs.or(losingConditions);
                         };
 
                         sides.push(side);

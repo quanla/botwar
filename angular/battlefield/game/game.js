@@ -44,8 +44,26 @@
                         for (var i = 0; i < game.sides.length; i++) {
                             var side = game.sides[i];
 
-                            if (!side.won && side.checkWin) {
+                            if (!side.won && !side.lost && side.checkLose) {
+                                var checkLose = side.checkLose();
+                                if (checkLose) {
+                                    side.lost = checkLose;
+                                }
+                            }
+                        }
+
+                        for (var i = 0; i < game.sides.length; i++) {
+                            var side = game.sides[i];
+
+                            if (!side.won && !side.lost && side.checkWin) {
                                 if (side.checkWin()) {
+                                    side.won = true;
+                                    return true;
+                                }
+                            }
+
+                            if (Cols.isNotEmpty(side.enemies)) {
+                                if (Cols.find(side.enemies, function(enemySide) { return enemySide.lost == null; }) == null) {
                                     side.won = true;
                                     return true;
                                 }

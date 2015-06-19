@@ -143,4 +143,14 @@ Fs.and = function(conds) {
         }
     }
     return true;
-}
+};
+
+Fs.or = function(conds) {
+    for (var i = 0; i < conds.length; i++) {
+        var cond = conds[i];
+        if (cond()) {
+            return true;
+        }
+    }
+    return false;
+};
