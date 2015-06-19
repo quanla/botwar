@@ -42,10 +42,11 @@
 
             $scope.conds = [
                 { name: "lastManStand" },
-                { name: "hasMorePoints", after: 10 }
+                { name: "hasMoreScores", after: 10 }
             ];
             $scope.getName = WinConditions.getName;
             $scope.getDescription = WinConditions.getDescription;
+            $scope.getParams = WinConditions.getParams;
             $scope.cancel = $modalInstance.dismiss;
 
             $scope.accept = function() {

@@ -19,17 +19,15 @@
                         };
                     }
                 },
-                "hasMorePoints": {
-                    display: "Has more points",
-                    description: "Has more points than any enemies. Each point you have is a damage point an enemy taken from you",
+                "hasMoreScores": {
+                    display: "Has more scores",
+                    description: "Has more scores than any enemies. Each score you have is a damage point an enemy taken from you",
                     params: [
-                        {name: "after", display: "After", unit: "seconds"}
+                        {name: "after", label: "After", unit: "seconds"}
                     ],
                     compileWinningCondition: function(cond, side) {
                         return function(round) {
                             if (round < cond.after * 100) return false;
-console.log(side.color);
-console.log(side.score);
                             return Cols.find(side.enemies, function(enemySide) { return enemySide.score > side.score; }) == null;
                         };
                     }
@@ -42,6 +40,9 @@ console.log(side.score);
                 },
                 getDescription: function(cond) {
                     return types[cond.name].description;
+                },
+                getParams: function(cond) {
+                    return types[cond.name].params;
                 },
                 wouldApply: function(cond, battleSetup) {
                     var type = types[cond.name];
