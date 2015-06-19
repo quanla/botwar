@@ -86,7 +86,7 @@
 
                                 SkirmishStorage.saveBattleSetup($scope.battleSetup);
 
-                                $scope.game = BattleSetup.createGame($scope.battleSetup, null, false);
+                                $scope.game = BattleSetup.createGame($scope.battleSetup, false);
                                 $scope.options.pause = true;
                             }
                         });
@@ -106,11 +106,12 @@
                         } else if (value == null) {
                             $scope.battleSetup = SkirmishStorage.loadBattleSetup($scope.bots);
 
-                            $scope.battleSetup.onFinish = function() {
-                                $scope.$applyAsync();
-                            };
 
                             if ($scope.battleSetup != null) {
+                                $scope.battleSetup.onFinish = function() {
+                                    $scope.$applyAsync();
+                                };
+
                                 $scope.game = BattleSetup.createGame($scope.battleSetup, false);
                                 $scope.options.pause = true;
                             } else {

@@ -21,63 +21,84 @@
             ;
         }])
         
-        .controller("create-challenge.ctrl", function($scope, UserStorage, BattleSetup, PositionGenerator, BotSource, $modal, ChallengeSetup) {
+        .controller("create-challenge.ctrl", function($scope, UserStorage, PositionGenerator, BotSource, $modal, ChallengeSetup, ChallengeStorage) {
 
             $scope.options = {
-
             };
 
-            $scope.challengeSetup = {
-                width: 500,
-                height: 500,
-                sides: [
-                    {
-                        color: "blue",
-                        units: [
-                            {
-                                type: "footman",
-                                count: 1
-                            },
-                            {
-                                type: "archer",
-                                count: 0
-                            },
-                            {
-                                type: "knight",
-                                count: 0
-                            }
-                        ]
-                    },
-                    {
-                        color: "red",
-                        units: [
-                            {
-                                type: "footman",
-                                count: 1
-                            },
-                            {
-                                type: "archer",
-                                count: 0
-                            },
-                            {
-                                type: "knight",
-                                count: 0
-                            }
-                        ]
+            function loadDefaultChallengeSetup() {
+                $scope.challengeSetup = {
+                    width: 500,
+                    height: 500,
+                    sides: [
+                        {
+                            color: "blue",
+                            units: [
+                                {
+                                    type: "footman",
+                                    count: 1
+                                },
+                                {
+                                    type: "archer",
+                                    count: 0
+                                },
+                                {
+                                    type: "knight",
+                                    count: 0
+                                }
+                            ],
+                            bot: $scope.bots[0]
+                        },
+                        {
+                            color: "red",
+                            units: [
+                                {
+                                    type: "footman",
+                                    count: 1
+                                },
+                                {
+                                    type: "archer",
+                                    count: 0
+                                },
+                                {
+                                    type: "knight",
+                                    count: 0
+                                }
+                            ],
+                            bot: $scope.bots[0]
+                        }
+                    ],
+                    winningConditions: [
+                        { name: "lastManStand" }
+                    ],
+                    onFinish: function() {
+                        $scope.$applyAsync();
                     }
-                ],
-                winningConditions: [
-                    { name: "lastManStand" }
-                ],
-                onFinish: function() {
-                    $scope.$applyAsync();
-                }
-            };
+                };
+                //console.log($scope.bots);
+                ChallengeStorage.saveChallengeSetup($scope.challengeSetup);
 
-            UserStorage.loadUserBots().then(function (bots) {
+                $scope.game = ChallengeSetup.createGame($scope.challengeSetup, false);
+                $scope.options.pause = true;
+            }
+
+
+            UserStorage.loadUserBots().then(function(bots) {
                 $scope.bots = bots;
-                $scope.challengeSetup.sides[0].bot = bots[0];
-                $scope.challengeSetup.sides[1].bot = bots[0];
+
+                // Load setup
+                $scope.challengeSetup = ChallengeStorage.loadChallengeSetup($scope.bots);
+
+
+                if ($scope.challengeSetup != null) {
+                    $scope.challengeSetup.onFinish = function() {
+                        $scope.$applyAsync();
+                    };
+
+                    createGame();
+                } else {
+                    loadDefaultChallengeSetup();
+                }
             });
 
             $scope.showCodeEditor = false;
@@ -86,15 +107,16 @@
                 $scope.game = ChallengeSetup.createGame($scope.challengeSetup);
                 $scope.options.pause = true;
             }
-
-            createGame();
-
-            $scope.$watch("challengeSetup.sides[0].units", function () {
+            function reloadGame() {
                 createGame();
-            }, true);
-            $scope.$watch("challengeSetup.sides[1].units", function () {
-                createGame();
-            }, true);
+                ChallengeStorage.saveChallengeSetup($scope.challengeSetup);
+            }
+
+
+            $scope.$watch("challengeSetup.continuous", reloadGame);
+            $scope.$watch("challengeSetup.winningConditions", reloadGame, true);
+            $scope.$watch("challengeSetup.sides[0].units", reloadGame, true);
+            $scope.$watch("challengeSetup.sides[1].units", reloadGame, true);
 
             $scope.testFight = function () {
                 $scope.game = ChallengeSetup.createGame($scope.challengeSetup, true);
@@ -105,15 +127,15 @@
                 $modal.open({
                     templateUrl: "angular/main/challenge/create-challenge/confirm-publish-modal.html",
                     controller: "create-challenge.confirm-modal.Ctrl",
-                    resolve: { getBattleSetup: function() {return $scope.challengeSetup; } }
+                    resolve: { getChallengeSetup: function() {return $scope.challengeSetup; } }
                 });
             };
         })
 
-        .controller("create-challenge.confirm-modal.Ctrl", function($scope, ChallengeServer, SecurityService, $modalInstance, getBattleSetup) {
+        .controller("create-challenge.confirm-modal.Ctrl", function($scope, ChallengeServer, SecurityService, $modalInstance, getChallengeSetup) {
 
             $scope.challenge = {
-                battleSetup: getBattleSetup()
+                battleSetup: getChallengeSetup()
             };
 
             $scope.publish = function() {
@@ -133,6 +155,40 @@
             $scope.cancel = $modalInstance.dismiss;
         })
 
+
+        .factory("ChallengeStorage", function() {
+            return {
+                saveChallengeSetup: function(challengeSetup) {
+                    var toSave = ObjectUtil.clone(challengeSetup);
+                    delete toSave.onFinish;
+                    for (var i = 0; i < toSave.sides.length; i++) {
+                        var side = toSave.sides[i];
+                        if (side.bot != null) {
+                            delete side.bot.code;
+                        }
+                    }
+                    localStorage["create-challenge.challengeSetup"] = JSON.stringify(toSave);
+                },
+                loadChallengeSetup: function(bots) {
+                    //delete localStorage["create-challenge.challengeSetup"];
+                    var loadStr = localStorage["create-challenge.challengeSetup"];
+                    //loadStr = null;
+                    if (loadStr == null) {
+                        return null;
+                    }
+                    var challengeSetup = JSON.parse(loadStr);
+                    for (var i = 0; i < challengeSetup.sides.length; i++) {
+                        var side = challengeSetup.sides[i];
+
+                        var find = Cols.find(bots, function (bot) {
+                            return bot.name == side.bot.name;
+                        });
+                        side.bot = find;
+                    }
+                    return challengeSetup
+                }
+            };
+        })
 
     ;
 
