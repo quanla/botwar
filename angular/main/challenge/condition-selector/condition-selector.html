@@ -7,13 +7,15 @@
     <div class="panel-body">
 
         <div>
+            <div ng-if="setup.winningConditions.length == 0">No conditions</div>
+
             <div class="winning-conditions">
                 <div class="winning-condition" ng-repeat="cond in setup.winningConditions">
                     - <span ng-class="{del: !wouldApply(cond)}">{{getName(cond)}}</span>
                     <button class="btn btn-sm btn-default pull-right" ng-click="remove(cond)">-</button>
                 </div>
             </div>
-            <div class="add-condition-btn">+</div>
+            <div class="add-condition-btn" ng-click="showAddCondModal()">+</div>
         </div>
     </div>
 </div>

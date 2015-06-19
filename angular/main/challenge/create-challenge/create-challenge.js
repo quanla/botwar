@@ -112,7 +112,6 @@
                 ChallengeStorage.saveChallengeSetup($scope.challengeSetup);
             }
 
-
             $scope.$watch("challengeSetup.continuous", reloadGame);
             $scope.$watch("challengeSetup.winningConditions", reloadGame, true);
             $scope.$watch("challengeSetup.sides[0].units", reloadGame, true);

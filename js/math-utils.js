@@ -135,20 +135,20 @@ ColLink.prototype = {
 
 
 var Fs = Fs || {};
-Fs.and = function(conds) {
+Fs.and = function(conds, param1) {
     for (var i = 0; i < conds.length; i++) {
         var cond = conds[i];
-        if (!cond()) {
+        if (!cond(param1)) {
             return false;
         }
     }
     return true;
 };
 
-Fs.or = function(conds) {
+Fs.or = function(conds, param1) {
     for (var i = 0; i < conds.length; i++) {
         var cond = conds[i];
-        if (cond()) {
+        if (cond(param1)) {
             return true;
         }
     }

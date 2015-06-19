@@ -31,21 +31,21 @@
 
                     initGame(game, GameSetup);
 
-                    function updateGameState(game) {
+                    function updateGameState(round, game) {
                         if (game.finished) return;
 
-                        var result = checkGameFinished(game);
+                        var result = checkGameFinished(round, game);
                         if (result) {
                             game.finish();
                         }
                     }
 
-                    function checkGameFinished(game) {
+                    function checkGameFinished(round, game) {
                         for (var i = 0; i < game.sides.length; i++) {
                             var side = game.sides[i];
 
                             if (!side.won && !side.lost && side.checkLose) {
-                                var checkLose = side.checkLose();
+                                var checkLose = side.checkLose(round);
                                 if (checkLose) {
                                     side.lost = checkLose;
                                 }
@@ -56,7 +56,7 @@
                             var side = game.sides[i];
 
                             if (!side.won && !side.lost && side.checkWin) {
-                                if (side.checkWin()) {
+                                if (side.checkWin(round)) {
                                     side.won = true;
                                     return true;
                                 }
@@ -101,7 +101,7 @@
                         }
 
                         // Check battle finished
-                        updateGameState(game, round);
+                        updateGameState(round, game);
                     });
                     sc.eachRound(function(round) {
                         gameRunner.updateUI(round);

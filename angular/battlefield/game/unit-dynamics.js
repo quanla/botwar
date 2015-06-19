@@ -51,8 +51,9 @@
                                 unit.botBlockedUtil = null;
                             }
 
-                            if (props.source.side.onDamage) {
-                                props.source.side.onDamage(damaged);
+                            props.source.side.score += damaged;
+                            if (props.source.side.onScoreChange) {
+                                props.source.side.onScoreChange(props.source.side.score);
                             }
                         }
 

@@ -35,7 +35,8 @@
 
                         var side = {
                             color: sideNum == 0 ? "blue" : "red",
-                            units: units
+                            units: units,
+                            score: 0
                         };
 
                         function compileConditions(side, battleSetup, compile) {
@@ -52,11 +53,11 @@
                         var winningConditions = compileConditions(side, battleSetup, WinConditions.compileWinningCondition);
                         var losingConditions = compileConditions(side, battleSetup, WinConditions.compileLosingCondition);
 
-                        side.checkWin = function() {
-                            return Cols.isEmpty(winningConditions) ? false : Fs.and(winningConditions);
+                        side.checkWin = function(round) {
+                            return Cols.isEmpty(winningConditions) ? false : Fs.and(winningConditions, round);
                         };
-                        side.checkLose = function() {
-                            return Cols.isEmpty(losingConditions) ? false : Fs.or(losingConditions);
+                        side.checkLose = function(round) {
+                            return Cols.isEmpty(losingConditions) ? false : Fs.or(losingConditions, round);
                         };
 
                         sides.push(side);
@@ -77,6 +78,7 @@
                     } else if (battleSetup.continuous) {
                         game.continuous = battleSetup.continuous;
                         game.afterRoundDynamics = function(round) {
+                            if (game.finished) return;
                             ContinuousSupport.checkEachRound(game, battleSetup, round, BotSource);
                         };
                     }

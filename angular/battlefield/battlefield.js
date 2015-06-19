@@ -73,13 +73,11 @@
                     $scope.$watch(split[0], function(game) {
                         if (game != null) {
                             elem.text(0);
-                            var total = 0;
                             for (var i = 0; i < game.sides.length; i++) {
                                 var side = game.sides[i];
                                 if (side.color == sideColor) {
-                                    side.onDamage = function(damage) {
-                                        total+=damage;
-                                        elem.text(total);
+                                    side.onScoreChange = function(score) {
+                                        elem.text(score);
                                     };
                                 }
                             }
