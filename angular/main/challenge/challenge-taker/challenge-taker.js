@@ -19,24 +19,27 @@
 
         .controller("challenge-taker.ctrl", function(UserStorage, $scope, $stateParams, BotSource, BattleSetup, ChallengeServer) {
 
-            ChallengeServer.getChallenge($stateParams.challengeId).success(function(challenge) {
-                $scope.challenge = challenge;
-                $scope.game = BattleSetup.createGame(challenge.battleSetup, null, false);
-            });
+            $scope.options = {};
 
             UserStorage.loadUserBots().then(function(bots) {
                 $scope.bots = bots;
-                $scope.currentBot = bots[0];
+
+                ChallengeServer.getChallenge($stateParams.challengeId).success(function(challenge) {
+                    $scope.challenge = challenge;
+                    $scope.game = BattleSetup.createGame(challenge.challengeSetup, false);
+                    $scope.options.pause = true;
+                    $scope.challenge.challengeSetup.sides[0].bot = $scope.bots[0];
+
+                    $scope.challenge.challengeSetup.onFinish = function() {
+                        $scope.$applyAsync();
+                    }
+                });
             });
             $scope.showCodeEditor = false;
 
-
-            $scope.changeBot = function(bot) {
-                $scope.currentBot = bot;
-            };
-
             $scope.startGame = function() {
-                $scope.game = BattleSetup.createGame($scope.challenge.battleSetup, $scope.currentBot);
+                $scope.game = BattleSetup.createGame($scope.challenge.challengeSetup, true);
+                $scope.options.pause = false;
             }
         })
 

@@ -2,11 +2,11 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading text-capitalize">
-                <h4><a href="" ng-click="showCodeEditor = !showCodeEditor">Your Bot Code - {{currentBot.name}}</a></h4>
+                <h4><a href="" ng-click="showCodeEditor = !showCodeEditor">Your Bot Code - {{challenge.challengeSetup.sides[0].bot.name}}</a></h4>
             </div>
 
             <div class="panel-body" ng-if="showCodeEditor">
-                <bw-editor bots="bots" current-bot="currentBot" change-bot="changeBot(bot)"></bw-editor>
+                <bw-editor bots="bots" current-bot="challenge.challengeSetup.sides[0].bot" change-bot="challenge.challengeSetup.sides[0].bot = bot"></bw-editor>
             </div>
         </div>
     </div>
@@ -18,25 +18,17 @@
 
     </div>
     <div class="col-lg-6 text-center">
-        <div width="560" height="560" battlefield="game" options="options"></div>
-        <button class="btn btn-sm"
-                ng-class="options.consume == 3 ? 'btn-primary' : 'btn-default'"
-                ng-click="options.consume = options.consume == 3 ? null : 3"><span class="glyphicon glyphicon-forward"></span></button>
+        <div battlefield="game" options="options"></div>
+
+        <battle-status game="game"></battle-status>
     </div>
 </div>
 
 
 <div class="row">
     <div class="col-lg-12 text-center">
-        <div style="width: 400px; display: inline-block">
-            <div class="input-group input-group-lg" >
-                <div class="input-group-btn">
-                    <button class="btn btn-primary" ng-click="startGame()">Start Fight using bot: </button>
-                </div>
-
-                <select class="form-control" ng-model="currentBot" ng-options="b as b.name for b in bots"></select>
-            </div>
-        </div>
+        <br/>
+        <battle-control game="game" start="startGame()" options="options"></battle-control>
 
     </div>
 </div>

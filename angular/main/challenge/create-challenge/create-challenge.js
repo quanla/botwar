@@ -126,7 +126,7 @@
                 $modal.open({
                     templateUrl: "angular/main/challenge/create-challenge/confirm-publish-modal.html",
                     controller: "create-challenge.confirm-modal.Ctrl",
-                    resolve: { getChallengeSetup: function() {return $scope.challengeSetup; } }
+                    resolve: { challengeSetup: function() {return $scope.challengeSetup; } }
                 });
             };
         })
