@@ -4,7 +4,7 @@
 
     angular.module('bw.battlefield.status', [
     ])
-        .directive("battleStatus", function() {
+        .directive("battleStatus", function(numberFilter) {
             return {
                 restrict: "E",
                 scope: {
@@ -20,7 +20,7 @@
                                     var scoreSpan = elem.find("[side=" + side.color + "]");
                                     scoreSpan.text(0);
                                     side.onScoreChange = function(score) {
-                                        scoreSpan.text(score);
+                                        scoreSpan.text(numberFilter(score, 0));
                                     };
                                 });
                             }, 0);

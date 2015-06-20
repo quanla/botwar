@@ -1,9 +1,39 @@
-<div class="text-center">
-    <div battlefield="game" options="options"></div>
-    <battle-status game="game"></battle-status>
+<div class="row" style="margin: 0">
+    <div class="col-lg-5">
+        <div class="panel panel-default">
+            <div class="panel-body">
 
-    <div>
-        <br/>
-        <battle-control game="game" start="startGame()" options="options"></battle-control>
+                <div class="row">
+                    <div class="col-lg-4 text-right"><label class="control-label">Enemy Bot:</label></div>
+                    <div class="col-lg-8" ng-bind="::challenge.challengeSetup.sides[1].bot.name"></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 text-right"><label class="control-label">Conditions:</label></div>
+                    <div class="col-lg-8">
+                        <div ng-repeat="wc in ::challenge.challengeSetup.winningConditions" ng-bind="::getDisplay(wc)"></div>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label">Your bot:</label>
+                        <div class="col-lg-8"><select class="form-control" ng-options="b as b.name for b in bots" ng-model="challenge.challengeSetup.sides[0].bot"></select></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="text-center">
+            <div battlefield="game" options="options"></div>
+            <battle-status game="game"></battle-status>
+
+            <div>
+                <br/>
+                <battle-control game="game" start="startGame()" options="options"></battle-control>
+            </div>
+        </div>
     </div>
 </div>

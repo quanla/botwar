@@ -11,7 +11,7 @@
 
             <div class="winning-conditions">
                 <div class="winning-condition" ng-repeat="cond in setup.winningConditions">
-                    - <span ng-class="{del: !wouldApply(cond)}">{{getName(cond)}}</span>
+                    - <span ng-class="{del: !wouldApply(cond)}">{{getDisplay(cond)}}</span>
                     <button class="btn btn-sm btn-default pull-right" ng-click="remove(cond)">-</button>
                 </div>
             </div>

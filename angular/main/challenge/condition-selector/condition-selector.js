@@ -13,7 +13,7 @@
                     setup: "="
                 },
                 link: function($scope, elem, attrs) {
-                    $scope.getName = WinConditions.getName;
+                    $scope.getDisplay = WinConditions.getDisplay;
                     $scope.wouldApply = function(cond) {
                         return WinConditions.wouldApply(cond, $scope.setup);
                     };
@@ -44,7 +44,7 @@
                 { name: "lastManStand" },
                 { name: "hasMoreScores", after: 10 }
             ];
-            $scope.getName = WinConditions.getName;
+            $scope.getDisplay = WinConditions.getDisplay;
             $scope.getDescription = WinConditions.getDescription;
             $scope.getParams = WinConditions.getParams;
             $scope.cancel = $modalInstance.dismiss;

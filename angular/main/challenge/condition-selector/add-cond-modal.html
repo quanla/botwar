@@ -2,7 +2,7 @@
 <div class="modal-body">
     <div class="list-group">
         <a href="" class="list-group-item" ng-class="{active: modal.focus==cond}" ng-repeat="cond in conds" ng-click="modal.focus = cond">
-            <h4 class="list-group-item-heading" ng-bind="::getName(cond)"></h4>
+            <h4 class="list-group-item-heading" ng-bind="::getDisplay(cond)"></h4>
             <p class="list-group-item-text" ng-bind="::getDescription(cond)"></p>
             <div class="row" ng-repeat="param in getParams(cond)" ng-if="modal.focus==cond">
                 <div class="col-lg-4 text-right" >

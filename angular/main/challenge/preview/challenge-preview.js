@@ -5,7 +5,7 @@
     angular.module('bw.main.challenge.preview', [
     ])
 
-        .directive("challengeBattlePreview", function(BattleSetup, Fancybox) {
+        .directive("challengePreview", function(BattleSetup, Fancybox, WinConditions) {
             return {
                 restrict: "E",
                 templateUrl: "angular/main/challenge/preview/challenge-preview.html",
@@ -20,21 +20,24 @@
                         challengeSetup.height = 410;
                         $scope.game = BattleSetup.createGame(challengeSetup, false);
                     });
-
                     $scope.tryBattle = function() {
                         Fancybox.open($scope, {
                             templateUrl: "angular/main/challenge/preview/try-battle-fmodal.html",
                             width: 1000,
                             controller: "bw.main.challenge.preview.try-battle.Ctrl"
                         });
-                    }
+                    };
+
+                    $scope.getDisplay = WinConditions.getDisplay;
+                    
+                    //$scope.tryBattle();
 
                 }
             };
         })
 
 
-        .controller("bw.main.challenge.preview.try-battle.Ctrl", function($scope, ChallengeSetup, UserStorage) {
+        .controller("bw.main.challenge.preview.try-battle.Ctrl", function($scope, ChallengeSetup, UserStorage, WinConditions) {
 
             UserStorage.loadUserBots().then(function (bots) {
                 $scope.bots = bots;
@@ -51,6 +54,8 @@
                 };
                 $scope.options.pause = false;
             };
+
+            $scope.getDisplay = WinConditions.getDisplay;
         })
     ;
 

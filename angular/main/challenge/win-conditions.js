@@ -20,7 +20,7 @@
                     }
                 },
                 "hasMoreScores": {
-                    display: "Has more scores",
+                    display: function(cond) { return "Has more scores after " + cond.after + " seconds"; },
                     description: "Has more scores than any enemies. Each score you have is a damage point an enemy taken from you",
                     params: [
                         {name: "after", label: "After", unit: "seconds"}
@@ -35,8 +35,9 @@
             };
 
             return {
-                getName: function(cond) {
-                    return types[cond.name].display;
+                getDisplay: function(cond) {
+                    var type = types[cond.name];
+                    return typeof type.display == 'string' ? type.display : type.display(cond);
                 },
                 getDescription: function(cond) {
                     return types[cond.name].description;
