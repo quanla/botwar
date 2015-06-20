@@ -5,6 +5,17 @@
     angular.module('bw.google-signin', [
     ])
 
+        .directive("gPlusone", function() {
+            return {
+                restrict: "A",
+                link: function($scope, elem, attrs) {
+                    gapi.plusone.render(
+                        elem[0]
+                    );
+                }
+            };
+        })
+
         .factory("GoogleSignin", function($rootScope) {
             // Load the SDK asynchronously
             (function(d, s, id) {

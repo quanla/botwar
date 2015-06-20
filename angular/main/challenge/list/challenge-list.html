@@ -18,13 +18,16 @@
                 <div class="row">
                     <h4 class="list-group-item-heading col-lg-8" ng-bind="::challenge.title" ></h4>
                     <div class="col-lg-4 has-button">
-                        <div class="text-right text-muted on-out" ng-bind="::challenge.fromName"></div>
                         <div ng-if="isMine()">
+                            <div class="text-right text-muted on-out" ng-bind="::challenge.fromName"></div>
                             <div class="text-right on-hover">
                                 <button class="btn btn-sm btn-danger" ng-click="deleteChallenge()">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     Delete</button>
                             </div>
+                        </div>
+                        <div ng-if="!isMine()">
+                            <div class="text-right text-muted" ng-bind="::challenge.fromName"></div>
                         </div>
                     </div>
                     <p class="list-group-item-text col-lg-8" ng-bind="::challenge.description" ng-click="view.focused = challenge"></p>
@@ -33,7 +36,7 @@
         </div>
     </div>
 
-    <div class="col-lg-4" style="height: 100%">
+    <div class="col-lg-4">
         <challenge-preview ng-if="view.focused != null" challenge="view.focused"></challenge-preview>
     </div>
 </div>

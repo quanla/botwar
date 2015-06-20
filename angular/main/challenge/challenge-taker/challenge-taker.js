@@ -9,8 +9,8 @@
         .config(["$stateProvider", function ($stateProvider) {
 
             $stateProvider
-                .state('challenge-taker', {
-                    url: '/challenge-taker/:challengeId',
+                .state('challenge-take', {
+                    url: '/challenge-take/:challengeId',
                     templateUrl: "angular/main/challenge/challenge-taker/challenge-taker.html",
                     controller: "challenge-taker.ctrl"
                 })
