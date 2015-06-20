@@ -13,5 +13,5 @@ public class Challenge {
     public String fromEmail;
 
     public String description;
-    public Object battleSetup;
+    public Object challengeSetup;
 }

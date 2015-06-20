@@ -17,7 +17,7 @@ import java.util.List;
 @Url("/challenges")
 public class ChallengesService {
     public static Template<Challenge> template = new Builder<>(Challenge.class)
-            .embeded("battleSetup")
+            .embeded("challengeSetup")
             .build();
 
     @Post

@@ -3,10 +3,7 @@ package qj.app.botwar.server.challenge.service;
 import qj.app.botwar.server.AuthorizationException;
 import qj.app.botwar.server.challenge.model.Authen;
 import qj.app.botwar.server.challenge.model.Challenge;
-import qj.tool.web.json.Delete;
-import qj.tool.web.json.Get;
-import qj.tool.web.json.Url;
-import qj.tool.web.json.UrlParam;
+import qj.tool.web.json.*;
 
 import java.sql.Connection;
 import java.util.Objects;
@@ -33,6 +30,16 @@ public class ChallengeService {
             template.deleteById(challengeId, conn);
         } else {
             throw new AuthorizationException();
+        }
+    }
+
+    @Put
+    @Url("/challenge/plusone/:challengeId/:state")
+    public void plusone(@UrlParam("challengeId") Long challengeId, @UrlParam("state") String state, Connection conn) {
+        if ("on".equals(state)) {
+            template.update(conn, "SET plusone = plusone + 1 WHERE id=?", challengeId);
+        } else {
+            template.update(conn, "SET plusone = plusone - 1 WHERE id=?", challengeId);
         }
     }
 }
