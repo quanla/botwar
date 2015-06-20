@@ -29,7 +29,7 @@
                     };
 
                     $scope.getDisplay = WinConditions.getDisplay;
-                    
+
                     //$scope.tryBattle();
 
                 }
@@ -38,13 +38,17 @@
 
 
         .controller("bw.main.challenge.preview.try-battle.Ctrl", function($scope, ChallengeSetup, UserStorage, WinConditions) {
+            $scope.$watch("challenge.challengeSetup.sides[0].bot", function(value) {
+                $scope.game = ChallengeSetup.createGame($scope.challenge.challengeSetup, false);
+                $scope.options.pause = true;
+            });
+
 
             UserStorage.loadUserBots().then(function (bots) {
                 $scope.bots = bots;
                 $scope.challenge.challengeSetup.sides[0].bot = bots[0];
             });
 
-            $scope.game = ChallengeSetup.createGame($scope.challenge.challengeSetup, false);
             $scope.options = { pause: true };
 
             $scope.startGame = function() {

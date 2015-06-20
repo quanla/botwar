@@ -20,7 +20,7 @@
 
             UnitPhysicsProvider.addUnitType("knight", {
                 needWay: true,
-                maxSpeed: 1.5
+                maxSpeed: 1.7
             });
 
             UnitImpactProvider.addUnitType("knight", {
