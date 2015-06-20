@@ -21,6 +21,8 @@
                     var gameRunner;
 
                     var renderer;
+
+                    var scale = attrs.scale ? attrs.scale * 1 : null;
                     $scope.$watch("game", function(game) {
 
                         if (unitSprites != null) {
@@ -29,13 +31,15 @@
                         }
 
                         if (game != null) {
-                            if (renderer == null || renderer.width != game.battlefield.width + 60 || renderer.height != game.battlefield.height + 60) {
+                            var rendererWidth = game.battlefield.width + 60;
+                            var rendererHeight = game.battlefield.height + 60;
+                            if (renderer == null || renderer.width != rendererWidth || renderer.height != rendererHeight) {
                                 if (renderer) {
                                     renderer.destroy();
                                     elem[0].removeChild(renderer.view);
                                 }
 
-                                renderer = Renderers.createRenderer(game.battlefield.width + 60, game.battlefield.height + 60);
+                                renderer = Renderers.createRenderer(rendererWidth, rendererHeight, scale);
                                 elem[0].appendChild(renderer.view);
                             }
 

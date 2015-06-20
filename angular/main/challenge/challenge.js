@@ -23,29 +23,30 @@
             $scope.view = {
             };
 
-            UserStorage.loadUserBots().then(function (bots) {
-                $scope.bots = bots;
-            });
-
-
             ChallengeServer.getChallenges().success(function(challenges) {
                 $scope.challenges = challenges;
             });
         })
 
-        .directive("challengeBattlePreview", function(BattleSetup) {
+        .directive("challengeBattlePreview", function(BattleSetup, UserStorage) {
             return {
                 restrict: "E",
                 templateUrl: "angular/main/challenge/challenge-battle-preview.html",
+                scope: {
+                    challenge: "="
+                },
                 link: function($scope, elem, attrs) {
-                    $scope.game = BattleSetup.createGame($scope.challenge.challengeSetup, null, false);
+                    UserStorage.loadUserBots().then(function (bots) {
+                        $scope.bots = bots;
+                    });
 
-                    var recentlyUseBot;
-                    $scope.testBattle = function(myBot) {
-                        recentlyUseBot = myBot;
-                        $scope.game = BattleSetup.createGame($scope.challenge.challengeSetup, myBot, true)
-                    };
+                    $scope.$watch("challenge", function(challenge) {
 
+                        var challengeSetup = ObjectUtil.clone(challenge.challengeSetup);
+                        challengeSetup.width = 400;
+                        challengeSetup.height = 400;
+                        $scope.game = BattleSetup.createGame(challengeSetup, false);
+                    });
 
                 }
             };

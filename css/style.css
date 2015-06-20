@@ -29,7 +29,7 @@ select.text-capitalize option {
     min-height: 60px;
 }
 .list-group.challenge-list > .list-group-item:hover {
-    background-color: #EEEEEE;
+    /*background-color: #EEEEEE;*/
     cursor: pointer;
 }
 .list-group.challenge-list > .list-group-item.focused:hover {
@@ -98,4 +98,12 @@ select.text-capitalize option {
 
 .del {
     text-decoration: line-through;
+}
+
+.has-button {
+    height: 30px;
+}
+
+.active .text-muted {
+    color: #ffffff;
 }

@@ -1,39 +1,15 @@
-<div class="row">
-    <div class="col-lg-6">
-        <h3 ng-bind="::challenge.title"></h3>
-    </div>
-</div>
-<hr/>
+<div class="panel panel-default">
+    <div class="panel-heading">Challenge Preview</div>
+    <div class="panel-body">
+        <div battlefield="game" scale="0.7"></div>
 
-<div class="row">
-    <div class="col-lg-3 text-center">
-        <div class="panel panel-default text-left">
-            <div class="panel-body">
-                <div class="form-group">
-                    <label class="control-label">From: </label>
-                    <div class="form-control-static">
-                        <span ng-bind="challenge.fromName"></span>
-                        <span class="text-muted" ng-bind="'(' + challenge.fromEmail + ')'"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Enemy Bot Name:</label>
-                    <div class="form-control-static" ng-bind="::challenge.challengeSetup.sides[1].bot.name"></div>
-                </div>
-                <div class="form-group" ng-if="::challenge.description">
-                    <label class="control-label">More Info:</label>
-                    <div class="form-control-static" ng-bind="::challenge.description"></div>
-                </div>
-            </div>
+        <div class="row">
+            <div class="col-lg-4 text-right"><label class="control-label">Enemy Bot:</label></div>
+            <div class="col-lg-8" ng-bind="::challenge.challengeSetup.sides[1].bot.name"></div>
         </div>
-        <button class="btn btn-primary" ng-click="testBattle(bots[0])">Try this challenge using "{{bots[0].name}}"</button>
     </div>
+    <div class="panel-footer">
 
-    <div class="col-lg-6 text-center">
-        <div battlefield="game"></div>
-    </div>
-
-    <div class="col-lg-3 text-center">
         <div class="btn-group" >
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Try battle using your bot
@@ -41,15 +17,12 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li ng-repeat="bot in bots"><a href="" ng-click="testBattle(bot)" ng-bind="::bot.name"></a></li>
+
             </ul>
         </div>
 
-        <br/>
-        <br/>
 
         <a class="btn btn-link" ui-sref="challenge-taker({challengeId: challenge.id})">Bring battle to code Editor</a>
-        <br/>
-        <br/>
 
         <button class="btn btn-default" ng-click="response()">Response to this challenge</button>
     </div>

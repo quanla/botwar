@@ -132,15 +132,19 @@
                     getAssetsLoc: function() {
                         return renderers.assetsLoc;
                     },
-                    createRenderer: function(width, height) {
+                    createRenderer: function(width, height, scale) {
 
-                        var renderer = PIXI.autoDetectRenderer(width || 800, height || 600, { antialias: false });
+                        var renderer = PIXI.autoDetectRenderer(width, height, { antialias: false });
 
                         // create the root of the scene graph
                         var stage = new PIXI.Container();
 
+                        if (scale != null) {
+                            renderer.view.style.width = Math.round(width * scale) + "px";
+                            renderer.view.style.height = Math.round(height * scale) + "px";
+                        }
 
-                        addBackground(stage, renderer);
+                        addBackground(stage, renderer, scale);
 
                         var dirtStage = new PIXI.Container();
                         dirtStage.position.set(30, 30);
