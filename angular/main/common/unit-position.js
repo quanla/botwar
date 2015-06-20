@@ -46,7 +46,10 @@
                         }
                     }
 
-                    var y = addLine(front, "front", 0);
+                    var front1 = Math.min(front, 5);
+                    var front2 = front - front1;
+                    var y = addLine(front1, "front", 0);
+                    y = Math.max(y, addLine(front2, "front", + space));
                     y = Math.max(y, addLine(rear, "rear", -space));
 
                     function addFlank(count, y) {

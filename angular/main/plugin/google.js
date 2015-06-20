@@ -9,12 +9,14 @@
             return {
                 restrict: "E",
                 link: function($scope, elem, attrs) {
-                    gapi.plusone.render(elem[0], {
-                        href: attrs.href,
-                        align: attrs.align,
-                        callback: function(jsonParam) {
-                            $scope.$eval(attrs.callback, {jsonParam: jsonParam});
-                        }
+                    $scope.$watch(function() { return elem.attr("href")}, function(href) {
+                        gapi.plusone.render(elem[0], {
+                            href: href,
+                            align: attrs.align,
+                            callback: function(jsonParam) {
+                                $scope.$eval(attrs.callback, {jsonParam: jsonParam});
+                            }
+                        });
                     });
                 }
             };
