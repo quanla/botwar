@@ -2,16 +2,20 @@
 
 (function () {
 
-    angular.module('bw.google-signin', [
+    angular.module('bw.google', [
     ])
 
         .directive("gPlusone", function() {
             return {
-                restrict: "A",
+                restrict: "E",
                 link: function($scope, elem, attrs) {
-                    gapi.plusone.render(
-                        elem[0]
-                    );
+                    gapi.plusone.render(elem[0], {
+                        href: attrs.href,
+                        align: attrs.align,
+                        callback: function(jsonParam) {
+                            $scope.$eval(attrs.callback, {jsonParam: jsonParam});
+                        }
+                    });
                 }
             };
         })

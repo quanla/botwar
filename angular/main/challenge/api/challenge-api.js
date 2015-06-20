@@ -20,6 +20,9 @@
                 },
                 deleteChallenge: function(challengeId) {
                     return Api.delete("challenge/" + challengeId);
+                },
+                plusoneChallenge: function(challenge, state) {
+                    return Api.put("challenge/plusone/" + challenge.id + "/" + state);
                 }
             };
         })

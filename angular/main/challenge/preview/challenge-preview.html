@@ -1,5 +1,10 @@
 <div class="panel panel-default">
-    <div class="panel-heading">Challenge Preview</div>
+    <div class="panel-heading">
+        Challenge Preview
+        <div class="pull-right text-right">
+            <g-plusone align="right" callback="plusone(jsonParam)" href="#/challenge-take/{{challenge.id}}"></g-plusone>
+        </div>
+    </div>
     <div class="panel-body">
         <div battlefield="game" scale="0.7"></div>
 
@@ -31,7 +36,7 @@
                 </a>
             </div>
             <div class="col-lg-6" style="padding: 0 10px 0 10px; margin-bottom: 5px">
-                <div class="g-plusone" g-plusone data-annotation="inline" data-width="300" dara-href="http://quanla.github.io/botwar/#/challenge-take/{{challenge.id}}"></div>
+
             </div>
             <div class="col-lg-6" style="padding: 0 10px 0 10px; margin-bottom: 5px">
                 <button class="btn btn-default btn-block" ng-click="response()">

@@ -17,7 +17,7 @@
             ;
         }])
 
-        .controller("challenge-taker.ctrl", function(UserStorage, $scope, $stateParams, BotSource, BattleSetup, ChallengeServer) {
+        .controller("challenge-taker.ctrl", function(UserStorage, $scope, $stateParams, BotSource, BattleSetup, ChallengeServer, LayoutService) {
 
             $scope.options = {};
 
@@ -25,6 +25,7 @@
                 $scope.bots = bots;
 
                 ChallengeServer.getChallenge($stateParams.challengeId).success(function(challenge) {
+                    LayoutService.setTitle($scope, challenge.title + " - BotwarJS");
                     $scope.challenge = challenge;
                     $scope.game = BattleSetup.createGame(challenge.challengeSetup, false);
                     $scope.options.pause = true;

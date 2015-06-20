@@ -5,7 +5,7 @@
     angular.module('bw.main.challenge.preview', [
     ])
 
-        .directive("challengePreview", function(BattleSetup, Fancybox, WinConditions) {
+        .directive("challengePreview", function(BattleSetup, Fancybox, WinConditions, ChallengeServer) {
             return {
                 restrict: "E",
                 templateUrl: "angular/main/challenge/preview/challenge-preview.html",
@@ -30,8 +30,11 @@
 
                     $scope.getDisplay = WinConditions.getDisplay;
 
-                    //$scope.tryBattle();
-
+                    $scope.plusone = function(params) {
+                        ChallengeServer.plusoneChallenge($scope.challenge, params.state).success(function(count) {
+                            $scope.challenge.plusone = count;
+                        });
+                    };
                 }
             };
         })

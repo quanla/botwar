@@ -3,6 +3,7 @@
 (function () {
     /* App Module */
     angular.module("bw.main", [
+        'bw.main.layout',
         'bw.main.battle-setup',
         'bw.common.model',
         'bw.common.unit-position',
@@ -13,7 +14,8 @@
         'bw.main.hello',
         'bw.main.user',
         'bw.main.skirmish',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'bw.google'
     ])
 
         .config(function (ApiProvider) {

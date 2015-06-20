@@ -30,7 +30,13 @@
                             <div class="text-right text-muted" ng-bind="::challenge.fromName"></div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <p class="list-group-item-text col-lg-8" ng-bind="::challenge.description" ng-click="view.focused = challenge"></p>
+                    <div class="col-lg-4 has-button text-right">
+                        <span class="fa fa-thumbs-o-up"></span>
+                        <span ng-bind="challenge.plusone | number:0"></span>
+                    </div>
                 </div>
             </a>
         </div>

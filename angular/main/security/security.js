@@ -3,7 +3,6 @@
 (function () {
 
     angular.module('bw.main.security', [
-        'bw.google-signin'
     ])
 
         .factory("User", function() {
