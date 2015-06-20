@@ -14,9 +14,8 @@
     <div class="col-lg-8">
 
         <div class="list-group challenge-list">
-            <div class="list-group-item" ng-class="view.focused == challenge ? 'active' : ''" ng-repeat="challenge in challenges" challenge-row>
-
-                <div class="row" ng-click="view.focused = challenge">
+            <a class="list-group-item" ng-click="view.focused = challenge" ng-class="view.focused == challenge ? 'active' : ''" ng-repeat="challenge in challenges" challenge-row>
+                <div class="row">
                     <h4 class="list-group-item-heading col-lg-8" ng-bind="::challenge.title" ></h4>
                     <div class="col-lg-4 has-button">
                         <div class="text-right text-muted on-out" ng-bind="::challenge.fromName"></div>
@@ -30,9 +29,7 @@
                     </div>
                     <p class="list-group-item-text col-lg-8" ng-bind="::challenge.description" ng-click="view.focused = challenge"></p>
                 </div>
-
-
-            </div>
+            </a>
         </div>
     </div>
 

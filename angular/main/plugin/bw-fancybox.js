@@ -10,6 +10,13 @@
                 var opened = false;
 
                 var scope = $scope.$new();
+
+                if (options.resolve) {
+                    for (var name in options.resolve) {
+                        scope[name] = options.resolve[name];
+                    }
+                }
+
                 //options.templateUrl
                 var templatePromise = $http.get(options.templateUrl, {cache: $templateCache}).then(function (result) {
                     return result.data;
