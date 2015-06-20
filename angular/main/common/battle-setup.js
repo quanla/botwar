@@ -98,13 +98,13 @@
                 return Cols.find(battleSetup.sides, function(side) { return side.color == color; });
             }
 
-            function getFreePoint(side) {
+            function getFreePoint(forSide) {
 
                 var p;
 
                 LOOP:
                 for (;;) {
-                    var x = Math.round(Math.random() * 100) + (side.color == "blue" ? 0 : battleSetup.width - 100);
+                    var x = Math.round(Math.random() * 100) + (forSide.color == "blue" ? 0 : battleSetup.width - 100);
                     var y = Math.round(Math.random() * battleSetup.height);
                     p = {x: x, y: y};
 
