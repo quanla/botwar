@@ -2,6 +2,7 @@ package qj.app.botwar.server;
 
 import qj.ac.deploy.DeployUtil;
 import qj.tool.web.HttpServer;
+import qj.ui.DesktopUI4;
 import qj.util.FileUtil;
 import qj.util.LangUtil;
 import qj.util.PropertiesUtil;
@@ -60,9 +61,8 @@ public class ChallengeServer {
     public static class Deploy {
 
         static String host = "54.254.246.157";
-        static String key = "mf934jf2098a3";
         public static void main(String[] args) {
-            DeployUtil.deploy("Botwar_Challenge", host + ":1213", key, deploy());
+            DeployUtil.deploy("Botwar_Challenge", host + ":1213", DesktopUI4.prompt("Key?"), deploy());
 //            DeployUtil.restart("Botwar_Challenge", host + ":1213", key);
 //            DeployUtil.stop("Botwar_Challenge", host + ":1213", key);
         }

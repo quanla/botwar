@@ -14,4 +14,6 @@ public class Challenge {
 
     public String description;
     public Object challengeSetup;
+
+    public int plusone;
 }

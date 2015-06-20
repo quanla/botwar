@@ -32,7 +32,7 @@ public class ChallengesService {
 
     @Get
     public List getAll(Connection conn) {
-        List<Challenge> challenges = template.selectAll(conn);
+        List<Challenge> challenges = template.selectList(conn, "ORDER BY plusone DESC");
         challenges.forEach((c) -> {
             c.fromId = null;
         });
