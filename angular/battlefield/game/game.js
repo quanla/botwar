@@ -171,9 +171,7 @@
             if (game.finished) return;
 
             game.finished = true;
-            if (game.onFinish) {
-                game.onFinish();
-            }
+            Fs.invokeAll(game.onFinishes);
         };
 
         // Init sides

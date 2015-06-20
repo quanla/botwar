@@ -82,7 +82,8 @@
                             ContinuousSupport.checkEachRound(game, battleSetup, round, BotSource);
                         };
                     }
-                    game.onFinish = battleSetup.onFinish;
+                    game.onFinishes = [];
+                    if (battleSetup.onFinish) { game.onFinishes.push(battleSetup.onFinish); };
 
                     return game;
                 }

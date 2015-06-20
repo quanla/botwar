@@ -51,11 +51,11 @@
 
             $scope.options = { pause: true };
 
+            $scope.challenge.challengeSetup.onFinish = function() {
+                $scope.$applyAsync();
+            };
             $scope.startGame = function() {
                 $scope.game = ChallengeSetup.createGame($scope.challenge.challengeSetup, true);
-                $scope.game.onFinish = function() {
-                    $scope.$applyAsync();
-                };
                 $scope.options.pause = false;
             };
 
