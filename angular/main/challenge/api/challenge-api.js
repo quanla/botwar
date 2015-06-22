@@ -22,7 +22,10 @@
                     return Api.delete("challenge/" + challengeId);
                 },
                 plusoneChallenge: function(challenge, state) {
-                    return Api.put("challenge/plusone/" + challenge.id + "/" + state);
+                    return Api.put("challenge/" + challenge.id + "/plusone/" + state);
+                },
+                countReplies: function(challenge) {
+                    return Api.get("challenge/" + challenge.id + "/count_replies");
                 }
             };
         })

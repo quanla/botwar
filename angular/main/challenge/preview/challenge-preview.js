@@ -19,6 +19,11 @@
                         challengeSetup.width = 410;
                         challengeSetup.height = 410;
                         $scope.game = BattleSetup.createGame(challengeSetup, false);
+
+                        $scope.countReplies = null;
+                        ChallengeServer.countReplies(challenge).success(function(count) {
+                            $scope.countReplies = count;
+                        });
                     });
                     $scope.tryBattle = function() {
                         Fancybox.open($scope, {

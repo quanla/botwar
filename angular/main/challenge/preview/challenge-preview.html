@@ -10,13 +10,13 @@
 
         <div class="row">
             <div class="col-lg-4 text-right"><label class="control-label">Enemy Bot:</label></div>
-            <div class="col-lg-8" ng-bind="::challenge.challengeSetup.sides[1].bot.name"></div>
+            <div class="col-lg-8" ng-bind="challenge.challengeSetup.sides[1].bot.name"></div>
         </div>
 
         <div class="row">
             <label class="col-lg-4 text-right">Conditions:</label>
             <div class="col-lg-8">
-                <div ng-repeat="wc in ::challenge.challengeSetup.winningConditions" ng-bind="::getDisplay(wc)"></div>
+                <div ng-repeat="wc in challenge.challengeSetup.winningConditions" ng-bind="getDisplay(wc)"></div>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
             </div>
             <div class="col-lg-6" style="padding: 0 10px 0 10px; margin-bottom: 5px">
                 <button class="btn btn-default btn-block" ng-click="response()">
-                    Response
+                    Replies ({{countReplies == null ? "..." : countReplies}})
                     &nbsp;
                     <span class="fa fa-envelope-o"></span>
                 </button>

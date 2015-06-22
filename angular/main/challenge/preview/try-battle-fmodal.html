@@ -19,7 +19,9 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label class="col-lg-4 control-label">Your bot:</label>
-                        <div class="col-lg-8"><select class="form-control" ng-options="b as b.name for b in bots" ng-model="challenge.challengeSetup.sides[0].bot"></select></div>
+                        <div class="col-lg-8">
+                            <select class="form-control" ng-options="b as b.name for b in bots" ng-model="challenge.challengeSetup.sides[0].bot"></select>
+                        </div>
                     </div>
                 </div>
             </div>
