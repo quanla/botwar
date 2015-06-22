@@ -3,6 +3,9 @@ package qj.app.botwar.server.challenge.service;
 import qj.app.botwar.server.AuthorizationException;
 import qj.app.botwar.server.challenge.model.Authen;
 import qj.app.botwar.server.challenge.model.Challenge;
+import qj.tool.sql.Builder;
+import qj.tool.sql.SQLUtil;
+import qj.tool.sql.Template;
 import qj.tool.web.json.*;
 
 import java.sql.Connection;
@@ -34,13 +37,23 @@ public class ChallengeService {
     }
 
     @Put
-    @Url("/challenge/plusone/:challengeId/:state")
-    public void plusone(@UrlParam("challengeId") Long challengeId, @UrlParam("state") String state, Connection conn) {
-        if ("on".equals(state)) {
-            template.update(conn, "SET plusone = plusone + 1 WHERE id=?", challengeId);
-        } else {
-            template.update(conn, "SET plusone = plusone - 1 WHERE id=?", challengeId);
-        }
+    @Url("/challenge/:challengeId/plusone/:state")
+    public int plusone(@UrlParam("challengeId") Long challengeId, @UrlParam("state") String state, Connection conn) {
+        Challenge challenge = template.select(conn, "SELECT id, plusone WHERE id=?", challengeId);
+        challenge.plusone += "on".equals(state) ? 1 : -1;
+        template.update(challenge, "plusone", conn);
+        return challenge.plusone;
+    }
+
+
+//    public static Template<Challenge> template = new Builder<>(Challenge.class)
+//            .embeded("challengeSetup")
+//            .build();
+
+    @Get
+    @Url("/challenge/:challengeId/count_replies")
+    public Long countReplies(@UrlParam("challengeId") Long challengeId, Connection conn) {
+        return SQLUtil.selectLong(conn, "SELECT count(*) FROM challenge_reply WHERE challenge_reply.to_challenge = ?", challengeId);
     }
 }
 
