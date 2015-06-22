@@ -5,8 +5,31 @@
     angular.module('bw.main.battle-setup', [
     ])
 
-        .factory("BattleSetup", function(PositionGenerator, UnitUtil, BotSource, WinConditions) {
+        .factory("BattleSetup", function(PositionGenerator, UnitUtil, BotSource, WinConditions, UnitPhysics) {
+            function Unit(props) {
+                ObjectUtil.copy(props, this);
+            }
+            Unit.prototype = {
+                isNeedWay: function() {
+                    return this.overwrite && this.overwrite.needWay != null ? this.overwrite.needWay : this.needWay;
+                },
+                getBot: function() {
+                    return this.overwrite && this.overwrite.bot != null ? this.overwrite.bot : this.bot;
+                }
+            };
+
+            function createUnit(props) {
+                var unit = new Unit(props);
+
+                var unitPhysics = UnitPhysics.getUnitPhysics(unit.type);
+                unit.needWay = unitPhysics.needWay;
+                unit.maxSpeed = unitPhysics.maxSpeed;
+
+                return unit;
+            }
+
             return {
+                createUnit: createUnit,
                 createGame: function(battleSetup, prepareBot) {
                     if (battleSetup.winningConditions == null) {
                         battleSetup.winningConditions = [{name: "lastManStand"}];
@@ -16,19 +39,29 @@
 
                     function addSide(sideNum, sideSetup) {
                         var units = [];
+
+                        function addUnit(props) {
+                            units.push(createUnit(props));
+                        }
+
                         var positions = PositionGenerator.generatePositions(sideNum, sideSetup.units, battleSetup.width || 500, battleSetup.height || 500);
                         for (var j = 0; j < sideSetup.units.length; j++) {
                             var unitConfig = sideSetup.units[j];
                             for (var k = 0; k < unitConfig.count; k++) {
                                 var botCode = !prepareBot ? null : sideSetup.bot != null ? sideSetup.bot.code : null;
                                 var bot = botCode ? BotSource.createBot(botCode, unitConfig.type) : null;
-                                units.push({
+
+                                var unitPhysics = UnitPhysics.getUnitPhysics(unitConfig.type);
+
+                                addUnit({
                                     type: unitConfig.type,
                                     position: positions(unitConfig.type),
                                     direction: sideNum * Math.PI + Math.PI / 2,
                                     bot: bot,
                                     state: {name: "stand"},
-                                    afterBotRun: unitConfig.afterBotRun
+                                    afterBotRun: unitConfig.afterBotRun,
+                                    needWay: unitPhysics.needWay,
+                                    maxSpeed: unitPhysics.maxSpeed
                                 });
                             }
                         }
@@ -36,7 +69,8 @@
                         var side = {
                             color: sideNum == 0 ? "blue" : "red",
                             units: units,
-                            score: 0
+                            score: 0,
+                            addUnit: addUnit
                         };
 
                         function compileConditions(side, battleSetup, compile) {
@@ -104,7 +138,7 @@
 
                 LOOP:
                 for (;;) {
-                    var x = Math.round(Math.random() * 100) + (forSide.color == "blue" ? 0 : battleSetup.width - 100);
+                    var x = Math.round(Math.random() * 100) + (forSide.color == "blue" ? -130 : battleSetup.width + 30);
                     var y = Math.round(Math.random() * battleSetup.height);
                     p = {x: x, y: y};
 
@@ -126,6 +160,13 @@
                 return p;
             }
 
+            var moveInBot = {
+                run: function(control) {
+                    control.turnToward({x: battleSetup.width/2, y: battleSetup.height/2});
+                    control.goForward();
+                }
+            };
+
             function addUnit(side, type, bot) {
                 var p = getFreePoint(side);
 
@@ -136,9 +177,16 @@
                     bot: BotSource.createBot(bot.code, type),
                     side: side,
                     state: {name: "stand"},
-                    birth: round
+                    birth: round,
+                    overwrite: {
+                        needWay: false,
+                        until: function() {
+                            return this.position.x >= 0 && this.position.y >= 0 && this.position.x < battleSetup.width && this.position.y < battleSetup.height;
+                        },
+                        bot: moveInBot
+                    }
                 };
-                side.units.push(unit);
+                side.addUnit(unit);
             }
 
             for (var i = 0; i < game.sides.length; i++) {

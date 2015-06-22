@@ -85,8 +85,7 @@
                                             if (unit == props.source) {
                                                 return;
                                             }
-                                            var unitPhysics = UnitPhysics.getUnitPhysics(unit);
-                                            if (unitPhysics.needWay) {
+                                            if (unit.state.name != "die" && unit.isNeedWay()) {
                                                 if (Distance.between(unit.position, position) < 20) {
                                                     return true;
                                                 }
@@ -129,7 +128,7 @@
             };
         })
 
-        .factory("UnitDynamics", function(Dynamics, UnitImpact, GameUtil, UnitPhysics, UnitFightingStyle) {
+        .factory("UnitDynamics", function(Dynamics, UnitImpact, GameUtil, UnitPhysics, UnitFightingStyle, BattleSetup) {
             function limitPosition(pos, battlefield) {
                 if (pos.x < 0) {
                     pos.x = 0;
@@ -150,13 +149,11 @@
                     var impact = UnitImpact.prepare(game, round);
                     GameUtil.eachUnit(game, function(unit) {
 
-                        var unitPhysics = UnitPhysics.getUnitPhysics(unit);
-
-                        unit.velocity = Dynamics.applyAccel(unit.moveAccel, unit.direction, unit.velocity, unitPhysics);
+                        unit.velocity = Dynamics.applyAccel(unit.moveAccel, unit.direction, unit.velocity, unit.maxSpeed);
 
                         if (unit.velocity != null && unit.velocity.value > 0) {
 
-                            if (unitPhysics.needWay) {
+                            if (unit.isNeedWay()) {
                                 var positions = [
                                     Dynamics.applyVelocity(unit.velocity, unit.position),
                                     Dynamics.applyVelocity({value: unit.velocity.value, direction: unit.velocity.direction - 3*Math.PI/8}, unit.position),
@@ -176,7 +173,7 @@
                         }
 
                         // Battlefield boundary
-                        if (unitPhysics.needWay) {
+                        if (unit.isNeedWay()) {
                             limitPosition(unit.position, game.battlefield);
                         }
 
@@ -193,7 +190,7 @@
                                     damage: fightingStyle.damage
                                 });
                             } else if (fightingStyle.launchCreateArrow && (round - unit.state.since) == fightingStyle.launchCreateArrow) {
-                                game.nature.push({
+                                game.nature.push(BattleSetup.createUnit({
                                     type: "arrow",
                                     state: {name: "fly"},
                                     position: ObjectUtil.clone(unit.position),
@@ -202,7 +199,7 @@
                                     side: unit.side,
                                     damage: fightingStyle.damage,
                                     moveAccel: 100
-                                });
+                                }));
                             } else if ((round - unit.state.since) == fightingStyle.fightFinish) {
                                 unit.state = {name: "stand"};
                             }
@@ -228,6 +225,14 @@
                         if (unit.isHit && (round - unit.isHit.since) > 2) {
                             unit.isHit = null;
                         }
+
+
+
+                        if (unit.overwrite && unit.overwrite.until) {
+                            if (unit.overwrite.until.apply(unit)) {
+                                delete unit.overwrite;
+                            }
+                        }
                     });
 
                 }
@@ -236,7 +241,7 @@
 
         .factory("Dynamics", function() {
 
-            function applyAccel(accel, direction, velocity, unitPhysics) {
+            function applyAccel(accel, direction, velocity, maxSpeed) {
 
                 if (accel == null || accel == 0) {
                     return null;
@@ -245,7 +250,6 @@
                 // Add vectors
                 var result = Vectors.add({value: accel, direction: direction}, velocity || {value: 0, direction: 0});
                 // Speed limit
-                var maxSpeed = unitPhysics.maxSpeed;
                 if (result.value > maxSpeed) {
                     result.value = maxSpeed;
                 } else if (result.value < -maxSpeed) {

@@ -147,18 +147,19 @@
 
                                 var hasError = sideTruth.eachFriendHandle(function (h) {
                                     var unit = h.o;
-                                    if (unit.bot && !isLocked(unit, round)) {
+                                    var bot = unit.getBot();
+                                    if (bot && !isLocked(unit, round)) {
 
-                                        if (unit.bot.run == null) {
-                                            throw "Wrong bot config: " + unit.bot + ", run function is missing";
+                                        if (bot.run == null) {
+                                            throw "Wrong bot config: " + bot + ", run function is missing";
                                         }
                                         var control = botControl.createControl(h, round, sideTruth);
 
                                         try {
-                                            unit.bot.run(control);
+                                            bot.run(control);
                                         } catch (e) {
-                                            if (unit.bot.errorHandler) {
-                                                unit.bot.errorHandler(e);
+                                            if (bot.errorHandler) {
+                                                bot.errorHandler(e);
                                             } else {
                                                 console.log("Error while running \"" + unit.side.color + "\" bot:");
                                                 console.log(e);

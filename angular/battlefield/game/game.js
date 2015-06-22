@@ -228,7 +228,8 @@
 
                     var time = new Date().getTime();
 
-                    return lastRound + Math.floor((time - lastRoundTime) / roundDuration * multiply);
+                    var plus = Math.min(10, Math.floor((time - lastRoundTime) / roundDuration * multiply));
+                    return lastRound + plus;
                 },
                 remember: function(round) {
                     lastRound = round;
