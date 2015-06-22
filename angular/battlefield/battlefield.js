@@ -8,7 +8,7 @@
         'bw.battlefield.renderer'
     ])
 
-        .directive("battlefield", function(Renderers, GameRunner, UnitSprites) {
+        .directive("battlefield", function(Renderers, GameRunner, UnitSprites, GameControl) {
             return {
                 restrict: "A",
                 scope: {
@@ -43,12 +43,18 @@
                                 elem[0].appendChild(renderer.view);
                             }
 
+                            var gameControl = GameControl.createGameControl(game);
+                            gameControl.setStage(renderer.controlStage);
+
                             gameRunner = GameRunner.newGameRunner(game, $scope.options);
 
                             unitSprites = UnitSprites.createUnitSprites(game, renderer.unitStage, renderer.dirtStage);
 
                             gameRunner.updateUI = unitSprites.updateSprites;
-                            renderer.onEachRound(gameRunner.onEachRound);
+                            renderer.onEachRound(function() {
+                                gameRunner.onEachRound();
+                                gameControl.updateUI();
+                            });
                         }
 
                     });
@@ -67,7 +73,21 @@
             };
         })
 
+        .factory("GameControl", function() {
+            return {
+                createGameControl: function() {
+                    return {
+                        setStage: function(stage) {
 
+                        },
+                        updateUI: function(stage) {
+
+                        }
+
+                    };
+                }
+            };
+        })
     ;
 
 })();

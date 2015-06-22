@@ -172,22 +172,6 @@
 
             game.finished = true;
 
-            var winBot = {
-                run: function(control) {
-                    control.stand();
-                }
-            };
-            for (var i = 0; i < game.sides.length; i++) {
-                var side = game.sides[i];
-
-                for (var j = 0; j < side.units.length; j++) {
-                    var unit = side.units[j];
-                    unit.overwrite = {
-                        bot: winBot
-                    };
-                }
-            }
-
             Fs.invokeAll(game.onFinishes);
         };
 

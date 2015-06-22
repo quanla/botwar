@@ -14,7 +14,7 @@
                 },
                 templateUrl: "angular/battlefield/battle-control.html",
                 link: function($scope, elem, attrs) {
-
+                    $scope.hasStart = attrs.start != null;
                 }
             };
         })
