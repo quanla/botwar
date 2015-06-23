@@ -3,12 +3,14 @@ package qj.app.botwar.server.challenge.service;
 import qj.app.botwar.server.AuthorizationException;
 import qj.app.botwar.server.challenge.model.Authen;
 import qj.app.botwar.server.challenge.model.Challenge;
+import qj.app.botwar.server.challenge.model.ChallengeReply;
 import qj.tool.sql.Builder;
 import qj.tool.sql.SQLUtil;
 import qj.tool.sql.Template;
 import qj.tool.web.json.*;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.util.Objects;
 
 import static qj.app.botwar.server.challenge.service.ChallengesService.template;
@@ -54,6 +56,23 @@ public class ChallengeService {
     @Url("/challenge/:challengeId/count_replies")
     public Long countReplies(@UrlParam("challengeId") Long challengeId, Connection conn) {
         return SQLUtil.selectLong(conn, "SELECT count(*) FROM challenge_reply WHERE challenge_reply.to_challenge = ?", challengeId);
+    }
+
+
+    public static Template<ChallengeReply> templateReply = new Builder<>(ChallengeReply.class)
+            .embeded("bot")
+            .build();
+
+    @Post
+    @Url("/challenge/:challengeId/reply")
+    public void postReply(ChallengeReply challengeReply, Authen authen, Connection conn) {
+        challengeReply.fromAuthenType = authen.type;
+        challengeReply.fromId = authen.id;
+        challengeReply.fromName = authen.username;
+        challengeReply.fromEmail = authen.email;
+        challengeReply.createTime = new Date();
+
+        templateReply.insert(challengeReply, conn);
     }
 }
 

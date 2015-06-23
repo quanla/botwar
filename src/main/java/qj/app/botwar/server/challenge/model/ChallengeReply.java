@@ -5,19 +5,16 @@ import java.util.Date;
 /**
  * Created by quan on 6/7/2015.
  */
-public class Challenge {
+public class ChallengeReply {
     public Long id;
-    public String title;
+    public Long toChallenge;
+    public String message;
 
     public String fromName;
     public String fromId;
     public String fromAuthenType;
     public String fromEmail;
 
-    public String description;
-    public Object challengeSetup;
-
     public Date createTime;
-
-    public int plusone;
+    public Object bot;
 }

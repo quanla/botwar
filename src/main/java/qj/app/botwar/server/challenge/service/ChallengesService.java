@@ -9,6 +9,7 @@ import qj.tool.web.json.Post;
 import qj.tool.web.json.Url;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class ChallengesService {
         challenge.fromId = authen.id;
         challenge.fromName = authen.username;
         challenge.fromEmail = authen.email;
+        challenge.createTime = new Date();
 
         template.insert(challenge, conn);
     }
