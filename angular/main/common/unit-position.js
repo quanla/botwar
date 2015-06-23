@@ -19,8 +19,6 @@
                     var rear = Cols.sum(unitConfigs, function(u) { return posType[u.type] == 'rear' ? u.count : 0; });
                     var flank = Cols.sum(unitConfigs, function(u) { return posType[u.type] == 'flank' ? u.count : 0; });
 
-
-
                     var positions = [];
 
                     var space = 60;
@@ -46,7 +44,9 @@
                         }
                     }
 
-                    var front1 = Math.min(front, 5);
+                    var lineMax = (bfheight / space) + 1 - 4;
+
+                    var front1 = Math.min(front, lineMax);
                     var front2 = front - front1;
                     var y = addLine(front1, "front", 0);
                     y = Math.max(y, addLine(front2, "front", + space));

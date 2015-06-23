@@ -29,7 +29,7 @@
                         {
                             color: "blue",
                             units: [
-                                { type: "footman", count: 10},
+                                { type: "footman", count: 20},
                                 { type: "archer", count: 10},
                                 { type: "knight", count: 4}
                             ],
@@ -38,7 +38,7 @@
                         {
                             color: "red",
                             units: [
-                                { type: "footman", count: 10},
+                                { type: "footman", count: 20},
                                 { type: "archer", count: 10},
                                 { type: "knight", count: 4}
                             ],

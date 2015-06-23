@@ -95,9 +95,8 @@ ColLink.prototype = {
                 var index = this.findO(o, i+1);
                 if (index > -1) {
                     // If o match somewhere else: Bring it here
-                    var theH = this.link[index];
-                    this.link.splice(index, 1);
-                    this.link.splice(i, 0, theH);
+                    this.link[i] = this.link[index];
+                    this.link[index] = h;
                 } else {
                     // Else: o not match any where: new elem, add it here
                     var l = this.createFunc(o);
