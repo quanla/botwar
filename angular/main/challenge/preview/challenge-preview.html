@@ -30,19 +30,17 @@
             </div>
             <div class="col-lg-6" style="padding: 0 10px 0 10px; margin-bottom: 5px">
                 <a class="btn btn-default btn-block" style="" ui-sref="challenge-take({challengeId: challenge.id})">
-                    Bring it on
-                    &nbsp;
                     <span class="fa fa-hand-o-right"></span>
+                    Bring it on
                 </a>
             </div>
             <div class="col-lg-6" style="padding: 0 10px 0 10px; margin-bottom: 5px">
 
             </div>
             <div class="col-lg-6" style="padding: 0 10px 0 10px; margin-bottom: 5px">
-                <button class="btn btn-default btn-block" ng-click="response()">
-                    Replies ({{countReplies == null ? "..." : countReplies}})
-                    &nbsp;
-                    <span class="fa fa-envelope-o"></span>
+                <button class="btn btn-default btn-block" ng-click="viewReply()" ng-class="{disabled: !countReplies}">
+                    <span class="fa fa-trophy"></span>
+                    Conquered ({{countReplies == null ? "..." : countReplies}})
                 </button>
             </div>
         </div>

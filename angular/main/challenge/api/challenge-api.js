@@ -29,6 +29,15 @@
                 },
                 postReply: function(challengeReply) {
                     return Api.post("challenge/" + challengeReply.toChallenge + "/reply", challengeReply);
+                },
+                getReply: function(challenge) {
+                    return Api.get("challenge/" + challenge.id + "/reply");
+                },
+                getNextReply: function(challenge, reply) {
+                    return Api.get("challenge/" + challenge.id + "/next_reply/" + reply.id);
+                },
+                getPrevReply: function(challenge, reply) {
+                    return Api.get("challenge/" + challenge.id + "/prev_reply/" + reply.id);
                 }
             };
         })

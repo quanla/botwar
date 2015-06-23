@@ -1,0 +1,19 @@
+<div class="modal-header "><h4 class="modal-title" ng-bind="'Conquered by: ' + reply.fromName + ' on ' + (reply.createTime | date:'HH:mm MMM dd, yyyy')"></h4></div>
+<div class="modal-body text-center">
+    <div battlefield="game" options="options"></div>
+    <battle-status game="game"></battle-status>
+
+    <div>
+        <br/>
+        <battle-control game="game" start="restartGame()" options="options"></battle-control>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="text-center">
+        <button class="btn btn-default pull-left" ng-disabled="prevReply==null" ng-click="toPrevReply()">&larr; Previous</button>
+
+        <button class="btn btn-default" ng-click="cancel()"><i class="glyphicon glyphicon-remove"></i> Close</button>
+
+        <button class="btn btn-default pull-right" ng-disabled="nextReply==null" ng-click="toNextReply()">Next &rarr;</button>
+    </div>
+</div>
