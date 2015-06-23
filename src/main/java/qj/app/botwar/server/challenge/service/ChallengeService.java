@@ -74,5 +74,25 @@ public class ChallengeService {
 
         templateReply.insert(challengeReply, conn);
     }
+
+    @Get
+    @Url("/challenge/:challengeId/reply")
+    public ChallengeReply getReply(@UrlParam("challengeId") Long challengeId, Connection conn) {
+        return templateReply.select(conn, "WHERE to_challenge=? ORDER BY create_time DESC", challengeId);
+    }
+
+    @Get
+    @Url("/challenge/:challengeId/next_reply/:replyId")
+    public ChallengeReply getNextReply(@UrlParam("challengeId") Long challengeId, @UrlParam("replyId") Long replyId, Connection conn) {
+        ChallengeReply challengeReply = templateReply.selectById(replyId, conn);
+        return templateReply.select(conn, "WHERE to_challenge=? AND create_time < ? ORDER BY create_time DESC", challengeId, challengeReply.createTime);
+    }
+
+    @Get
+    @Url("/challenge/:challengeId/prev_reply/:replyId")
+    public ChallengeReply getPrevReply(@UrlParam("challengeId") Long challengeId, @UrlParam("replyId") Long replyId, Connection conn) {
+        ChallengeReply challengeReply = templateReply.selectById(replyId, conn);
+        return templateReply.select(conn, "WHERE to_challenge=? AND create_time > ? ORDER BY create_time ASC", challengeId, challengeReply.createTime);
+    }
 }
 
