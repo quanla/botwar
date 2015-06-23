@@ -84,12 +84,17 @@ ColLink.prototype = {
             var o = this.oriCol[i];
             if (h.o === o) {
                 // Good to go
-                continue
+            } else if (this.oriCol.indexOf(h.o, i+1) == -1) {
+                this.link.splice(i, 1);
+                if (this.removeFunc) {
+                    this.removeFunc(h.l);
+                }
+                i--;
             } else {
 
                 var index = this.findO(o, i+1);
                 if (index > -1) {
-                    // If o match somewhere else: Bring the it here
+                    // If o match somewhere else: Bring it here
                     var theH = this.link[index];
                     this.link.splice(index, 1);
                     this.link.splice(i, 0, theH);

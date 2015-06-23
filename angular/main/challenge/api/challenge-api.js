@@ -26,6 +26,9 @@
                 },
                 countReplies: function(challenge) {
                     return Api.get("challenge/" + challenge.id + "/count_replies");
+                },
+                postReply: function(challengeReply) {
+                    return Api.post("challenge/" + challengeReply.toChallenge + "/reply", challengeReply);
                 }
             };
         })

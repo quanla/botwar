@@ -11,38 +11,73 @@
             };
         })
 
-        .factory("SecurityService", function(User, $modal) {
-            return {
-                showSigninModal: function() {
-                    return $modal.open({
-                        templateUrl: "angular/main/security/sign-in-modal.html",
-                        controller: "security.signin-modal"
-                    }).result;
-                },
-                isSignedIn: function() {
-                    return User.google != null;
-                }
-            };
-        })
+        .factory("SecurityService", function(User, $modal, $q, GoogleSignin) {
+            var googleSignin;
 
-        .controller("security.signin-modal", function($scope, $modalInstance, SecurityService, User) {
-
-            $scope.signinGoogle = function() {
-                if (User.google == null) {
-                    gapi.auth2.getAuthInstance().signIn({
-                        scope: "profile email"
-                    });
-                }
-            };
-
-            $scope.$watch(function() { return SecurityService.isSignedIn(); }, function(signedIn) {
-                if (signedIn) {
-                    $modalInstance.close();
-                }
+            GoogleSignin.initGoogleSignin().then(function(googleSignin1) {
+                googleSignin = googleSignin1;
+                User.google = googleSignin.getProfile();
             });
 
-            $scope.cancel = $modalInstance.dismiss;
+            function isSignedIn() {
+                return User.google != null;
+            }
+
+            function signin() {
+                var defer = $q.defer();
+                if (User.google == null) {
+                    googleSignin.signin().then(function(p) {
+                        User.google = p;
+                        defer.resolve();
+                    });
+                } else {
+                    defer.resolve();
+                }
+                return defer.promise;
+            }
+
+            return {
+                signin: signin,
+                isSignedIn: isSignedIn,
+                ensureSignin: function() {
+
+                    if (!isSignedIn()) {
+                        return signin();
+                    } else {
+                        var defer = $q.defer();
+                        defer.resolve();
+                        return defer.promise;
+                    }
+
+                },
+                signout: function() {
+                    googleSignin.signout();
+                    User.google = null;
+                },
+                ready: function() {
+                    return googleSignin != null;
+                }
+            };
         })
+
+        //.controller("security.signin-modal", function($scope, $modalInstance, SecurityService, User) {
+        //
+        //    $scope.signinGoogle = function() {
+        //        if (User.google == null) {
+        //            gapi.auth2.getAuthInstance().signIn({
+        //                scope: "profile email"
+        //            });
+        //        }
+        //    };
+        //
+        //    $scope.$watch(function() { return SecurityService.isSignedIn(); }, function(signedIn) {
+        //        if (signedIn) {
+        //            $modalInstance.close();
+        //        }
+        //    });
+        //
+        //    $scope.cancel = $modalInstance.dismiss;
+        //})
 
 
         .provider("Api", function() {

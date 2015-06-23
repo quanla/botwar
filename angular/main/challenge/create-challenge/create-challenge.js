@@ -138,17 +138,11 @@
             };
 
             $scope.publish = function() {
-                if (!SecurityService.isSignedIn()) {
-                    SecurityService.showSigninModal().then(function() {
-                        ChallengeServer.postChallenge($scope.challenge).success(function() {
-                            $modalInstance.close();
-                        });
-                    });
-                } else {
+                SecurityService.ensureSignin().then(function() {
                     ChallengeServer.postChallenge($scope.challenge).success(function() {
                         $modalInstance.close();
                     });
-                }
+                });
             };
 
             $scope.cancel = $modalInstance.dismiss;

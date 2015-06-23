@@ -26,6 +26,53 @@
                 </div>
             </div>
         </div>
+
+        <div class="panel panel-success" ng-if="game.finished && game.sides[0].won && !post">
+            <div class="panel-heading text-center">
+                <h4>
+                    <i class="fa fa-trophy fa-lg"></i>
+                    Congratulations!
+                    <i class="fa fa-trophy fa-lg"></i>
+                </h4>
+            </div>
+            <div class="panel-body">
+                <p>
+                    You won the challenge!
+                </p>
+                <p>
+                    Would you like to post your victory?
+                </p>
+                <form name="replyForm">
+                    <div class="form-group">
+                        <textarea class="form-control" ng-model="reply.message" placeholder="Post message..."></textarea>
+                    </div>
+                    <div class="form-group text-right">
+                        <button class="btn btn-primary" ng-click="postVictory()"><span class="glyphicon glyphicon-upload"></span> Post this victory</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel panel-success" ng-if="post">
+            <div class="panel-heading text-center">
+                <h4>
+                    <i class="fa fa-trophy fa-lg"></i>
+                    Congratulations!
+                    <i class="fa fa-trophy fa-lg"></i>
+                </h4>
+            </div>
+            <div class="panel-body">
+                <p class="text-success">
+                    Your victory has been post
+                </p>
+                <div class="form-group">
+                    <textarea class="form-control" readonly ng-model="::reply.message" placeholder="No message..."></textarea>
+                </div>
+                <p>
+                    Thank you and hope you enjoyed the challenge.
+                </p>
+            </div>
+        </div>
     </div>
     <div class="col-lg-7">
         <div class="text-center">

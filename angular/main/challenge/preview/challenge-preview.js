@@ -45,7 +45,10 @@
         })
 
 
-        .controller("bw.main.challenge.preview.try-battle.Ctrl", function($scope, ChallengeSetup, UserStorage, WinConditions) {
+        .controller("bw.main.challenge.preview.try-battle.Ctrl", function($scope, ChallengeSetup, SecurityService, ChallengeServer, UserStorage, WinConditions) {
+            $scope.reply = {};
+            $scope.post = false;
+
             $scope.$watch("challenge.challengeSetup.sides[0].bot", function(value) {
                 $scope.game = ChallengeSetup.createGame($scope.challenge.challengeSetup, false);
                 $scope.options.pause = true;
@@ -68,6 +71,19 @@
             };
 
             $scope.getDisplay = WinConditions.getDisplay;
+
+            $scope.postVictory = function() {
+
+                SecurityService.ensureSignin().then(function() {
+                    ChallengeServer.postReply({
+                        toChallenge: $scope.challenge.id,
+                        message: $scope.reply.message,
+                        bot: $scope.challenge.challengeSetup.sides[0].bot
+                    }).then(function() {
+                        $scope.post = true;
+                    });
+                });
+            };
         })
     ;
 
