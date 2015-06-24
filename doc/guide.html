@@ -300,9 +300,9 @@
 <pre><code>function Bot(unitType) {
 
     this.run = function (control) {
-        control.goForward();
+       control.goForward();
     };
-    }
+}
 </code></pre>
 
 <p>Explanation:</p>
@@ -315,19 +315,28 @@
 <h3>Robot control</h3>
 <p>Here are functions and attributes of the control object:</p>
 <ul>
-    <li><code>control.hitpoint</code>: Give the current hitpoint of the unit (soldier).</li>
     <li><code>control.round</code>: Give the current round of the game.</li>
+    <li><code>control.type</code>: Give the unit type. Can be either: &quot;footman&quot;, &quot;knight&quot; or &quot;archer&quot;.</li>
+    <li><code>control.hitpoint</code>: Give the current hitpoint of the unit (soldier).</li>
     <li><code>control.position</code>: Give the current position of this unit (soldier).</li>
     <li><code>control.direction</code>: Get and set the current direction of this unit (soldier).</li>
+    <li><code>control.state</code>: Get the current state of this unit, useful to check if this unit is already dead (dead unit's bot is run 1 last time, but all actions except messaging are not applied)</li>
+    <li><code>control.battlefield</code>: Get the battlefield info: control.battlefield.width and control.battlefield.height</li>
     <li><code>control.turnToward(position)</code>: Command the unit to turn its head toward that position.</li>
     <li><code>control.turnAway(position)</code>: Command the unit to turn its head the opposite way to that position.</li>
     <li><code>control.goForward()</code>: Command the unit to go forward in the current direction.</li>
     <li><code>control.fight()</code>: Command the unit to initiate a fight action.</li>
     <li><code>control.stand()</code>: Command the unit to stand, this will cancel the <code>goForward</code> action.</li>
+    <li><code>control.sendMessage(message, to)</code>: Send any message to an ally. If to is not defined, the message will be sent to all friendly units.</li>
+    <li><code>control.sendToAll(message)</code>: Send any message to all friendly units.</li>
     <li><code>control.getEnemies()</code>: Return the list of all enemies in the battle field.</li>
     <li><code>control.getNearestEnemy()</code>: Return nearest enemy to the unit's current position.</li>
     <li><code>control.getFriends()</code>: Return the list of all friends in the battle field.</li>
     <li><code>control.predictPosition(unit, roundNum)</code>: Predict the position of unit after <code>roundNum</code> number of rounds. Prediction is based on unit's current position and current velocity.</li>
+    <li><code>control.messages</code>: Get all messages that friendly units sent to this unit (soldier).</li>
+    <li><code>control.self</code>: Give the unit reference - this reference's value will be updated each round, base on your unit's actual state. This is convenience to be used to send as message to allies.</li>
+    <li><code>control.setFact(name, value)</code>: Set a fact value for all units of same side. Once set, the value is accessible by all other units through control.getFact(name) method.</li>
+    <li><code>control.getFact(name)</code>: Get the fact value for all units of same side.</li>
 </ul>
 <h3>Robot blocking</h3>
 <p>Most actions will block your robot from being run for some rounds, only stand and small change in direction will not. This will help prevent the soldier from being &quot;flickered&quot; caused by changing moves so rapidly.</p>
@@ -336,6 +345,12 @@
     <li><strong>Walk</strong>: After calling to <code>control.goForward</code>, robot will be blocked for 10 rounds, note that after 10 rounds the soldier will keep walking in the same direction if no other order is issued</li>
     <li><strong>Direction</strong>: After changing direction, if the change is larger than PI/30 then robot will be blocked for 10 rounds. This will help prevent the soldier from spinning like crazy until his brain is flushed out of his head.</li>
     <li><strong>Die</strong>: A dead soldier will have a dead robot, and a dead robot can't run.</li>
+</ul>
+<h2>Advanced Guide</h2>
+<h3>Keeping and reusing references</h3>
+<ul>
+    <li>It's ok to keep the reference to an enemy unit or friendly unit in memory and reuse it for the next rounds. These reference will not be invalidated, instead, new unit state values will be updated into the very same object that you are referencing to. This will help a lot in simplifying coding logic, and robot communication.</li>
+    <li>All these unit references are shared among robots of same side, so if you try to update values (like position, or state of an unit), then other robots of your side will be affected, but the real unit or robots of other sides will not be. In short, if you want to screw things up, you are only hurting yourself.</li>
 </ul>
 
 </body>

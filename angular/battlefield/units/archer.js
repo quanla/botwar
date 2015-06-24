@@ -8,7 +8,7 @@
     ])
         .config(function(GameSetupProvider, UnitRenderProvider, UnitFightingStyleProvider, UnitPhysicsProvider, UnitImpactProvider) {
             GameSetupProvider.addUnitType("archer", {
-                defaultHitpoint: 70
+                defaultHitpoint: 60
             });
 
             UnitFightingStyleProvider.addStyle("archer", {

@@ -63,7 +63,6 @@
                                 round: round,
                                 type: unit.type,
                                 hitpoint: unit.hitpoint,
-                                self: unitPresHandle.l.truth,
                                 position: unitPresHandle.l.truth.position,
                                 direction: unit.direction,
                                 state: unitPresHandle.l.truth.state,
@@ -135,6 +134,7 @@
                                 predictPosition: predict.predictPosition,
 
                                 messages: unit.messages,
+                                self: unitPresHandle.l.truth,
                                 setFact: function(name, value) {
                                     if (unit.side.facts == null) {
                                         unit.side.facts = {};
