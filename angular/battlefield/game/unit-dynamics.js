@@ -58,6 +58,7 @@
                         }
 
                         return {
+                            applyHit: applyHit,
                             hit: function(props) {
 
                                 var adjustantEnemies = Cols.filter(GameUtil.getEnemies(props.source), function(enemy) {
@@ -107,16 +108,15 @@
                                     }
                                 };
                             },
-                            arrow: function(props) {
+                            pierce: function(from) {
                                 return GameUtil.eachUnit(game, function(unit) {
                                     if (unit.state.name == "die" ) {
                                         return; // Immune to damage
                                     }
 
-                                    if (types[unit.type].takeHit && props.source.side != unit.side) {
+                                    if (types[unit.type].takeHit && from.side != unit.side) {
 
-                                        if (Distance.between(unit.position, props.position) < 20) {
-                                            applyHit(unit, props);
+                                        if (Distance.between(unit.position, from.position) < 20) {
                                             return true;
                                         }
                                     }
@@ -189,15 +189,16 @@
                                     source: unit,
                                     damage: fightingStyle.damage
                                 });
-                            } else if (fightingStyle.launchCreateArrow && (round - unit.state.since) == fightingStyle.launchCreateArrow) {
+                            } else if (fightingStyle.launch && (round - unit.state.since) == fightingStyle.launch.at) {
                                 game.nature.push(BattleSetup.createUnit({
-                                    type: "arrow",
+                                    type: fightingStyle.launch.type,
                                     state: {name: "fly"},
                                     position: ObjectUtil.clone(unit.position),
                                     start: ObjectUtil.clone(unit.position),
                                     direction: unit.direction,
                                     side: unit.side,
                                     damage: fightingStyle.damage,
+                                    range: fightingStyle.launch.range,
                                     moveAccel: 100
                                 }));
                             } else if ((round - unit.state.since) == fightingStyle.fightFinish) {
@@ -209,15 +210,30 @@
                             }
                         }
 
-                        if (unit.type == "arrow") {
-                            if (
-                                impact.arrow({
+                        if (unit.state.name == "fly") {
+
+                            var hitUnit = impact.pierce(unit);
+                            if (hitUnit) {
+                                var hitProps = {
                                     position: unit.position,
                                     source: unit,
                                     damage: unit.damage
-                                })
-                                || Distance.between(unit.position, unit.start) > 200
-                            ) {
+                                };
+                                if (unit.blastRadius) {
+                                    unit.side.enemies.forEach(function(enemySide) {
+                                        enemySide.units.forEach(function(enemyUnit) {
+                                            if (enemyUnit.state.name == "die") return;
+
+                                            if (Distance.between(enemyUnit.position, unit.position) <= unit.blastRadius) {
+                                                impact.applyHit(enemyUnit, hitProps);
+                                            }
+                                        });
+                                    });
+                                } else {
+                                    impact.applyHit(hitUnit, hitProps);
+                                }
+                                Cols.remove(unit, game.nature);
+                            } else if (Distance.between(unit.position, unit.start) > unit.range) {
                                 Cols.remove(unit, game.nature);
                             }
                         }

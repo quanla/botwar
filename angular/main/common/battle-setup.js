@@ -28,6 +28,7 @@
                 unit.bounded = unitPhysics.bounded;
                 unit.needWay = unitPhysics.needWay;
                 unit.maxSpeed = unitPhysics.maxSpeed;
+                unit.blastRadius = unitPhysics.blastRadius;
 
                 return unit;
             }

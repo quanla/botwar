@@ -1,5 +1,5 @@
 function Bot(unitType) {
-    var startFightFrom = unitType == "archer" ? 200 : 40;
+    var startFightFrom = unitType == "archer" ? 200 : unitType == "ballista" ? 350 : 40;
 
     this.run = function (control) {
         // Find the nearest enemy

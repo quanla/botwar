@@ -134,7 +134,7 @@
                             var unit = side.units[j];
 
                             if (func(unit)) {
-                                return true;
+                                return unit;
                             }
                         }
                     }
@@ -142,10 +142,10 @@
                         var unit = game.nature[j];
 
                         if (func(unit)) {
-                            return true;
+                            return unit;
                         }
                     }
-                    return false;
+                    return null;
                 },
                 getEnemies: function(unit) {
                     var total = [];

@@ -25,6 +25,8 @@
             'archer',
             'peasant',
             'grunt',
+            'ballista',
+            'ballista_missile',
             //'zerling',
             'knight'
         ])

@@ -26,14 +26,16 @@
                 //unitType: "archer"
                 //unitType: "peasant"
                 //unitType: "grunt"
-                unitType: "knight"
+                //unitType: "knight"
+                unitType: "ballista"
             };
             $scope.direction = 0;
             //$scope.direction = 2;
 
             $scope.states = [
-                "stand",
-                "fight"
+                //"stand",
+                //"fight"
+                //"fly"
                 //"walk"
             ];
 
@@ -52,13 +54,12 @@
                         frames.push($scope.view.unitType + "_stand0_" + $scope.direction + ".png");
                     }
                     if (state == "walk") {
-                        for (var j = 0; j < 4; j++) {
+                        for (var j = 0; j < ($scope.view.unitType=='ballista' ? 2 : 4); j++) {
                             frames.push($scope.view.unitType + "_walk" + j + "_" + $scope.direction + ".png");
-
                         }
                     }
                     if (state == "fight") {
-                        for (var j = 0; j < ($scope.view.unitType=='peasant' ? 5 : $scope.view.unitType=='archer' ? 2 : 4); j++) {
+                        for (var j = 0; j < ($scope.view.unitType=='peasant' ? 5 : $scope.view.unitType=='archer' ? 2 : $scope.view.unitType=='ballista' ? 2 : 4); j++) {
                             frames.push($scope.view.unitType + "_fight" + j + "_" + $scope.direction + ".png");
                         }
                     }
@@ -67,6 +68,10 @@
                             var dir = Math.floor($scope.direction / 2) * 2 + 1;
                             frames.push($scope.view.unitType + "_die" + j + "_" + dir + ".png");
                         }
+                    }
+                    if (state == "fly") {
+                        var j = 0;
+                        frames.push($scope.view.unitType + "_fly" + j + "_" + $scope.direction + ".png");
                     }
                 }
                 $scope.postureEditor.frames = frames;

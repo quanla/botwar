@@ -10,6 +10,7 @@
                 generatePositions: function(side, unitConfigs, bfwidth, bfheight) {
                     var posType = {
                         "archer": "rear",
+                        "ballista": "rear",
                         "footman": "front",
                         "grunt": "front",
                         "knight": "flank"
@@ -48,9 +49,14 @@
 
                     var front1 = Math.min(front, lineMax);
                     var front2 = front - front1;
-                    var y = addLine(front1, "front", 0);
-                    y = Math.max(y, addLine(front2, "front", + space));
-                    y = Math.max(y, addLine(rear, "rear", -space));
+
+                    var rear1 = Math.min(rear, lineMax);
+                    var rear2 = rear - rear1;
+                    var y = 0;
+                    y = Math.max(y, addLine(front1, "front",      0));
+                    y = Math.max(y, addLine(front2, "front",  space));
+                    y = Math.max(y, addLine( rear1,  "rear", -space));
+                    y = Math.max(y, addLine( rear2,  "rear", -space * 2));
 
                     function addFlank(count, y) {
                         var top = Math.ceil(count / 2);
@@ -68,9 +74,6 @@
 
 
                     return function(unitType) {
-                        //console.log(bfwidth);
-                        //console.log(bfheight);
-
                         var pos = Cols.find(positions, function(p) { return p.type == posType[unitType];});
                         Cols.remove(pos, positions);
                         return {x: Math.round(pos.x + 100)*(side==0 ? 1 : -1) + side*(bfwidth), y: Math.round(pos.y + bfheight/2)};

@@ -30,8 +30,9 @@
                             color: "blue",
                             units: [
                                 { type: "footman", count: 20},
+                                { type: "knight", count: 4},
                                 { type: "archer", count: 10},
-                                { type: "knight", count: 4}
+                                { type: "ballista", count: 2}
                             ],
                             bot: fightBot
                         },
@@ -39,8 +40,9 @@
                             color: "red",
                             units: [
                                 { type: "footman", count: 20},
+                                { type: "knight", count: 4},
                                 { type: "archer", count: 10},
-                                { type: "knight", count: 4}
+                                { type: "ballista", count: 2}
                             ],
                             bot: fightBot
                         }

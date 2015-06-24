@@ -56,6 +56,10 @@
                                                 {
                                                     type: "knight",
                                                     count: 0
+                                                },
+                                                {
+                                                    type: "ballista",
+                                                    count: 0
                                                 }
                                             ],
                                             bot: $scope.bots[0]
@@ -73,6 +77,10 @@
                                                 },
                                                 {
                                                     type: "knight",
+                                                    count: 0
+                                                },
+                                                {
+                                                    type: "ballista",
                                                     count: 0
                                                 }
                                             ],

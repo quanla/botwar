@@ -13,7 +13,7 @@
 
             UnitFightingStyleProvider.addStyle("archer", {
                 fightFinish: 10 * 4,
-                launchCreateArrow: 10 * 3,
+                launch: {at: 10 * 3, type: "arrow", range: 200},
                 damage: 15
             });
 
