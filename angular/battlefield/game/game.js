@@ -5,6 +5,7 @@
     angular.module('bw.battlefield.game', [
         'bw.battlefield.unit-fighting-style',
         'bw.battlefield.unit-dynamics',
+        'bw.battlefield.game.bot-source',
         'bw.battlefield.game.bot'
     ])
         .provider("GameSetup", function() {
