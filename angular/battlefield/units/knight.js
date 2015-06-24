@@ -19,6 +19,7 @@
             });
 
             UnitPhysicsProvider.addUnitType("knight", {
+                bounded: true,
                 needWay: true,
                 maxSpeed: 1.7
             });

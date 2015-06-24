@@ -19,6 +19,7 @@
             });
 
             UnitPhysicsProvider.addUnitType("grunt", {
+                bounded: true,
                 needWay: true,
                 maxSpeed: 1
             });

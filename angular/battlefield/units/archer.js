@@ -18,6 +18,7 @@
             });
 
             UnitPhysicsProvider.addUnitType("archer", {
+                bounded: true,
                 needWay: true,
                 maxSpeed: 1
             });

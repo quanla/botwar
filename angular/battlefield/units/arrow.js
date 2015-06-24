@@ -11,6 +11,7 @@
         .config(function(UnitRenderProvider, UnitFightingStyleProvider, UnitPhysicsProvider, UnitImpactProvider) {
 
             UnitPhysicsProvider.addUnitType("arrow", {
+                bounded: false,
                 needWay: false,
                 maxSpeed: 20
             });

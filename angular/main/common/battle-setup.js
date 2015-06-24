@@ -10,6 +10,9 @@
                 ObjectUtil.copy(props, this);
             }
             Unit.prototype = {
+                isBounded: function() {
+                    return this.overwrite && this.overwrite.bounded != null ? this.overwrite.bounded : this.bounded;
+                },
                 isNeedWay: function() {
                     return this.overwrite && this.overwrite.needWay != null ? this.overwrite.needWay : this.needWay;
                 },
@@ -22,6 +25,7 @@
                 var unit = new Unit(props);
 
                 var unitPhysics = UnitPhysics.getUnitPhysics(unit.type);
+                unit.bounded = unitPhysics.bounded;
                 unit.needWay = unitPhysics.needWay;
                 unit.maxSpeed = unitPhysics.maxSpeed;
 
@@ -59,9 +63,7 @@
                                     direction: sideNum * Math.PI + Math.PI / 2,
                                     bot: bot,
                                     state: {name: "stand"},
-                                    afterBotRun: unitConfig.afterBotRun,
-                                    needWay: unitPhysics.needWay,
-                                    maxSpeed: unitPhysics.maxSpeed
+                                    afterBotRun: unitConfig.afterBotRun
                                 });
                             }
                         }
@@ -158,7 +160,7 @@
                 LOOP:
                 for (;;) {
                     var x = Math.round(Math.random() * 100) + (forSide.color == "blue" ? -130 : battleSetup.width + 30);
-                    var y = Math.round(Math.random() * battleSetup.height);
+                    var y = Math.round(Math.random() * (battleSetup.height + 100)) - 50;
                     p = {x: x, y: y};
 
                     for (var i = 0; i < game.sides.length; i++) {
@@ -198,7 +200,7 @@
                     state: {name: "stand"},
                     birth: round,
                     overwrite: {
-                        needWay: false,
+                        bounded: false,
                         until: function() {
                             return this.position.x >= 0 && this.position.y >= 0 && this.position.x < battleSetup.width && this.position.y < battleSetup.height;
                         },

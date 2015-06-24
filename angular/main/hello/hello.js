@@ -65,12 +65,12 @@
             };
             //$scope.showLargeBattle();
 
-            $scope.step1 = true;
-            //$scope.step2 = true;
-            //$scope.step3 = true;
+            $scope.stepNum = 1;
 
             $scope.showStep = function(i) {
-                $scope["step" + i] = true;
+                $scope.fader().then(function() {
+                    $scope.stepNum = i;
+                });
             };
 
             SampleBot.loadBot("fight", function(bot) {
@@ -227,5 +227,22 @@
 
         })
 
+        .directive("animationFade", function($parse, $q) {
+            return {
+                restrict: "A",
+                link: function($scope, elem, attrs) {
+                    //$scope.
+                    $parse(attrs.animationFade).assign($scope, function() {
+                        var defer = $q.defer();
+
+                        elem.fadeOut(function() {
+                            defer.resolve();
+                            elem.fadeIn();
+                        });
+                        return defer.promise;
+                    });
+                }
+            };
+        })
     ;
 })();

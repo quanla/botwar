@@ -19,6 +19,7 @@
             });
 
             UnitPhysicsProvider.addUnitType("footman", {
+                bounded: true,
                 needWay: true,
                 maxSpeed: 1
             });

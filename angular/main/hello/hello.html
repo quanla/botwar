@@ -13,71 +13,72 @@
         </div>
     </div>
 
-    <div class="row step1" ng-if="step1" ng-controller="bw.main.hello.step1.Ctrl">
-        <div class="col-lg-6 text-center">
-            <br/>
-            <br/>
-            <br/>
-            <button class="btn btn-primary btn-lg" ng-click="startGame()">Fight!</button>
-
-            <div ng-if="game.finished">
+    <div animation-fade="fader">
+        <div class="row step1" ng-if="stepNum == 1" ng-controller="bw.main.hello.step1.Ctrl">
+            <div class="col-lg-6 text-center">
                 <br/>
-                Ah, he died, but what a dull battle huh?
                 <br/>
-                Why don't we code the Red guy differently and make him a yellow coward?
+                <br/>
+                <button class="btn btn-primary btn-lg" ng-click="startGame()">Fight!</button>
 
-                <button class="btn btn-default" ng-click="showStep(2)">Yeah, sound like fun</button>
+                <div ng-if="game.finished">
+                    <br/>
+                    Ah, he died, but what a dull battle huh?
+                    <br/>
+                    Why don't we code the Red guy differently and make him a yellow coward?
+
+                    <button class="btn btn-default" ng-click="showStep(2)">Yeah, sound like fun</button>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div battlefield="game" options="options"></div>
             </div>
         </div>
-        <div class="col-lg-6 text-center">
-            <div battlefield="game" options="options"></div>
-        </div>
-    </div>
 
-    <div class="row step2" ng-if="step2" ng-controller="bw.main.hello.step2.Ctrl">
-        <div class="col-lg-6 text-center">
-            <br/>
-            Wait and see him run...
-            <br/>
-            <br/>
-            <button class="btn btn-primary btn-lg" ng-click="startGame()">Fight!</button>
+        <div class="row step2" ng-if="stepNum == 2" ng-controller="bw.main.hello.step2.Ctrl">
+            <div class="col-lg-6 text-center">
+                <br/>
+                Wait and see him run...
+                <br/>
+                <br/>
+                <button class="btn btn-primary btn-lg" ng-click="startGame()">Fight!</button>
 
-            <div ng-if="game.finished">
-                <br/>
-                Quite fun huh?
-                <br/>
-                Now... what if Red is smarter, a battle veteran... what would he do?
-                <br/>
-                <button class="btn btn-default" ng-click="showStep(3)">Ok, show me.</button>
+                <div ng-if="game.finished">
+                    <br/>
+                    Quite fun huh?
+                    <br/>
+                    Now... what if Red is smarter, a battle veteran... what would he do?
+                    <br/>
+                    <button class="btn btn-default" ng-click="showStep(3)">Ok, show me.</button>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div width="400" height="400" battlefield="game" options="options"></div>
             </div>
         </div>
-        <div class="col-lg-6 text-center">
-            <div width="400" height="400" battlefield="game" options="options"></div>
-        </div>
-    </div>
 
-    <div class="row step3" ng-if="step3" ng-controller="bw.main.hello.step3.Ctrl">
-        <div class="col-lg-6 text-center">
-            <br/>
-            Red... the veteran.
-            <br/>
-            <br/>
-            <button class="btn btn-primary btn-lg" ng-click="startGame()" ng-bind="game.finished ? 'Try Again!' : 'Fight!'"></button>
+        <div class="row step3" ng-if="stepNum == 3" ng-controller="bw.main.hello.step3.Ctrl">
+            <div class="col-lg-6 text-center">
+                <br/>
+                Red... the veteran.
+                <br/>
+                <br/>
+                <button class="btn btn-primary btn-lg" ng-click="startGame()" ng-bind="game.finished ? 'Try Again!' : 'Fight!'"></button>
 
-            <div ng-if="::game.finished">
-                <br/>
-                Ah ha, he attacks even before the Blue guy is near enough, and the stupid Blue guy can never win.
+                <div ng-if="::game.finished">
+                    <br/>
+                    Ah ha, he attacks even before the Blue guy is near enough, and the stupid Blue guy can never win.
 
-                <br/>
-                <a ui-sref="skirmish">That's fun. Show me the code</a>
-                <br/>
-                <button class="btn btn-primary" ng-click="showLargeBattle()">Let's see how a large battle would be</button>
-                <br/>
+                    <br/>
+                    <a ui-sref="skirmish">That's fun. Show me the code</a>
+                    <br/>
+                    <button class="btn btn-primary" ng-click="showLargeBattle()">Let's see how a large battle would be</button>
+                    <br/>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div width="400" height="400" battlefield="game" options="options"></div>
             </div>
         </div>
-        <div class="col-lg-6 text-center">
-            <div width="400" height="400" battlefield="game" options="options"></div>
-        </div>
     </div>
-
 </div>

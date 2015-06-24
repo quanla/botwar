@@ -173,7 +173,7 @@
                         }
 
                         // Battlefield boundary
-                        if (unit.isNeedWay()) {
+                        if (unit.isBounded()) {
                             limitPosition(unit.position, game.battlefield);
                         }
 

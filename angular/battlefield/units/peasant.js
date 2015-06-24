@@ -18,6 +18,7 @@
             });
 
             UnitPhysicsProvider.addUnitType("peasant", {
+                bounded: true,
                 needWay: true,
                 maxSpeed: 1
             });
