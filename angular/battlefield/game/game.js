@@ -27,7 +27,7 @@
 
         .factory("GameRunner", function(BotRunner, UnitDynamics, GameUtil, UnitUtil, GameSetup) {
             return {
-                newGameRunner: function(game, options) {
+                newGameRunner: function(game, options, uiSupport) {
                     var isErrored = false;
 
                     initGame(game, GameSetup);
@@ -94,7 +94,7 @@
 
                         // Change velocity, position
                         // action impacts
-                        UnitDynamics.applyDynamics(game, round);
+                        UnitDynamics.applyDynamics(game, round, uiSupport);
 
                         // Invoke listeners
                         if (game.afterRoundDynamics) {

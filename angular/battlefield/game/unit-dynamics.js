@@ -59,6 +59,17 @@
 
                         return {
                             applyHit: applyHit,
+                            applyBlast: function(sides, props) {
+                                sides.forEach(function(enemySide) {
+                                    enemySide.units.forEach(function(enemyUnit) {
+                                        if (enemyUnit.state.name == "die") return;
+
+                                        if (Distance.between(enemyUnit.position, props.position) <= props.blastRadius + 20) {
+                                            applyHit(enemyUnit, props);
+                                        }
+                                    });
+                                });
+                            },
                             hit: function(props) {
 
                                 var adjustantEnemies = Cols.filter(GameUtil.getEnemies(props.source), function(enemy) {
@@ -145,7 +156,7 @@
             }
 
             return {
-                applyDynamics: function(game, round) {
+                applyDynamics: function(game, round, uiSupport) {
                     var impact = UnitImpact.prepare(game, round);
                     GameUtil.eachUnit(game, function(unit) {
 
@@ -213,27 +224,19 @@
                         if (unit.state.name == "fly") {
 
                             var hitUnit = impact.pierce(unit);
-                            if (hitUnit) {
+                            if (hitUnit || Distance.between(unit.position, unit.start) > unit.range) {
                                 var hitProps = {
                                     position: unit.position,
                                     source: unit,
+                                    blastRadius: unit.blastRadius,
                                     damage: unit.damage
                                 };
                                 if (unit.blastRadius) {
-                                    unit.side.enemies.forEach(function(enemySide) {
-                                        enemySide.units.forEach(function(enemyUnit) {
-                                            if (enemyUnit.state.name == "die") return;
-
-                                            if (Distance.between(enemyUnit.position, unit.position) <= unit.blastRadius) {
-                                                impact.applyHit(enemyUnit, hitProps);
-                                            }
-                                        });
-                                    });
-                                } else {
+                                    impact.applyBlast(unit.side.enemies, hitProps);
+                                    uiSupport.explosion(unit.position);
+                                } else if (hitUnit != null) {
                                     impact.applyHit(hitUnit, hitProps);
                                 }
-                                Cols.remove(unit, game.nature);
-                            } else if (Distance.between(unit.position, unit.start) > unit.range) {
                                 Cols.remove(unit, game.nature);
                             }
                         }
@@ -241,8 +244,6 @@
                         if (unit.isHit && (round - unit.isHit.since) > 2) {
                             unit.isHit = null;
                         }
-
-
 
                         if (unit.overwrite && unit.overwrite.until) {
                             if (unit.overwrite.until.apply(unit)) {

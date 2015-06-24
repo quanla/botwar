@@ -27,6 +27,7 @@
             'grunt',
             'ballista',
             'ballista_missile',
+            'explosion',
             //'zerling',
             'knight'
         ])

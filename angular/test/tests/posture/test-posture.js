@@ -27,7 +27,8 @@
                 //unitType: "peasant"
                 //unitType: "grunt"
                 //unitType: "knight"
-                unitType: "ballista"
+                //unitType: "ballista"
+                unitType: "explosion"
             };
             $scope.direction = 0;
             //$scope.direction = 2;
@@ -72,6 +73,11 @@
                     if (state == "fly") {
                         var j = 0;
                         frames.push($scope.view.unitType + "_fly" + j + "_" + $scope.direction + ".png");
+                    }
+                    if (state == "explode") {
+                        for (var j = 0; j < 6; j++) {
+                            frames.push($scope.view.unitType + "_explode_" + j + ".png");
+                        }
                     }
                 }
                 $scope.postureEditor.frames = frames;

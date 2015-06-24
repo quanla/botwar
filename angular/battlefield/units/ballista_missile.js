@@ -14,7 +14,7 @@
                 bounded: false,
                 needWay: false,
                 maxSpeed: 10,
-                blastRadius: 600
+                blastRadius: 60
             });
 
             UnitImpactProvider.addUnitType("ballista_missile", {

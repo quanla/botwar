@@ -65,7 +65,7 @@
                     controller: "bw.main.hello.large-battle.Ctrl"
                 });
             };
-            //$scope.showLargeBattle();
+            $scope.showLargeBattle();
 
             $scope.stepNum = 1;
 

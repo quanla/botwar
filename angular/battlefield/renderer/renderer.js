@@ -155,6 +155,10 @@
                         unitStage.position.set(30, 30);
                         stage.addChild(unitStage);
 
+                        var explosionStage = new PIXI.Container();
+                        explosionStage.position.set(30, 30);
+                        stage.addChild(explosionStage);
+
                         var controlStage = new PIXI.Container();
                         controlStage.position.set(30, 30);
                         stage.addChild(controlStage);
@@ -177,8 +181,9 @@
                         requestAnimationFrame( animate );
 
                         return {
-                            unitStage: unitStage,
                             dirtStage: dirtStage,
+                            unitStage: unitStage,
+                            explosionStage: explosionStage,
                             controlStage: controlStage,
                             onEachRound: function(onEachRound1) {
                                 onEachRound = onEachRound1;

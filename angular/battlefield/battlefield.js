@@ -5,10 +5,11 @@
     angular.module('bw.battlefield', [
         'bw.battlefield.game',
         'bw.battlefield.all-units',
+        'bw.battlefield.ui-support',
         'bw.battlefield.renderer'
     ])
 
-        .directive("battlefield", function(Renderers, GameRunner, UnitSprites, GameControl) {
+        .directive("battlefield", function(Renderers, GameRunner, UnitSprites, GameControl, GameUISupport) {
             return {
                 restrict: "A",
                 scope: {
@@ -46,7 +47,8 @@
                             var gameControl = GameControl.createGameControl(game);
                             gameControl.setStage(renderer.controlStage);
 
-                            gameRunner = GameRunner.newGameRunner(game, $scope.options);
+                            var uiSupport = GameUISupport.createGameUISupport(renderer.explosionStage);
+                            gameRunner = GameRunner.newGameRunner(game, $scope.options, uiSupport);
 
                             unitSprites = UnitSprites.createUnitSprites(game, renderer.unitStage, renderer.dirtStage);
 
@@ -54,6 +56,7 @@
                             renderer.onEachRound(function() {
                                 gameRunner.onEachRound();
                                 gameControl.updateUI();
+                                uiSupport.updateUI();
                             });
                         }
 

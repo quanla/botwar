@@ -22,6 +22,7 @@
         .controller("bw.test.sprite.Ctrl", function($scope, $http, SpriteSheetEditors, testTypes) {
             //$scope.unitType = "footman";
             $scope.spriteNames = [
+                ["explosion", "explosion"],
                 ["footman", "footman"],
                 ["knight", "knight"],
                 ["ballista", "ballista"],
@@ -30,7 +31,7 @@
             ];
 
             $scope.view = {
-                spriteName: $scope.spriteNames[2]
+                spriteName: $scope.spriteNames[0]
                 //unitType: "peasant"
             };
 
